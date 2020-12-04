@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  * 
  * @author thtrungvo
  * We use HIBERNATE=> remove some auto-configuration of jpa (exclude=...)
- *
+ * https://dzone.com/articles/spring-boot-security-json-web-tokenjwt-hello-world?fbclid=IwAR0ljU7yB6dhqnz_D3YB9DJZ3CgGVz2nCAfbWdWeWLS6oisoEGvrMv4doz0
  */
 
 @SpringBootApplication
