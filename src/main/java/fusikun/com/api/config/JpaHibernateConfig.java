@@ -1,4 +1,4 @@
-package fusikun.com.api;
+package fusikun.com.api.config;
 
 import java.util.Properties;
 

@@ -1,4 +1,4 @@
-package fusikun.com.api;
+package fusikun.com.api.jwtUtils;
 
 import java.io.IOException;
 import java.io.Serializable;

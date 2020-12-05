@@ -1,4 +1,4 @@
-package fusikun.com.api;
+package fusikun.com.api.jwtUtils;
 
 import java.io.IOException;
 
@@ -22,7 +22,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JwtUserDetailsService JwtUserDetailsService;
+	private JwtUserDetailsService jwtUserDetailsService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -49,7 +49,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		}
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = this.JwtUserDetailsService.loadUserByUserName(username);
+			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 			// if token is valid configure Spring Security to manually set:
 			// authentication
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
