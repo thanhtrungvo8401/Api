@@ -7,7 +7,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+/**
+ * 
+ * @author thtrungvo
+ *	this method implements UserDetailsService of Spring-Security
+ * 	show the way we can get the User (DB, ...)
+ * 	by method: loadUserByUsername
+ */
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 

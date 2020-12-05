@@ -12,35 +12,56 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import fusikun.com.api.jwtUtils.JwtAuthenticationEntryPoint;
-import fusikun.com.api.jwtUtils.JwtRequestFilter;
+import fusikun.com.api.requestFilters.JwtRequestFilter;
+import fusikun.com.api.service.JwtUserDetailsService;
+import fusikun.com.api.utils.JwtAuthenticationEntryPoint;
+
+/**
+ * 
+ * @author thtrungvo
+ *	JwtUserDetailsService => implements UserDetailsService of Spring-Security
+ */
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-	@Autowired
-	private UserDetailsService jwtUserDetailsService;
-
-	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
+	private JwtUserDetailsService jwtUserDetailsService; 
+	
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(jwtUserDetailsService);
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable()
+			.authorizeRequests().antMatchers("/authenticate").permitAll()
+			.anyRequest().authenticated();
+	}
+	/**
+	 
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+	@Autowired
+	private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -68,4 +89,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Add a filter to validate the tokens with every request:
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
+	 */
 }

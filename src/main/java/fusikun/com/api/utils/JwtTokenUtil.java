@@ -1,4 +1,4 @@
-package fusikun.com.api.jwtUtils;
+package fusikun.com.api.utils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,12 +17,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
-
+	private static final long serialVersionUID = 7358756538128482919L;
+	public static final long JWT_TOKEN_VALIDITY = 1 * 60 * 60;
 	@Value("${jwt.secret}")
 	private String SECRET_KEY;
 
@@ -55,7 +51,7 @@ public class JwtTokenUtil implements Serializable {
 	// generate token for user:
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<String, Object>();
-		return doGenerateToekn(claims, userDetails.getUsername());
+		return doGenerateToken(claims, userDetails.getUsername());
 	}
 
 	// while creating the token
@@ -63,7 +59,7 @@ public class JwtTokenUtil implements Serializable {
 	// 2) Sign the JWT using the HS512 algorithm and secret key.
 	// 3) According to JWS Compact Serialization
 	// compaction of the JWT to a URL-safe string
-	private String doGenerateToekn(Map<String, Object> claims, String subject) {
+	private String doGenerateToken(Map<String, Object> claims, String subject) {
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
@@ -73,5 +69,4 @@ public class JwtTokenUtil implements Serializable {
 		final String username = getUserNameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
-
 }
