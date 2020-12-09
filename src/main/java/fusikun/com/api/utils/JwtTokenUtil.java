@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +16,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
+@PropertySource(value = "jwt.properties")
 public class JwtTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = 7358756538128482919L;
-	public static final long JWT_TOKEN_VALIDITY = 1 * 60 * 60;
-	@Value("${jwt.secret}")
+	@Value("${jwt.validity.hours}")
+	private Double JWT_TOKEN_HOURS = 0.0;
+	@Value("${jwt.secret.key}")
 	private String SECRET_KEY;
-
-	// retrieve user from jwt-token:
+		// retrieve user from jwt-token:
 	public String getUserNameFromToken(String token) {
 		return getClaimsFromToken(token, Claims::getSubject);
 	}
@@ -61,7 +63,7 @@ public class JwtTokenUtil implements Serializable {
 	// compaction of the JWT to a URL-safe string
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+				.setExpiration(new Date(System.currentTimeMillis() + Math.round(JWT_TOKEN_HOURS * 60 * 60 * 1000)))
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
 
