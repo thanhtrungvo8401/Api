@@ -24,7 +24,8 @@ public class JwtTokenUtil implements Serializable {
 	private Double JWT_TOKEN_HOURS = 0.0;
 	@Value("${jwt.secret.key}")
 	private String SECRET_KEY;
-		// retrieve user from jwt-token:
+	
+	// retrieve user from jwt-token:
 	public String getUserNameFromToken(String token) {
 		return getClaimsFromToken(token, Claims::getSubject);
 	}
