@@ -18,7 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import fusikun.com.api.exceptionHandlers.InvalidTokenException;
 import fusikun.com.api.service.JwtUserDetailsService;
 import fusikun.com.api.utils.AuthContants;
-import fusikun.com.api.utils.ConstantErrorCodes;
 import fusikun.com.api.utils.ConstantErrorMessages;
 import fusikun.com.api.utils.JwtTokenUtil;
 
