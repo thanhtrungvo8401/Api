@@ -15,8 +15,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import fusikun.com.api.exceptionHandlers.InvalidTokenException;
 import fusikun.com.api.service.JwtUserDetailsService;
 import fusikun.com.api.utils.AuthContants;
+import fusikun.com.api.utils.ConstantErrorCodes;
+import fusikun.com.api.utils.ConstantErrorMessages;
 import fusikun.com.api.utils.JwtTokenUtil;
 
 @Component
@@ -37,8 +40,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		if (authorizationHeader != null && authorizationHeader.startsWith(AuthContants.BEARER)) {
 			jwt = authorizationHeader.substring(AuthContants.BEARER_INDEX);
 			username = jwtTokenUtil.getUserNameFromToken(jwt);
+		} else {
+			throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
 		}
-		
+
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
 			if (jwtTokenUtil.validateToken(jwt, userDetails)) {
@@ -48,7 +53,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-			}
+			} else
+				throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
+		} else {
+			throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
 		}
 		chain.doFilter(request, response);
 	}

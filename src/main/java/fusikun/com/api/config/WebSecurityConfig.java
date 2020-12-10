@@ -19,9 +19,9 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import fusikun.com.api.exceptionHandlers.JwtAuthenticationEntryPoint;
 import fusikun.com.api.requestFilters.JwtRequestFilter;
 import fusikun.com.api.service.JwtUserDetailsService;
-import fusikun.com.api.utils.JwtAuthenticationEntryPoint;
 
 /**
  * 
@@ -39,6 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -63,40 +66,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated()
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-	
-	/**
-	 
-	@Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		// configure AuthenticationManerger so that is knows from where to load
-		// user for matching credentials
-		// Use BCryptPasswordEncoder
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-	}
-	
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		// We dont need CSRF for this example
-		httpSecurity
-			.csrf().disable()
-			.authorizeRequests()
-			// dont authenticate this particular request
-			.antMatchers("/authenticate").permitAll()
-			// all other requests need to be authenticated
-			.anyRequest().authenticated().and()
-			// make sure we user stateless session; session wont be use to
-			// store any state
-			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-	
-		// Add a filter to validate the tokens with every request:
-		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-	}
-	 */
+//	@Autowired
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//		// configure AuthenticationManerger so that is knows from where to load
+//		// user for matching credentials
+//		// Use BCryptPasswordEncoder
+//		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+//	}
 }
