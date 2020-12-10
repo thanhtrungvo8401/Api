@@ -12,25 +12,35 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import fusikun.com.api.exceptionHandlers.InvalidTokenException;
 import fusikun.com.api.service.JwtUserDetailsService;
 import fusikun.com.api.utils.AuthContants;
 import fusikun.com.api.utils.ConstantErrorMessages;
+import fusikun.com.api.utils.IgnoreUrl;
 import fusikun.com.api.utils.JwtTokenUtil;
 
+@Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
-
+	
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
+		// Ignore some URL:
+		String reqUrl = request.getRequestURI();
+		if (IgnoreUrl.listUrl.contains(reqUrl)) {
+			chain.doFilter(request, response);
+			return;
+		}
+		// URL not in Ignore list => validate
 		final String authorizationHeader = request.getHeader(AuthContants.AUTHORIZATION);
 		String username = null;
 		String jwt = null;

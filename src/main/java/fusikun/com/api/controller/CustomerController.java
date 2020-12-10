@@ -17,7 +17,7 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 
-	@GetMapping(value = { "/", "/customers" })
+	@GetMapping(value = {"/customers" })
 	public List<Customer> listCustomer() {
 		return customerService.findAll();
 	}
