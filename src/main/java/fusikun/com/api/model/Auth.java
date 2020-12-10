@@ -13,53 +13,30 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "auth")
+public class Auth {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(unique = true, nullable = false, length = 50)
-	private String username;
-
-	@Column(nullable = false)
-	private String password;
-
-	@Column(nullable = true)
-	private String email;
-
 	@Column(nullable = false)
 	private Boolean isActive;
-
-	@Column(nullable = true)
-	private String accessToken;
 
 	@Column(nullable = false)
 	private Date createDate;
 
 	@Column(nullable = false)
 	private Date updateDate;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "roleId", nullable = false)
 	private Role role;
-
-	public Boolean getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "menuId", nullable = false)
+	private Menu menu;
+	
 	public long getId() {
 		return id;
 	}
@@ -68,44 +45,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Boolean getActive() {
+	public Boolean getIsActive() {
 		return isActive;
 	}
 
-	public void setActive(Boolean isActive) {
+	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
-	}
-
-	public String getAccessToken() {
-		return accessToken;
-	}
-
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
 	}
 
 	public Date getCreateDate() {
