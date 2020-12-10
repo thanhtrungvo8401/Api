@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,8 +30,8 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
 	}
 
 	// AUTHENTICATE:
-	@ExceptionHandler(BadCredentialsException.class)
-	public final ResponseEntity<Object> handleBadCredentialsException(Exception ex, WebRequest request)
+	@ExceptionHandler({BadCredentialsException.class, AuthenticationException.class, DisabledException.class})
+	public final ResponseEntity<Object> handleWrongUsernamePasswordException(Exception ex, WebRequest request)
 			throws Exception {
 		List<Object> errorCodes = new LinkedList<>();
 		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_FORM_ERROR, ConstantErrorCodes.BAD_CREDENTIALS));

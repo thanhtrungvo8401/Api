@@ -25,8 +25,8 @@ import fusikun.com.api.service.JwtUserDetailsService;
 
 /**
  * 
- * @author thtrungvo
- *	JwtUserDetailsService => implements UserDetailsService of Spring-Security
+ * @author thtrungvo JwtUserDetailsService => implements UserDetailsService of
+ *         Spring-Security
  */
 
 @Configuration
@@ -34,42 +34,42 @@ import fusikun.com.api.service.JwtUserDetailsService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	private JwtUserDetailsService jwtUserDetailsService; 
-	
-	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
+	private JwtUserDetailsService jwtUserDetailsService;
 
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	
+
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(jwtUserDetailsService);
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
 	}
-	
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/authenticate");
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests()
-			.antMatchers("/authenticate").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		.anyRequest().authenticated()
+		.and()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
-
 
 //	@Autowired
 //	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
