@@ -23,7 +23,7 @@ public class JwtUserDetail implements UserDetails{
 		if (user != null) {
 			this.username = user.getUsername();
 			this.password = user.getPassword();
-			this.active = user.isActive();
+			this.active = user.getActive();
 			this.authorities = Arrays.asList(new SimpleGrantedAuthority("USER_ROLE"));
 		}
 		

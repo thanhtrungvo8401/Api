@@ -63,7 +63,10 @@ public class JwtTokenUtil implements Serializable {
 	// 3) According to JWS Compact Serialization
 	// compaction of the JWT to a URL-safe string
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+		return Jwts.builder().setClaims(claims)
+				.setSubject(subject)
+				.setId("AccessToken")
+				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + Math.round(JWT_TOKEN_HOURS * 60 * 60 * 1000)))
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
