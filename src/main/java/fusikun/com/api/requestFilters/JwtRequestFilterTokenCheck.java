@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import fusikun.com.api.exceptionHandlers.InvalidTokenException;
+import fusikun.com.api.model.JwtUserDetails;
 import fusikun.com.api.service.JwtUserDetailsService;
 import fusikun.com.api.utils.AuthContants;
 import fusikun.com.api.utils.ConstantErrorMessages;
@@ -48,11 +48,12 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 			jwt = authorizationHeader.substring(AuthContants.BEARER_INDEX);
 			username = jwtTokenUtil.getUserNameFromToken(jwt);
 		} else {
+			System.out.println("======= JWT does not start with 'bearer' =======");
 			throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
 		}
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+			JwtUserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
 			if (jwtTokenUtil.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
@@ -60,8 +61,10 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-			} else
+			} else {
+				System.out.println("======= invalid TOKEN =======");
 				throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
+			}
 		} else {
 			throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
 		}

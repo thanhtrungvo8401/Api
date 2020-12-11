@@ -11,6 +11,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import fusikun.com.api.model.JwtUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,10 +25,15 @@ public class JwtTokenUtil implements Serializable {
 	private Double JWT_TOKEN_HOURS = 0.0;
 	@Value("${jwt.secret.key}")
 	private String SECRET_KEY;
-	
+
 	// retrieve user from jwt-token:
 	public String getUserNameFromToken(String token) {
 		return getClaimsFromToken(token, Claims::getSubject);
+	}
+
+	// retrieve accessToken from jwt-token:
+	public String getAccessTokenFromToken(String token) {
+		return getClaimsFromToken(token, Claims::getId);
 	}
 
 	// retrieve expiration date from jwt-token:
@@ -63,16 +69,16 @@ public class JwtTokenUtil implements Serializable {
 	// 3) According to JWS Compact Serialization
 	// compaction of the JWT to a URL-safe string
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
-		return Jwts.builder().setClaims(claims)
-				.setSubject(subject)
-				.setId("AccessToken")
+		return Jwts.builder().setClaims(claims).setSubject(subject).setId("accessToken")
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + Math.round(JWT_TOKEN_HOURS * 60 * 60 * 1000)))
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
 
-	public Boolean validateToken(String token, UserDetails userDetails) {
+	public Boolean validateToken(String token, JwtUserDetails userDetails) {
 		final String username = getUserNameFromToken(token);
-		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		final String accessToken = getAccessTokenFromToken(token);
+		return (username.equals(userDetails.getUsername()) && accessToken.equals(userDetails.getAccessToken())
+				&& !isTokenExpired(token));
 	}
 }

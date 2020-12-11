@@ -8,27 +8,33 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class JwtUserDetail implements UserDetails{
+public class JwtUserDetails implements UserDetails{
 	
 	private static final long serialVersionUID = 1317367368138070184L;
 	private String username;
 	private String password;
-	private boolean active;
+	private boolean isActive;
+	private String accessToken;
 	private List<GrantedAuthority> authorities;
 
-	public JwtUserDetail() {
+	public JwtUserDetails() {
 	}
 	
-	public JwtUserDetail(User user) {
+	public JwtUserDetails(User user) {
 		if (user != null) {
 			this.username = user.getUsername();
 			this.password = user.getPassword();
-			this.active = user.getActive();
+			this.isActive = user.getIsActive();
+			this.accessToken = user.getAccessToken();
 			this.authorities = Arrays.asList(new SimpleGrantedAuthority("USER_ROLE"));
 		}
 		
 	}
 
+	public String getAccessToken() {
+		return accessToken;
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.authorities;
@@ -46,12 +52,12 @@ public class JwtUserDetail implements UserDetails{
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return this.isActive;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return this.isActive;
 	}
 
 	@Override
@@ -61,7 +67,7 @@ public class JwtUserDetail implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return this.active;
+		return this.isActive;
 	}
 
 }

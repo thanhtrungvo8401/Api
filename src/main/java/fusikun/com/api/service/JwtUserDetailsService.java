@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import fusikun.com.api.model.JwtUserDetail;
+import fusikun.com.api.model.JwtUserDetails;
 import fusikun.com.api.model.User;
 /**
  * 
@@ -22,9 +22,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 	UserService userService;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userService.findByUsername(username);
-		return new JwtUserDetail(user);
+		return new JwtUserDetails(user);
 	}
 
 }

@@ -92,14 +92,6 @@ public class User {
 		this.email = email;
 	}
 
-	public Boolean getActive() {
-		return isActive;
-	}
-
-	public void setActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
