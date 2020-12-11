@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import fusikun.com.api.exceptionHandlers.InvalidTokenException;
 import fusikun.com.api.model.JwtUserDetails;
 import fusikun.com.api.service.JwtUserDetailsService;
-import fusikun.com.api.utils.AuthContants;
+import fusikun.com.api.utils.ConstantAuth;
 import fusikun.com.api.utils.ConstantErrorMessages;
 import fusikun.com.api.utils.IgnoreUrl;
 import fusikun.com.api.utils.JwtTokenUtil;
@@ -41,11 +41,11 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 			return;
 		}
 		// URL not in Ignore list => validate
-		final String authorizationHeader = request.getHeader(AuthContants.AUTHORIZATION);
+		final String authorizationHeader = request.getHeader(ConstantAuth.AUTHORIZATION);
 		String username = null;
 		String jwt = null;
-		if (authorizationHeader != null && authorizationHeader.startsWith(AuthContants.BEARER)) {
-			jwt = authorizationHeader.substring(AuthContants.BEARER_INDEX);
+		if (authorizationHeader != null && authorizationHeader.startsWith(ConstantAuth.BEARER)) {
+			jwt = authorizationHeader.substring(ConstantAuth.BEARER_INDEX);
 			username = jwtTokenUtil.getUserNameFromToken(jwt);
 		} else {
 			System.out.println("======= JWT does not start with 'bearer' =======");
