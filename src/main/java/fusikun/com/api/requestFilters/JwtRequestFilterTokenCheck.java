@@ -36,7 +36,7 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		// Ignore some URL:
 		String reqUrl = request.getRequestURI();
-		if (IgnoreUrl.listUrl.contains(reqUrl)) {
+		if (IgnoreUrl.listUrl.contains(reqUrl.substring(IgnoreUrl.prefixRemove))) {
 			chain.doFilter(request, response);
 			return;
 		}
