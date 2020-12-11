@@ -19,4 +19,8 @@ public class UserService {
 			return optUser.get();
 		else return null;
 	}
+	
+	public User updateUser(User user) {
+		return userRepository.saveAndFlush(user);
+	} 
 }

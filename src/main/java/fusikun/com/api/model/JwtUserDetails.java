@@ -35,6 +35,10 @@ public class JwtUserDetails implements UserDetails{
 		return accessToken;
 	}
 	
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.authorities;

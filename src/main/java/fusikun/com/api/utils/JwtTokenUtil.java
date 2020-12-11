@@ -8,7 +8,6 @@ import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import fusikun.com.api.model.JwtUserDetails;
@@ -58,9 +57,9 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	// generate token for user:
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(JwtUserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<String, Object>();
-		return doGenerateToken(claims, userDetails.getUsername());
+		return doGenerateToken(claims, userDetails);
 	}
 
 	// while creating the token
@@ -68,8 +67,10 @@ public class JwtTokenUtil implements Serializable {
 	// 2) Sign the JWT using the HS512 algorithm and secret key.
 	// 3) According to JWS Compact Serialization
 	// compaction of the JWT to a URL-safe string
-	private String doGenerateToken(Map<String, Object> claims, String subject) {
-		return Jwts.builder().setClaims(claims).setSubject(subject).setId("accessToken")
+	private String doGenerateToken(Map<String, Object> claims, JwtUserDetails userDetails) {
+		return Jwts.builder().setClaims(claims)
+				.setSubject(userDetails.getUsername())
+				.setId(userDetails.getAccessToken())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + Math.round(JWT_TOKEN_HOURS * 60 * 60 * 1000)))
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
