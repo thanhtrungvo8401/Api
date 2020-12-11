@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IgnoreUrl {
-	private static final String[] list = {"/authenticate"};
+	private static final String[] list = {"/authenticate/login"};
 	public static final List<String> listUrl = Arrays.asList(list);
-	public static final int prefixRemove = 4;
 }
