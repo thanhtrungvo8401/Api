@@ -2,11 +2,8 @@ package fusikun.com.api.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,7 +13,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.UniqueElements;
 
 import fusikun.com.api.utils.ConstantErrorCodes;
 
@@ -24,13 +20,11 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 @Table(name = "user")
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
 //	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
-	@Column(unique = true)
 	private String username;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
@@ -40,15 +34,12 @@ public class User {
 	@Email(message = ConstantErrorCodes.NOT_MAIL)
 	private String email;
 	
-	@Column(nullable = false)
 	private Boolean isActive;
 
 	private String accessToken;
 
-	@Column(nullable = false)
 	private Date createDate;
 
-	@Column(nullable = false)
 	private Date updateDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

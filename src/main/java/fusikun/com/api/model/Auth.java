@@ -2,11 +2,8 @@ package fusikun.com.api.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,16 +17,12 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 public class Auth {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(nullable = false)
 	private Boolean isActive;
 
-	@Column(nullable = false)
 	private Date createDate;
 
-	@Column(nullable = false)
 	private Date updateDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
