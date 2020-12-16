@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,7 +23,7 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 // ControllerAdvice => use for all project:
 @ControllerAdvice
 @RestController
-public class CustomizeResponseEntityExceptionHandler {
+public class Customize_ResponseEntityExceptionHandler {
 	// COMMON ERROR:
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleExceptionForAll(Exception ex, WebRequest request) throws Exception {
@@ -42,14 +43,14 @@ public class CustomizeResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}
 
-	@ExceptionHandler( MethodArgumentNotValidException.class )
+	@ExceptionHandler({ MethodArgumentNotValidException.class, Customize_MethodArgumentNotValidException.class })
 	public final ResponseEntity<Object> handleValidationExceptions(Exception exeption, WebRequest request)
 			throws Exception {
-		MethodArgumentNotValidException ex = (MethodArgumentNotValidException) exeption;
-		List<Object> errorCodes = new LinkedList<>();
+		BindException ex = (BindException) exeption;
 		List<ObjectError> errorList = ex.getBindingResult().getAllErrors();
+		List<Object> errorCodes = new LinkedList<>();
 		errorList.forEach((err) -> {
-			String field = err.getObjectName();
+			String field = ((org.springframework.validation.FieldError) err).getField();
 			String code = err.getCode();
 			errorCodes.add(new FieldError(field, code));
 		});
