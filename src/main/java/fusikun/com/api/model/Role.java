@@ -13,6 +13,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.UniqueElements;
+
+import fusikun.com.api.utils.ConstantErrorCodes;
 
 @Entity
 @Table(name = "role")
@@ -22,7 +28,10 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(nullable = false, unique = true, length = 50)
+	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@Column(unique = true)
+//	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
 	private String roleName;
 
 	@Column(nullable = false)

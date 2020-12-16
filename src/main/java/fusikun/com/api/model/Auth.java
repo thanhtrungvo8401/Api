@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import fusikun.com.api.utils.ConstantErrorCodes;
 
 @Entity
 @Table(name = "auth")
@@ -30,11 +33,13 @@ public class Auth {
 	private Date updateDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "roleId", nullable = false)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@JoinColumn(name = "roleId")
 	private Role role;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "menuId", nullable = false)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@JoinColumn(name = "menuId")
 	private Menu menu;
 	
 	public long getId() {
