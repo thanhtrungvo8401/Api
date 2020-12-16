@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,14 +30,12 @@ public class Menu {
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
-	@NotBlank(message = ConstantErrorCodes.NOT_BLANK)
 	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
 //	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
 	private String url;
 	
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
-	@NotBlank(message = ConstantErrorCodes.NOT_BLANK)
 	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
 //	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
 	private String name;

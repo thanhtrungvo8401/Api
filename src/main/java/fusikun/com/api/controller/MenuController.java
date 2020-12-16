@@ -19,7 +19,6 @@ public class MenuController {
 	
 	@PostMapping("/menu-actions/create")
 	public ResponseEntity<Object> createMenuActions(@Valid @RequestBody Menu menu) {
-		
 		return ResponseEntity.ok(menu);
 	}
 }
