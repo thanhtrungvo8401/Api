@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import fusikun.com.api.model.JwtRequest;
-import fusikun.com.api.model.JwtResponse;
+import fusikun.com.api.dto.JwtRequest;
+import fusikun.com.api.dto.JwtResponse;
 import fusikun.com.api.model.JwtUserDetails;
 import fusikun.com.api.model.User;
 import fusikun.com.api.service.UserService;
