@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fusikun.com.api.dto.MenuRequest;
+import fusikun.com.api.dto.MenuResponse;
 import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
 import fusikun.com.api.model.Menu;
+import fusikun.com.api.service.MenuServiceImpl;
 import fusikun.com.api.validator.MenuValidator;
 
 @RestController
@@ -19,6 +22,9 @@ public class MenuController {
 
 	@Autowired
 	MenuValidator menuValidator;
+	
+	@Autowired
+	MenuServiceImpl menuService;
 
 	@GetMapping("/menu-actions")
 	public ResponseEntity<Object> getMenuActions() {
@@ -26,15 +32,17 @@ public class MenuController {
 	}
 
 	@PostMapping("/menu-actions/create")
-	public ResponseEntity<Object> createMenuActions(@Valid @RequestBody Menu menu)
+	public ResponseEntity<Object> createMenuActions(@Valid @RequestBody MenuRequest menuRequest)
 			throws Customize_MethodArgumentNotValidException {
-		
-		BindException errors = new BindException(menu, "menu");
-		menuValidator.validate(menu, errors);
+		// Validation After pass Spring-Validation:
+		BindException errors = new BindException(menuRequest, MenuRequest.class.getName());
+		menuValidator.validate(menuRequest, errors);
 		if (errors.hasErrors()) {
 			throw new Customize_MethodArgumentNotValidException(errors.getBindingResult());
 		}
-		
-		return ResponseEntity.ok(menu);
+		Menu menu = menuRequest.getMenu();
+		Menu savedMenu = menuService.save(menu);
+		MenuResponse menuResponse = new MenuResponse(savedMenu);
+		return ResponseEntity.ok(menuResponse);
 	}
 }
