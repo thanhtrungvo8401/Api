@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,29 +19,46 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 public class Auth {
 
 	@Id
-	private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	private Boolean isActive;
 
-	private Date createDate;
+	private Date createdDate;
 
-	private Date updateDate;
+	private Date updatedDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@JoinColumn(name = "roleId")
 	private Role role;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@JoinColumn(name = "menuId")
 	private Menu menu;
-	
-	public long getId() {
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -51,19 +70,19 @@ public class Auth {
 		this.isActive = isActive;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 }

@@ -7,53 +7,51 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-
-import fusikun.com.api.utils.ConstantErrorCodes;
-
 
 @Entity
 @Table(name = "menu")
 public class Menu {
 	@Id
-	private long id;
-		
-	private Boolean isActive;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	@NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
-	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
-//	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
+	private Boolean isActive;
+	
 	private String url;
 	
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	@NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
-	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
-//	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
 	private String name;
 
-	private Date createDate;
+	private Date createdDate;
 
-	private Date updateDate;
+	private Date updatedDate;
 
 	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Auth> auths = new HashSet<>();
 
-	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "parentMenu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Menu> menus = new HashSet<>();
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parentId")
-	private Menu menu;
+	private Menu parentMenu;
+
 	
+	public Menu() {
+	}
+	
+	public Menu(String url, String name) {
+		super();
+		this.url = url;
+		this.name = name;
+	}
+
 	public Set<Menu> getMenus() {
 		return menus;
 	}
@@ -62,12 +60,12 @@ public class Menu {
 		this.menus = menus;
 	}
 
-	public Menu getMenu() {
-		return menu;
+	public Menu getParentMenu() {
+		return parentMenu;
 	}
 
-	public void setMenu(Menu menu) {
-		this.menu = menu;
+	public void setParentMenu(Menu parentMenu) {
+		this.parentMenu = parentMenu;
 	}
 
 	public Set<Auth> getAuths() {
@@ -78,11 +76,11 @@ public class Menu {
 		this.auths = auths;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -110,19 +108,20 @@ public class Menu {
 		this.name = name;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
+	
 }

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,14 +15,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 import fusikun.com.api.utils.ConstantErrorCodes;
 
 @Entity
 @Table(name = "user")
 public class User {
 	@Id
-	private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
@@ -33,15 +35,15 @@ public class User {
 
 	@Email(message = ConstantErrorCodes.NOT_MAIL)
 	private String email;
-	
+
 	private Boolean isActive;
 
 	private String accessToken;
 
-	private Date createDate;
+	private Date createdDate;
 
-	private Date updateDate;
-	
+	private Date updatedDate;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "roleId")
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
@@ -63,11 +65,11 @@ public class User {
 		this.role = role;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -103,19 +105,20 @@ public class User {
 		this.accessToken = accessToken;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
+
 }
