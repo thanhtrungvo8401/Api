@@ -10,4 +10,6 @@ public class ConstantErrorCodes {
 	public static final String UNIQUE_VALUE = "UNIQUE_VALUE";
 	public static final String NOT_BLANK = "NOT_BLANK";
 	public static final String NOT_MAIL = "NOT_MAIL";
+	public static final String PARENT_MENU_CONTAINS_BLANK_OR_SLASH = "PARENT_MENU_CONTAINS_BLANK_OR_SLASH";
+	public static final String NOT_EXIST_DATA = "NOT_EXIST_DATA";
 }

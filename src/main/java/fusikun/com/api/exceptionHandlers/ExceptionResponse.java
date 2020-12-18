@@ -7,17 +7,17 @@ import java.util.List;
 public class ExceptionResponse {
 	private Date timestamp;
 	private String message;
-	private String details;
+	private String path;
 	private List<Object> errorCodes = new LinkedList<>();
 
 	public ExceptionResponse() {
 	}
 
-	public ExceptionResponse(Date timestamp, String message, String details, List<Object> errorCodes) {
+	public ExceptionResponse(Date timestamp, String message, String path, List<Object> errorCodes) {
 		super();
 		this.timestamp = timestamp;
 		this.message = message;
-		this.details = details;
+		this.path = path;
 		if (errorCodes instanceof List) {
 			this.errorCodes = errorCodes;
 		}
@@ -39,12 +39,12 @@ public class ExceptionResponse {
 		this.message = message;
 	}
 
-	public String getDetails() {
-		return details;
+	public String getPath() {
+		return path;
 	}
 
-	public void setDetails(String details) {
-		this.details = details;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public List<Object> getErrorCodes() {
@@ -57,7 +57,7 @@ public class ExceptionResponse {
 
 	@Override
 	public String toString() {
-		return "ExceptionResponse [timestamp=" + timestamp + ", message=" + message + ", details=" + details
+		return "ExceptionResponse [timestamp=" + timestamp + ", message=" + message + ", path=" + path
 				+ ", errorCodes=" + errorCodes + "]";
 	}
 }
