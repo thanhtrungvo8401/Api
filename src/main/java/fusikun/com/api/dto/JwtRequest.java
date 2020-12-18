@@ -1,4 +1,4 @@
-package fusikun.com.api.model;
+package fusikun.com.api.dto;
 
 import java.io.Serializable;
 
