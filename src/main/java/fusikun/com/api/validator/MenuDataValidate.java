@@ -6,6 +6,7 @@ import org.springframework.validation.BindException;
 
 import fusikun.com.api.dto.MenuRequest;
 import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
+import fusikun.com.api.utils.TrymWhiteSpace;
 
 @Component
 public class MenuDataValidate {
@@ -14,6 +15,10 @@ public class MenuDataValidate {
 	MenuValidator menuValidator;
 
 	public final void validate(MenuRequest menuRequest) throws Customize_MethodArgumentNotValidException {
+		// TRYM WHITE SPACE:
+		menuRequest.setName(TrymWhiteSpace.trymWhiteSpace(menuRequest.getName()));
+		menuRequest.setUrl(TrymWhiteSpace.trymWhiteSpace(menuRequest.getUrl()));
+		// VALIDATION:
 		BindException errors = new BindException(menuRequest, MenuRequest.class.getName());
 		menuValidator.validate(menuRequest, errors);
 		if (errors.hasErrors()) {

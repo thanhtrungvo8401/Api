@@ -1,5 +1,8 @@
 package fusikun.com.api.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +24,18 @@ public class MenuController {
 
 	@Autowired
 	MenuDataValidate menuDataValidate;
-	
+
 	@Autowired
 	MenuService menuService;
 
 	@GetMapping("/menu-actions")
 	public ResponseEntity<Object> getMenuActions() {
-		return ResponseEntity.ok("List MENU");
+		List<Menu> listMenus = menuService.findAll();
+		List<MenuResponse> listResponse = new ArrayList<>();
+		listMenus.forEach(menu -> {
+			listResponse.add(new MenuResponse(menu));
+		});
+		return ResponseEntity.ok(listResponse);
 	}
 
 	@PostMapping("/menu-actions/create")
@@ -36,7 +44,6 @@ public class MenuController {
 		menuDataValidate.validate(menuRequest);
 		Menu menu = menuRequest.getMenu();
 		Menu savedMenu = menuService.save(menu);
-		MenuResponse menuResponse = new MenuResponse(savedMenu);
-		return ResponseEntity.ok(menuResponse);
+		return ResponseEntity.ok(new MenuResponse(savedMenu));
 	}
 }
