@@ -13,7 +13,7 @@ import fusikun.com.api.dto.MenuRequest;
 import fusikun.com.api.dto.MenuResponse;
 import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
 import fusikun.com.api.model.Menu;
-import fusikun.com.api.service.MenuServiceImpl;
+import fusikun.com.api.service.MenuService;
 import fusikun.com.api.validator.MenuDataValidate;
 
 @RestController
@@ -23,7 +23,7 @@ public class MenuController {
 	MenuDataValidate menuDataValidate;
 	
 	@Autowired
-	MenuServiceImpl menuService;
+	MenuService menuService;
 
 	@GetMapping("/menu-actions")
 	public ResponseEntity<Object> getMenuActions() {

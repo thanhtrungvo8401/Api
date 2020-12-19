@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import fusikun.com.api.dto.MenuRequest;
-import fusikun.com.api.service.MenuServiceImpl;
+import fusikun.com.api.service.MenuService;
 import fusikun.com.api.utils.Constant;
 import fusikun.com.api.utils.ConstantErrorCodes;
 
@@ -14,7 +14,7 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 public class MenuValidator implements Validator {
 
 	@Autowired
-	MenuServiceImpl menuService;
+	MenuService menuService;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
