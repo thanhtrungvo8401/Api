@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 import fusikun.com.api.model.Menu;
 
 @Repository
-public interface MenuRepository extends JpaRepository<Menu, Long>{
+public interface MenuRepository extends JpaRepository<Menu, Long> {
 	Optional<Menu> findByName(String name);
+
+	Integer countByName(String name);
+
+	Integer countByUrl(String url);
 }

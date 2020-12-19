@@ -14,7 +14,7 @@ import fusikun.com.api.model.Menu;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
-public class MenuServiceImpl implements MenuService{
+public class MenuServiceImpl implements MenuService {
 	@Autowired
 	MenuRepository menuRepository;
 
@@ -39,12 +39,22 @@ public class MenuServiceImpl implements MenuService{
 
 	@Override
 	public List<Menu> findAll() {
-//		menuRepository
+//		menuRepository.
 		return menuRepository.findAll();
 	}
 
 	@Override
 	public Boolean existsById(Long id) {
 		return menuRepository.existsById(id);
+	}
+
+	@Override
+	public Integer countByName(String name) {
+		return menuRepository.countByName(name);
+	}
+
+	@Override
+	public Integer countByUrl(String url) {
+		return menuRepository.countByUrl(url);
 	}
 }

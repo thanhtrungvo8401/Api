@@ -9,8 +9,12 @@ public interface MenuService {
 	public Menu save(Menu entity);
 
 	public Menu findById(Long id);
-	
+
 	public List<Menu> findAll();
-	
+
 	public Boolean existsById(Long id);
+
+	public Integer countByName(String name);
+
+	public Integer countByUrl(String url);
 }
