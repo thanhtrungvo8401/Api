@@ -13,6 +13,9 @@ public class MenuDataValidate {
 
 	@Autowired
 	MenuValidator menuValidator;
+	
+	@Autowired
+	MenuDeleteValidator menuDeleteValidator;
 
 	public final void validate(MenuRequest menuRequest) throws Customize_MethodArgumentNotValidException {
 		// TRYM WHITE SPACE:
@@ -24,5 +27,14 @@ public class MenuDataValidate {
 		if (errors.hasErrors()) {
 			throw new Customize_MethodArgumentNotValidException(errors.getBindingResult());
 		}
+	}
+	
+	public final void validateDeleteMethod(MenuRequest menuRequest) throws Customize_MethodArgumentNotValidException {
+		BindException errors = new BindException(menuRequest, MenuRequest.class.getName());
+		menuDeleteValidator.validate(menuRequest, errors);
+		if (errors.hasErrors()) {
+			throw new Customize_MethodArgumentNotValidException(errors.getBindingResult());
+		}
+		
 	}
 }

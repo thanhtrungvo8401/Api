@@ -61,4 +61,9 @@ public class MenuServiceImpl implements MenuService {
 	public Integer countByUrl(String url) {
 		return menuRepository.countByUrl(url);
 	}
+
+	@Override
+	public void deleteById(Long id) {
+		menuRepository.deleteById(id);
+	}
 }

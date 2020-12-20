@@ -26,4 +26,6 @@ public interface MenuService {
 
 	// select count(*) from menu as M where M.url = ?;
 	public Integer countByUrl(String url);
+
+	public void deleteById(Long id);
 }

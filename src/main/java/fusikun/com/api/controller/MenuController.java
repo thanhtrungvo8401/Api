@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import fusikun.com.api.dto.MenuResponse;
 import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
 import fusikun.com.api.model.Menu;
 import fusikun.com.api.service.MenuService;
+import fusikun.com.api.utils.ConstantMessages;
 import fusikun.com.api.validator.MenuDataValidate;
 
 @RestController
@@ -55,5 +57,13 @@ public class MenuController {
 		Menu menu = menuRequest.getMenu();
 		Menu savedMenu = menuService.save(menu);
 		return ResponseEntity.ok(new MenuResponse(savedMenu));
+	}
+
+	@DeleteMapping("/menu-actions/delete")
+	public ResponseEntity<Object> deleteMenuActionById(@RequestBody MenuRequest menuRequest)
+			throws Customize_MethodArgumentNotValidException {
+		menuDataValidate.validateDeleteMethod(menuRequest);
+		menuService.deleteById(menuRequest.getId());
+		return ResponseEntity.ok(ConstantMessages.SUCCESS);
 	}
 }
