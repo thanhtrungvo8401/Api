@@ -2,7 +2,6 @@ package fusikun.com.api.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import fusikun.com.api.utils.ConstantErrorCodes;
 
 @Entity
 @Table(name = "auth")
@@ -18,30 +20,45 @@ public class Auth {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
-	@Column(nullable = false)
 	private Boolean isActive;
 
-	@Column(nullable = false)
-	private Date createDate;
+	private Date createdDate;
 
-	@Column(nullable = false)
-	private Date updateDate;
+	private Date updatedDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "roleId", nullable = false)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@JoinColumn(name = "roleId")
 	private Role role;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "menuId", nullable = false)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@JoinColumn(name = "menuId")
 	private Menu menu;
-	
-	public long getId() {
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -53,19 +70,19 @@ public class Auth {
 		this.isActive = isActive;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 }

@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import fusikun.com.api.utils.ConstantErrorCodes;
 
 @Entity
 @Table(name = "role")
@@ -20,31 +23,27 @@ public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
-	@Column(nullable = false, unique = true, length = 50)
+	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+//	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
 	private String roleName;
 
-	@Column(nullable = false)
 	private String description;
 
-	@Column(nullable = false)
 	private Boolean isActive;
 
-	@Column(nullable = false)
-	private Date createDate;
+	private Date createdDate;
 
-	@Column(nullable = false)
-	private Date updateDate;
-	
+	private Date updatedDate;
+
 	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<User> users = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Auth> auths = new HashSet<>();
-	
-	
-	
+
 	public Set<Auth> getAuths() {
 		return auths;
 	}
@@ -61,11 +60,11 @@ public class Role {
 		this.users = users;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -93,19 +92,19 @@ public class Role {
 		this.isActive = isActive;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 }
