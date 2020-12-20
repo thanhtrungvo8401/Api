@@ -16,7 +16,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-@PropertySource(value = "jwt.properties")
+@PropertySource(value = "classpath:jwt.properties")
 public class JwtTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = 7358756538128482919L;

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @ComponentScan("fusikun.com.api")
 @EnableAutoConfiguration
-@PropertySource("configure.properties")
+@PropertySource("classpath:configure.properties")
 public class ApiApplication {
 	
 	@Autowired
