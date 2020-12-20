@@ -14,6 +14,9 @@ public interface MenuService {
 
 	// select * from menu;
 	public List<Menu> findAll();
+	
+	// select * from menu as M from M.parentId ISNULL;
+	public List<Menu> findAllParentMenus();
 
 	// select exists( select 1 from menu as M where M.name = ? ) as isExist;
 	public Boolean existsById(Long id);

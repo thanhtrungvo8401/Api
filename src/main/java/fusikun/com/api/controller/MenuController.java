@@ -38,6 +38,16 @@ public class MenuController {
 		return ResponseEntity.ok(listResponse);
 	}
 
+	@GetMapping("/menu-actions/parent")
+	public ResponseEntity<Object> getParentId() {
+		List<Menu> listParentMenus = menuService.findAllParentMenus();
+		List<MenuResponse> listResponse = new ArrayList<>();
+		listParentMenus.forEach(menu -> {
+			listResponse.add(new MenuResponse(menu));
+		});
+		return ResponseEntity.ok(listResponse);
+	}
+
 	@PostMapping("/menu-actions/create")
 	public ResponseEntity<Object> createMenuActions(@Valid @RequestBody MenuRequest menuRequest)
 			throws Customize_MethodArgumentNotValidException {
