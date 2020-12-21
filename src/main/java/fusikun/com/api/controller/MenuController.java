@@ -14,6 +14,7 @@ import fusikun.com.api.enums.UrlEnpointEnums;
 import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
 import fusikun.com.api.model.Menu;
 import fusikun.com.api.service.MenuService;
+import fusikun.com.api.utils.Constant;
 import fusikun.com.api.validator.MenuDataValidate;
 
 @RestController
@@ -51,8 +52,8 @@ public class MenuController {
 		menuRequest.setName(enpointName);
 		menuRequest.setUrl(enpointUrl);
 		if (!menuService.existsByName(enpointName)) {
-			if (enpointName.indexOf("__") >= 0) {
-				String parentName = enpointName.split("__")[0];
+			if (enpointName.indexOf(Constant.MENU_ADDRESS_DEVIDE) >= 0) {
+				String parentName = enpointName.split(Constant.MENU_ADDRESS_DEVIDE)[0];
 				Menu parentMenu = menuService.findByName(parentName);
 				menuRequest.setParentId(parentMenu.getId());
 			}
