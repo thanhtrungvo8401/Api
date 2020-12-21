@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import fusikun.com.api.dao.MenuRepository;
 import fusikun.com.api.model.Menu;
+import fusikun.com.api.specificationSearch.MenuSpecification;
+import fusikun.com.api.specificationSearch.SearchCriteria;
+import fusikun.com.api.specificationSearch.SearchOperator;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -51,6 +54,11 @@ public class MenuServiceImpl implements MenuService {
 	public Boolean existsById(Long id) {
 		return menuRepository.existsById(id);
 	}
+	
+	@Override
+	public Boolean existsByName(String name) {
+		return this.countByName(name) > 0;
+	}
 
 	@Override
 	public Integer countByName(String name) {
@@ -65,5 +73,18 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public void deleteById(Long id) {
 		menuRepository.deleteById(id);
+	}
+
+	@Override
+	public void deleteMenuHasNameNotInList(List<String> listName) {
+		MenuSpecification menuSpecification = new MenuSpecification();
+		menuSpecification.add(new SearchCriteria("name", SearchOperator.NOT_IN, listName));
+		List<Menu> menusNotInList =  menuRepository.findAll(menuSpecification);
+		menuRepository.deleteAll(menusNotInList);
+	}
+
+	@Override
+	public Menu findByName(String name) {
+		return menuRepository.findByName(name).get(0);
 	}
 }

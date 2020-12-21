@@ -11,15 +11,19 @@ public interface MenuService {
 
 	// select * from menu as M where M.id = ?
 	public Menu findById(Long id);
+	
+	public Menu findByName(String name);
 
 	// select * from menu;
 	public List<Menu> findAll();
-	
+
 	// select * from menu as M from M.parentId ISNULL;
 	public List<Menu> findAllParentMenus();
 
 	// select exists( select 1 from menu as M where M.name = ? ) as isExist;
 	public Boolean existsById(Long id);
+
+	public Boolean existsByName(String name);
 
 	// select count(*) from menu as M where M.name = ?;
 	public Integer countByName(String name);
@@ -28,4 +32,6 @@ public interface MenuService {
 	public Integer countByUrl(String url);
 
 	public void deleteById(Long id);
+
+	public void deleteMenuHasNameNotInList(List<String> listName);
 }

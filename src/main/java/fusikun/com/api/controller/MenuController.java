@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fusikun.com.api.dto.MenuRequest;
 import fusikun.com.api.dto.MenuResponse;
 import fusikun.com.api.enums.UrlEnpointEnums;
+import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
 import fusikun.com.api.model.Menu;
 import fusikun.com.api.service.MenuService;
 import fusikun.com.api.validator.MenuDataValidate;
@@ -34,19 +36,35 @@ public class MenuController {
 	}
 
 	@GetMapping("/menu-actions/generate")
-	public ResponseEntity<Object> generateActionsMenu() {
+	public ResponseEntity<Object> generateActionsMenu() throws Customize_MethodArgumentNotValidException {
 		deleteMenuActionsNotInList();
 		for (UrlEnpointEnums enpoint : UrlEnpointEnums.values()) {
 			MenuActionGenerateUitls(enpoint);
 		}
-		return null;
+		return ResponseEntity.status(201).body("SUCCESS");
 	}
 
-	private void MenuActionGenerateUitls(UrlEnpointEnums enpoint) {
+	private void MenuActionGenerateUitls(UrlEnpointEnums enpoint) throws Customize_MethodArgumentNotValidException {
 		String enpointName = enpoint.toString();
 		String enpointUrl = enpoint.getUrl();
+		MenuRequest menuRequest = new MenuRequest();
+		menuRequest.setName(enpointName);
+		menuRequest.setUrl(enpointUrl);
+		if (!menuService.existsByName(enpointName)) {
+			if (enpointName.indexOf("__") >= 0) {
+				String parentName = enpointName.split("__")[0];
+				Menu parentMenu = menuService.findByName(parentName);
+				menuRequest.setParentId(parentMenu.getId());
+			}
+			createMenuActions(menuRequest);
+		}
+	}
 
-		System.out.println(enpoint + ": " + enpoint.getUrl());
+	private void createMenuActions(MenuRequest menuRequest) throws Customize_MethodArgumentNotValidException {
+		menuDataValidate.validate(menuRequest);
+		Menu menu = menuRequest.getMenu();
+		Menu savedMenu = menuService.save(menu);
+		System.out.println(savedMenu.toString());
 	}
 
 	private void deleteMenuActionsNotInList() {
@@ -56,25 +74,4 @@ public class MenuController {
 		}
 		menuService.deleteMenuHasNameNotInList(list);
 	}
-
-//	private void getParentMenu() {
-//	List<Menu> listParentMenus = menuService.findAllParentMenus();
-//	List<MenuResponse> listResponse = new ArrayList<>();
-//	listParentMenus.forEach(menu -> {
-//		listResponse.add(new MenuResponse(menu));
-//	});
-//}
-//
-//private void createMenuActions(MenuRequest menuRequest)
-//		throws Customize_MethodArgumentNotValidException {
-//	menuDataValidate.validate(menuRequest);
-//	Menu menu = menuRequest.getMenu();
-//	Menu savedMenu = menuService.save(menu);
-//}
-//
-
-//@GetMapping("/menu-actions/defined-url")
-//public ResponseEntity<Object> getDefinedUrls() {
-//	return null;
-//}
 }

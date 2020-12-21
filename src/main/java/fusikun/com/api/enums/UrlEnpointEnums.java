@@ -3,12 +3,8 @@ package fusikun.com.api.enums;
 public enum UrlEnpointEnums {
 
 	MENU_ACTIONS("/menu-actions"), 
-	MENU_ACTIONS__DEFINED_URL("/menu-actions/defined-url"),
+	MENU_ACTIONS__GET_DEFINED_URL("/menu-actions/defined-url"),
 	MENU_ACTIONS__GENERATE("/menu-actions/generate"),
-	
-	MANAGERS("/managers"),
-	
-	STUDENT("/student"),
 	
 	ROLES("/roles"),
 	
