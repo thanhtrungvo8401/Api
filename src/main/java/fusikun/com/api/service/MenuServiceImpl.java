@@ -54,7 +54,7 @@ public class MenuServiceImpl implements MenuService {
 	public Boolean existsById(Long id) {
 		return menuRepository.existsById(id);
 	}
-	
+
 	@Override
 	public Boolean existsByName(String name) {
 		return this.countByName(name) > 0;
@@ -79,7 +79,7 @@ public class MenuServiceImpl implements MenuService {
 	public void deleteMenuHasNameNotInList(List<String> listName) {
 		MenuSpecification menuSpecification = new MenuSpecification();
 		menuSpecification.add(new SearchCriteria("name", SearchOperator.NOT_IN, listName));
-		List<Menu> menusNotInList =  menuRepository.findAll(menuSpecification);
+		List<Menu> menusNotInList = menuRepository.findAll(menuSpecification);
 		menuRepository.deleteAll(menusNotInList);
 	}
 
