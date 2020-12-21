@@ -20,7 +20,7 @@ import fusikun.com.api.utils.JwtTokenUtil;
 import fusikun.com.api.utils.RandomTokenUtil;
 
 @RestController
-public class JwtAuthenticationController {
+public class AuthController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	@Autowired
