@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 
 import fusikun.com.api.utils.ConstantErrorCodes;
-import fusikun.com.api.utils.ConstantErrorMessages;
+import fusikun.com.api.utils.ConstantMessages;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
@@ -36,7 +36,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 		List<Object> errorCodes = new LinkedList<>();
 		errorCodes.add(ConstantErrorCodes.INVALID_TOKEN);
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), authException.getMessage(),
-				ConstantErrorMessages.INVALID_TOKEN, errorCodes);
+				ConstantMessages.INVALID_TOKEN, errorCodes);
 		String exceptionResponseJson = new Gson().toJson(exceptionResponse);
 		out.print(exceptionResponseJson);
 		out.flush();

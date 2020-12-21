@@ -10,6 +10,8 @@ import fusikun.com.api.model.Menu;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificationExecutor<Menu> {
+	List<Menu> findByName(String name);
+	
 	Integer countByName(String name);
 
 	Integer countByUrl(String url);

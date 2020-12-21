@@ -17,8 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import fusikun.com.api.exceptionHandlers.InvalidTokenException;
 import fusikun.com.api.model.JwtUserDetails;
 import fusikun.com.api.service.JwtUserDetailsService;
-import fusikun.com.api.utils.ConstantAuth;
-import fusikun.com.api.utils.ConstantErrorMessages;
+import fusikun.com.api.utils.Constant;
+import fusikun.com.api.utils.ConstantMessages;
 import fusikun.com.api.utils.IgnoreUrl;
 import fusikun.com.api.utils.JwtTokenUtil;
 
@@ -41,15 +41,15 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 			return;
 		}
 		// URL not in Ignore list => validate
-		final String authorizationHeader = request.getHeader(ConstantAuth.AUTHORIZATION);
+		final String authorizationHeader = request.getHeader(Constant.AUTH_AUTHORIZATION);
 		String username = null;
 		String jwt = null;
-		if (authorizationHeader != null && authorizationHeader.startsWith(ConstantAuth.BEARER)) {
-			jwt = authorizationHeader.substring(ConstantAuth.BEARER_INDEX);
+		if (authorizationHeader != null && authorizationHeader.startsWith(Constant.AUTH_BEARER)) {
+			jwt = authorizationHeader.substring(Constant.AUTH_BEARER_INDEX);
 			username = jwtTokenUtil.getUserNameFromToken(jwt);
 		} else {
 			System.out.println("======= JWT does not start with 'bearer' =======");
-			throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
+			throw new InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -63,10 +63,10 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			} else {
 				System.out.println("======= invalid TOKEN =======");
-				throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
+				throw new InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 			}
 		} else {
-			throw new InvalidTokenException(ConstantErrorMessages.INVALID_TOKEN);
+			throw new InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
 		chain.doFilter(request, response);
 	}

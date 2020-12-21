@@ -123,5 +123,11 @@ public class Menu {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Menu [id=" + id + ", isActive=" + isActive + ", url=" + url + ", name=" + name + ", createdDate="
+				+ createdDate + ", updatedDate=" + updatedDate + ", auths=" + auths + ", menus=" + menus
+				+ ", parentMenu=" + parentMenu + "]";
+	}
 }

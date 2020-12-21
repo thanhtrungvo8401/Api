@@ -1,4 +1,4 @@
-package fusikun.com.api.config;
+package fusikun.com.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
