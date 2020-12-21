@@ -29,36 +29,50 @@ public class MenuSpecification implements Specification<Menu> {
 	@Override
 	public Predicate toPredicate(Root<Menu> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 		List<Predicate> predicates = new ArrayList<>();
-		
+
 		// Compare criteria.Operator => Predicates.add(operator, value);
-		
+
 		for (SearchCriteria criteria : list) {
-			if (criteria.getOperator().equals(SearchOperator.GREATER_THAN)) {
+			switch (criteria.getOperator()) {
+			case GREATER_THAN:
 				predicates.add(builder.greaterThan(root.get(criteria.getKey()), criteria.getValue().toString()));
-			} else if (criteria.getOperator().equals(SearchOperator.LESS_THAN)) {
+				break;
+			case LESS_THAN:
 				predicates.add(builder.lessThan(root.get(criteria.getKey()), criteria.getValue().toString()));
-			} else if (criteria.getOperator().equals(SearchOperator.GREATER_THAN_EQUAL)) {
+				break;
+			case GREATER_THAN_EQUAL:
 				predicates
 						.add(builder.greaterThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
-			} else if (criteria.getOperator().equals(SearchOperator.LESS_THAN_EQUAL)) {
+				break;
+			case LESS_THAN_EQUAL:
 				predicates.add(builder.lessThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
-			} else if (criteria.getOperator().equals(SearchOperator.NOT_EQUAL)) {
+				break;
+			case NOT_EQUAL:
 				predicates.add(builder.notEqual(root.get(criteria.getKey()), criteria.getValue()));
-			} else if (criteria.getOperator().equals(SearchOperator.EQUAL)) {
+				break;
+			case EQUAL:
 				predicates.add(builder.equal(root.get(criteria.getKey()), criteria.getValue()));
-			} else if (criteria.getOperator().equals(SearchOperator.MATCH)) {
+				break;
+			case MATCH:
 				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
 						"%" + criteria.getValue().toString().toLowerCase() + "%"));
-			} else if (criteria.getOperator().equals(SearchOperator.MATCH_END)) {
+				break;
+			case MATCH_END:
 				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
 						criteria.getValue().toString().toLowerCase() + "%"));
-			} else if (criteria.getOperator().equals(SearchOperator.MATCH_START)) {
+				break;
+			case MATCH_START:
 				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
 						"%" + criteria.getValue().toString().toLowerCase()));
-			} else if (criteria.getOperator().equals(SearchOperator.IN)) {
+				break;
+			case IN:
 				predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()));
-			} else if (criteria.getOperator().equals(SearchOperator.NOT_IN)) {
-				predicates.add(builder.not(root.get(criteria.getKey())).in(criteria.getValue()));
+				break;
+			case NOT_IN:
+				predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()).not());
+				break;
+			default:
+				break;
 			}
 		}
 
