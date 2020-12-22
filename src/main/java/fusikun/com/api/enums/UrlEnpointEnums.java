@@ -8,14 +8,21 @@ public enum UrlEnpointEnums {
 	MENU_ACTIONS__COUNT("/menu-actions/count"),
 	
 	ROLES("/roles"),
+	ROLES__CREATE("/roles/create"),
+	
+	MANAGERS("/managers"),
+	MANAGERS__CREATE("/managers/create"),
+	
+	STUDENT("/students"),
+	STUDENT__CREATE("/students/create"),
 	
 	VOCABULARIES("/vocabularies"),
 	
 	AUTHENTICATE("/authenticate"),
 	
-	AUTHENTICATE_LOGIN("/authenticate/login"),
+	AUTHENTICATE__LOGIN("/authenticate/login"),
 	
-	AUTHENTICATE_LOGOUT("/authenticate/logout")
+	AUTHENTICATE__LOGOUT("/authenticate/logout")
 	;
 
 	private final String url;
