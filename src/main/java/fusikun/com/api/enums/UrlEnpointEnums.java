@@ -7,14 +7,15 @@ public enum UrlEnpointEnums {
 	MENU_ACTIONS__GENERATE("/menu-actions/generate"),
 	
 	ROLES("/roles"),
+	ROLES__CREATE("/create"),
 	
 	VOCABULARIES("/vocabularies"),
 	
 	AUTHENTICATE("/authenticate"),
 	
-	AUTHENTICATE_LOGIN("/authenticate/login"),
+	AUTHENTICATE__LOGIN("/authenticate/login"),
 	
-	AUTHENTICATE_LOGOUT("/authenticate/logout")
+	AUTHENTICATE__LOGOUT("/authenticate/logout")
 	;
 
 	private final String url;

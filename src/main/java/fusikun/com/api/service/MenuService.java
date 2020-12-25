@@ -38,11 +38,13 @@ public class MenuService {
 	}
 
 	public Menu save(Menu entity) {
-		entity.setCreatedDate(new Date());
 		if (entity.getId() == null) {
-			entity.setUpdatedDate(new Date());
+			entity.setCreatedDate(new Date());
 		}
-		entity.setIsActive(true);
+		entity.setUpdatedDate(new Date());
+		if (entity.getIsActive() == null) {
+			entity.setIsActive(true);
+		}
 		return menuRepository.save(entity);
 	}
 

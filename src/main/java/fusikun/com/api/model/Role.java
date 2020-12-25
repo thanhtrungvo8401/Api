@@ -12,10 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import fusikun.com.api.utils.ConstantErrorCodes;
 
 @Entity
 @Table(name = "role")
@@ -25,9 +21,6 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-//	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
 	private String roleName;
 
 	private String description;
