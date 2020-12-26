@@ -41,6 +41,13 @@ public class RoleController {
 	@Autowired
 	AuthService authService;
 
+	@GetMapping("/roles")
+	public ResponseEntity<Object> getAllRoles() {
+		List<Role> roles = roleService.findAll();
+		List<RoleResponse> rolesRes = roles.stream().map(role -> new RoleResponse(role)).collect(Collectors.toList());
+		return ResponseEntity.ok(rolesRes);
+	}
+
 	@PostMapping("/roles/create")
 	public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
 			throws Customize_MethodArgumentNotValidException {
