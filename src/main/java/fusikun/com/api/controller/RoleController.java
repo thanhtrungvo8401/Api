@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import fusikun.com.api.model.Role;
 import fusikun.com.api.service.AuthService;
 import fusikun.com.api.service.MenuService;
 import fusikun.com.api.service.RoleService;
+import fusikun.com.api.utils.ConstantMessages;
 import fusikun.com.api.validator.RoleDataValidate;
 import javassist.NotFoundException;
 
@@ -58,15 +60,21 @@ public class RoleController {
 		Role savedRole = roleService.save(role);
 		List<Menu> menus = menuService.findAll();
 		handleGenerateAuthsFromRoleAndMenus(savedRole, menus);
-		return ResponseEntity.ok(new RoleResponse(savedRole));
+		return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
+	}
+
+	public ResponseEntity<Object> handleDeleteRoleById(@RequestBody RoleRequest roleRequest) throws NotFoundException {
+		// VALIDATE DATA IS EXIST OR NOT:
+		roleDataValidate.validateExistById(roleRequest.getId());
+		roleService.deleteById(roleRequest.getId());
+		return ResponseEntity.ok(ConstantMessages.SUCCESS);
 	}
 
 	@GetMapping("/roles/{id}")
 	public ResponseEntity<Object> getRoleById(@PathVariable Long id) throws NotFoundException {
+		// VALIDATE DATA IS EXIST OR NOT:
+		roleDataValidate.validateExistById(id);
 		Role role = roleService.findRoleById(id);
-		if (role == null) {
-			throw new NotFoundException("Role with id=" + id + " is not existed!!");
-		}
 		// Check role has fully mapped with AUTHS:
 		List<Auth> auths = role.getAuths();
 		List<String> menusMappedNames = auths.stream().map(auth -> auth.getMenu().getName())

@@ -18,6 +18,10 @@ public class RoleService {
 	@Autowired
 	RoleRepository roleRepository;
 
+	public void deleteById(Long id) {
+		roleRepository.deleteById(id);
+	}
+
 	public Role findRoleById(Long id) {
 		Optional<Role> optRole = roleRepository.findById(id);
 		if (optRole.isPresent())
