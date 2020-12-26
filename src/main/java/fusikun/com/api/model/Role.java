@@ -1,8 +1,7 @@
 package fusikun.com.api.model;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,24 +31,24 @@ public class Role {
 	private Date updatedDate;
 
 	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<User> users = new HashSet<>();
+	private List<User> users;
 
 	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<Auth> auths = new HashSet<>();
+	private List<Auth> auths;
 
-	public Set<Auth> getAuths() {
+	public List<Auth> getAuths() {
 		return auths;
 	}
 
-	public void setAuths(Set<Auth> auths) {
+	public void setAuths(List<Auth> auths) {
 		this.auths = auths;
 	}
 
-	public Set<User> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Set<User> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 

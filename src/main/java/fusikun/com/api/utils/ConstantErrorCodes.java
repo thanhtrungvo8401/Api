@@ -2,6 +2,7 @@ package fusikun.com.api.utils;
 
 public class ConstantErrorCodes {
 	public static final String FIELD_FORM_ERROR = "FORM_ERROR";
+	public static final String FIELD_MESS = "FIELD_MESS";
 	public static final String BAD_CREDENTIALS = "BAD_CREDENTIALS";
 	public static final String INVALID_TOKEN = "INVALID_TOKEN";
 	public static final String NOT_NULL = "NOT_NULL";
@@ -12,4 +13,7 @@ public class ConstantErrorCodes {
 	public static final String NOT_MAIL = "NOT_MAIL";
 	public static final String PARENT_MENU_CONTAINS_BLANK_OR_SLASH = "PARENT_MENU_CONTAINS_BLANK_OR_SLASH";
 	public static final String NOT_EXIST_DATA = "NOT_EXIST_DATA";
+	public static final String NOT_FOUND = "NOT_FOUND";
+	public static final String INTERNAL_SERVER_ERROR="INTERNAL_SERVER_ERROR";
+	public static final String INVALID_POST_DATA = "INVALID_POST_DATA";
 }

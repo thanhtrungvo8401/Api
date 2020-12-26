@@ -1,8 +1,7 @@
 package fusikun.com.api.model;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -33,10 +32,10 @@ public class Menu {
 	private Date updatedDate;
 
 	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Auth> auths = new HashSet<>();
+	private List<Auth> auths;
 
 	@OneToMany(mappedBy = "parentMenu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Menu> menus = new HashSet<>();
+	private List<Menu> menus;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parentId")
@@ -52,11 +51,11 @@ public class Menu {
 		this.name = name;
 	}
 
-	public Set<Menu> getMenus() {
+	public List<Menu> getMenus() {
 		return menus;
 	}
 
-	public void setMenus(Set<Menu> menus) {
+	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
 	}
 
@@ -68,11 +67,11 @@ public class Menu {
 		this.parentMenu = parentMenu;
 	}
 
-	public Set<Auth> getAuths() {
+	public List<Auth> getAuths() {
 		return auths;
 	}
 
-	public void setAuths(Set<Auth> auths) {
+	public void setAuths(List<Auth> auths) {
 		this.auths = auths;
 	}
 

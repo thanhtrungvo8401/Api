@@ -51,6 +51,12 @@ public class MenuService {
 	public List<Menu> findAll() {
 		return menuRepository.findAll();
 	}
+	
+	public List<Menu> findNotMappedMenus(List<String> listName) {
+		MenuSpecification menuSpecification = new MenuSpecification();
+		menuSpecification.add(new SearchCriteria("name", SearchOperator.NOT_IN ,listName));
+		return menuRepository.findAll();
+	}
 
 	public List<Menu> findAllParentMenus() {
 		return menuRepository.findAllParentMenu();

@@ -1,9 +1,11 @@
 package fusikun.com.api.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import fusikun.com.api.model.Auth;
+import fusikun.com.api.model.Menu;
 import fusikun.com.api.model.Role;
 
 public class RoleResponse {
@@ -13,6 +15,8 @@ public class RoleResponse {
 	private Boolean isActive;
 	private Date createdDate;
 	private Date updatedDate;
+	// SETTER ONLY:
+	private List<Menu> menus = new ArrayList<>();
 
 	public RoleResponse() {
 	}
@@ -24,6 +28,14 @@ public class RoleResponse {
 		this.isActive = role.getIsActive();
 		this.createdDate = role.getCreatedDate();
 		this.updatedDate = role.getUpdatedDate();
+	}
+
+	public List<Menu> getMenus() {
+		return menus;
+	}
+
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
 	}
 
 	private List<Auth> auths;
