@@ -9,12 +9,15 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fusikun.com.api.dto.AuthResponse;
+import fusikun.com.api.dto.MenuResponse;
 import fusikun.com.api.dto.RoleRequest;
 import fusikun.com.api.dto.RoleResponse;
 import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
@@ -63,10 +66,11 @@ public class RoleController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
 	}
 
-	public ResponseEntity<Object> handleDeleteRoleById(@RequestBody RoleRequest roleRequest) throws NotFoundException {
+	@DeleteMapping("/roles/delete/{id}")
+	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable Long id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
-		roleDataValidate.validateExistById(roleRequest.getId());
-		roleService.deleteById(roleRequest.getId());
+		roleDataValidate.validateExistById(id);
+		roleService.deleteById(id);
 		return ResponseEntity.ok(ConstantMessages.SUCCESS);
 	}
 
@@ -79,15 +83,21 @@ public class RoleController {
 		List<Auth> auths = role.getAuths();
 		List<String> menusMappedNames = auths.stream().map(auth -> auth.getMenu().getName())
 				.collect(Collectors.toList());
+		
 		List<Menu> menusNotMapped = menuService.findNotMappedMenus(menusMappedNames);
+		List<Auth> updatedAuths = auths; // get old auths list:
 		if (!menusNotMapped.isEmpty()) {
-			handleGenerateAuthsFromRoleAndMenus(role, menusNotMapped);
+			List<Auth> authAdds = handleGenerateAuthsFromRoleAndMenus(role, menusNotMapped);
+			updatedAuths.addAll(authAdds);
 		}
 		// generate Valid RETURN-DATA:
-		List<Auth> updatedAuths = role.getAuths();
-		List<Menu> updatedMenus = updatedAuths.stream().map(auth -> auth.getMenu()).collect(Collectors.toList());
+		List<AuthResponse> updatedAuthResponses = updatedAuths.stream().map((auth) -> {
+			MenuResponse menuResponse = new MenuResponse(auth.getMenu());
+			AuthResponse authResponse = new AuthResponse(auth, menuResponse);
+			return authResponse;
+		}).collect(Collectors.toList());
 		RoleResponse roleRes = new RoleResponse(role);
-		roleRes.setMenus(updatedMenus);
+		roleRes.setAuths(updatedAuthResponses);
 
 		return ResponseEntity.ok(roleRes);
 	}

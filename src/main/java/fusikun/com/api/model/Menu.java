@@ -37,7 +37,7 @@ public class Menu {
 	@OneToMany(mappedBy = "parentMenu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Menu> menus;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parentId")
 	private Menu parentMenu;
 

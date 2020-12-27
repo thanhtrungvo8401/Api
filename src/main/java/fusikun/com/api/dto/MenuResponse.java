@@ -1,7 +1,5 @@
 package fusikun.com.api.dto;
 
-import java.util.Date;
-
 import fusikun.com.api.model.Menu;
 
 public class MenuResponse {
@@ -9,8 +7,6 @@ public class MenuResponse {
 	private String url;
 	private String name;
 	private Long parentId;
-	Date createdDate;
-	Date updatedDate;
 
 	public MenuResponse() {
 	}
@@ -19,8 +15,6 @@ public class MenuResponse {
 		id = menu.getId();
 		url = menu.getUrl();
 		name = menu.getName();
-		createdDate = menu.getCreatedDate();
-		updatedDate = menu.getUpdatedDate();
 		if (menu.getParentMenu() != null) {
 			parentId = menu.getParentMenu().getId();
 		}
@@ -56,21 +50,5 @@ public class MenuResponse {
 
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
-	}
-
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
 	}
 }

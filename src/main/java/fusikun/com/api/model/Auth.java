@@ -37,12 +37,12 @@ public class Auth {
 		this.isActive = isActive;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@JoinColumn(name = "roleId")
 	private Role role;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@JoinColumn(name = "menuId")
 	private Menu menu;
