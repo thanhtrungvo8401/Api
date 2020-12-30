@@ -70,6 +70,7 @@ public class RoleController {
 	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable Long id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);
+		roleDataValidate.validateRoleIsUsedByUser(id);
 		roleService.deleteById(id);
 		return ResponseEntity.ok(ConstantMessages.SUCCESS);
 	}

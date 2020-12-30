@@ -4,10 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fusikun.com.api.dao.MenuRepository;
 import fusikun.com.api.model.Menu;
@@ -16,7 +15,7 @@ import fusikun.com.api.specificationSearch.SearchCriteria;
 import fusikun.com.api.specificationSearch.SearchOperator;
 
 @Service
-@Transactional(rollbackOn = Exception.class)
+@Transactional(rollbackFor = Exception.class)
 public class MenuService {
 	@Autowired
 	MenuRepository menuRepository;
@@ -51,10 +50,10 @@ public class MenuService {
 	public List<Menu> findAll() {
 		return menuRepository.findAll();
 	}
-	
+
 	public List<Menu> findNotMappedMenus(List<String> listName) {
 		MenuSpecification menuSpecification = new MenuSpecification();
-		menuSpecification.add(new SearchCriteria("name", SearchOperator.NOT_IN ,listName));
+		menuSpecification.add(new SearchCriteria("name", SearchOperator.NOT_IN, listName));
 		return menuRepository.findAll(menuSpecification);
 	}
 
