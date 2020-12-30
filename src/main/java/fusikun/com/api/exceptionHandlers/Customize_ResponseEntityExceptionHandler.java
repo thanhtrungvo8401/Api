@@ -20,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import fusikun.com.api.utils.ConstantErrorCodes;
+import javassist.NotFoundException;
 
 // ControllerAdvice => use for all project:
 @ControllerAdvice
@@ -28,9 +29,31 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 	// COMMON ERROR:
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleExceptionForAll(Exception ex, WebRequest request) throws Exception {
+		List<Object> errorCodes = new LinkedList<>();
+		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.INTERNAL_SERVER_ERROR));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-				request.getDescription(false), null);
+				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+	}
+
+	// NOT_FOUND EXCEPTION:
+	@ExceptionHandler(NotFoundException.class)
+	public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request) throws Exception {
+		List<Object> errorCodes = new LinkedList<>();
+		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.NOT_FOUND));
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false), errorCodes);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+	}
+
+	// METHOD_NOT_ALLOW_EXCEPTION:
+	@ExceptionHandler(MethodNotAllowedException.class)
+	public final ResponseEntity<Object> handleBadRequestException(Exception ex, WebRequest request) {
+		List<Object> errorCodes = new LinkedList<>();
+		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.METHOD_NOT_ALLOWED));
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false), errorCodes);
+		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(exceptionResponse);
 	}
 
 	// AUTHENTICATE:
@@ -55,6 +78,7 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 			String code = err.getCode();
 			errorCodes.add(new FieldError(field, code));
 		}
+		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.BAD_REQUEST));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
@@ -72,6 +96,7 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 			String code = err.getCode();
 			errorCodes.add(new FieldError(field, code));
 		});
+		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.BAD_REQUEST));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);

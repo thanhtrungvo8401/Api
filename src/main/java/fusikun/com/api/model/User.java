@@ -44,7 +44,7 @@ public class User {
 
 	private Date updatedDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "roleId")
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	private Role role;

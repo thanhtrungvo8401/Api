@@ -1,55 +1,38 @@
-package fusikun.com.api.model;
+package fusikun.com.api.dto;
 
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import fusikun.com.api.model.Role;
 
-@Entity
-@Table(name = "role")
-public class Role {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RoleResponse {
 	private Long id;
-
 	private String roleName;
-
 	private String description;
-
 	private Boolean isActive;
-
 	private Date createdDate;
-
 	private Date updatedDate;
+	// SETTER ONLY:
+	private List<AuthResponse> auths;
 
-	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<User> users;
+	public RoleResponse() {
+	}
 
-	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Auth> auths;
+	public RoleResponse(Role role) {
+		this.id = role.getId();
+		this.roleName = role.getRoleName();
+		this.description = role.getDescription();
+		this.isActive = role.getIsActive();
+		this.createdDate = role.getCreatedDate();
+		this.updatedDate = role.getUpdatedDate();
+	}
 
-	public List<Auth> getAuths() {
+	public List<AuthResponse> getAuths() {
 		return auths;
 	}
 
-	public void setAuths(List<Auth> auths) {
+	public void setAuths(List<AuthResponse> auths) {
 		this.auths = auths;
-	}
-
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
 	}
 
 	public Long getId() {

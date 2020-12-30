@@ -28,12 +28,21 @@ public class Auth {
 
 	private Date updatedDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	public Auth() {
+	}
+
+	public Auth(Role role, Menu menu, Boolean isActive) {
+		this.role = role;
+		this.menu = menu;
+		this.isActive = isActive;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@JoinColumn(name = "roleId")
 	private Role role;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@JoinColumn(name = "menuId")
 	private Menu menu;
