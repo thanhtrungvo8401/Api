@@ -69,6 +69,10 @@ public class MenuService {
 		return this.countByName(name) > 0;
 	}
 
+	public Long countActionMenus() {
+		return menuRepository.count();
+	}
+
 	public Integer countByName(String name) {
 		return menuRepository.countByName(name);
 	}

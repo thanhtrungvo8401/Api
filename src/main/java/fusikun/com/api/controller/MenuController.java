@@ -29,11 +29,21 @@ public class MenuController {
 	@GetMapping("/menu-actions")
 	public ResponseEntity<Object> getMenuActions() {
 		List<Menu> listMenus = menuService.findAll();
+		Long total = menuService.countActionMenus();
 		List<MenuResponse> listResponse = new ArrayList<>();
 		listMenus.forEach(menu -> {
 			listResponse.add(new MenuResponse(menu));
 		});
-		return ResponseEntity.ok(listResponse);
+		ListMenuActionsResponse response = new ListMenuActionsResponse();
+		response.setList(listResponse);
+		response.setTotal(total);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/menu-actions/count")
+	public ResponseEntity<Object> getMenuActionsCount() {
+		Long total = menuService.countActionMenus();
+		return ResponseEntity.ok(total);
 	}
 
 	@GetMapping("/menu-actions/generate")
@@ -74,5 +84,27 @@ public class MenuController {
 			list.add(enpoint.toString());
 		}
 		menuService.deleteMenuHasNameNotInList(list);
+	}
+
+	class ListMenuActionsResponse {
+		List<MenuResponse> list;
+		Long total;
+
+		public void setList(List<MenuResponse> list) {
+			this.list = list;
+		}
+
+		public void setTotal(Long total) {
+			this.total = total;
+		}
+
+		public List<MenuResponse> getList() {
+			return list;
+		}
+
+		public Long getTotal() {
+			return total;
+		}
+
 	}
 }
