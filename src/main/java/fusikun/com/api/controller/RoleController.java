@@ -66,15 +66,6 @@ public class RoleController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
 	}
 
-	@DeleteMapping("/roles/delete/{id}")
-	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable Long id) throws NotFoundException {
-		// VALIDATE DATA IS EXIST OR NOT:
-		roleDataValidate.validateExistById(id);
-		roleDataValidate.validateRoleIsUsedByUser(id);
-		roleService.deleteById(id);
-		return ResponseEntity.ok(ConstantMessages.SUCCESS);
-	}
-
 	@GetMapping("/roles/{id}")
 	public ResponseEntity<Object> getRoleById(@PathVariable Long id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
@@ -84,7 +75,7 @@ public class RoleController {
 		List<Auth> auths = role.getAuths();
 		List<String> menusMappedNames = auths.stream().map(auth -> auth.getMenu().getName())
 				.collect(Collectors.toList());
-		
+
 		List<Menu> menusNotMapped = menuService.findNotMappedMenus(menusMappedNames);
 		List<Auth> updatedAuths = auths; // get old auths list:
 		if (!menusNotMapped.isEmpty()) {
@@ -101,6 +92,15 @@ public class RoleController {
 		roleRes.setAuths(updatedAuthResponses);
 
 		return ResponseEntity.ok(roleRes);
+	}
+
+	@DeleteMapping("/roles/delete/{id}")
+	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable Long id) throws NotFoundException {
+		// VALIDATE DATA IS EXIST OR NOT:
+		roleDataValidate.validateExistById(id);
+		roleDataValidate.validateRoleIsUsedByUser(id);
+		roleService.deleteById(id);
+		return ResponseEntity.ok(ConstantMessages.SUCCESS);
 	}
 
 	private List<Auth> handleGenerateAuthsFromRoleAndMenus(Role savedRole, List<Menu> menus) {
