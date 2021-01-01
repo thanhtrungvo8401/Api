@@ -48,7 +48,11 @@ public class RoleService {
 	public Integer coutByRoleName(String roleName) {
 		return roleRepository.countByRoleName(roleName);
 	}
-
+	
+	public Long count() {
+		return roleRepository.count();
+	}
+	
 	public Boolean existByRoleName(String roleName) {
 		return roleRepository.countByRoleName(roleName) > 0;
 	}

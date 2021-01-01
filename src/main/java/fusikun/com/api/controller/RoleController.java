@@ -50,7 +50,8 @@ public class RoleController {
 	public ResponseEntity<Object> getAllRoles() {
 		List<Role> roles = roleService.findAll();
 		List<RoleResponse> rolesRes = roles.stream().map(role -> new RoleResponse(role)).collect(Collectors.toList());
-		return ResponseEntity.ok(rolesRes);
+		Long total = roleService.count();
+		return ResponseEntity.ok(new RoleManagement(rolesRes, total));
 	}
 
 	@PostMapping("/roles/create")
@@ -110,5 +111,34 @@ public class RoleController {
 			auths.add(auth);
 		});
 		return authService.saveAll(auths);
+	}
+
+	private class RoleManagement {
+		public RoleManagement() {
+					
+		}
+		
+		public RoleManagement(List<RoleResponse> list, Long total) {
+			super();
+			this.list = list;
+			this.total = total;
+		}
+		List<RoleResponse> list;
+		Long total;
+		public List<RoleResponse> getList() {
+			return list;
+		}
+
+		public void setList(List<RoleResponse> list) {
+			this.list = list;
+		}
+
+		public Long getTotal() {
+			return total;
+		}
+
+		public void setTotal(Long total) {
+			this.total = total;
+		}	
 	}
 }
