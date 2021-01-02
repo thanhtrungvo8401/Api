@@ -6,6 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import fusikun.com.api.dto.RoleRequest;
+import fusikun.com.api.model.Role;
 import fusikun.com.api.service.RoleService;
 import fusikun.com.api.utils.ConstantErrorCodes;
 
@@ -23,8 +24,19 @@ public class RoleValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		RoleRequest roleRequest = (RoleRequest) target;
 		// check duplicate RoleName:
-		if (roleService.existByRoleName(roleRequest.getRoleName())) {
-			errors.rejectValue("roleName", ConstantErrorCodes.UNIQUE_VALUE);
+		if (roleRequest.getId() == null) {
+			// Create role:
+			if (roleService.existByRoleName(roleRequest.getRoleName())) {
+				errors.rejectValue("roleName", ConstantErrorCodes.UNIQUE_VALUE);
+			}
+		} else {
+			// Update role:
+			Role oldRole = roleService.findRoleById(roleRequest.getId());
+			if (oldRole != null && !oldRole.getRoleName().equals(roleRequest.getRoleName())) {
+				if (roleService.existByRoleName(roleRequest.getRoleName())) {
+					errors.rejectValue("roleName", ConstantErrorCodes.UNIQUE_VALUE);
+				}
+			}
 		}
 	}
 

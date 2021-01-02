@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,6 +68,22 @@ public class RoleController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
 	}
 
+	@PatchMapping("/roles/{id}/update")
+	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
+			@PathVariable Long id) throws Customize_MethodArgumentNotValidException, NotFoundException {
+		// CUSTOM VALIDATE:
+		roleRequest.setId(id);
+		roleDataValidate.validateExistById(roleRequest.getId());
+		roleDataValidate.validate(roleRequest);
+		// SAVE ROLE:
+		Role oldRole = roleService.findRoleById(id);
+		Role role = roleRequest.getRole();
+		oldRole.setRoleName(role.getRoleName());
+		oldRole.setDescription(role.getDescription());
+		Role saveRole = roleService.save(oldRole);
+		return ResponseEntity.ok(new RoleResponse(saveRole));
+	}
+
 	@GetMapping("/roles/{id}")
 	public ResponseEntity<Object> getRoleById(@PathVariable Long id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
@@ -116,16 +133,18 @@ public class RoleController {
 	private class RoleManagement {
 		@SuppressWarnings("unused")
 		public RoleManagement() {
-					
+
 		}
-		
+
 		public RoleManagement(List<RoleResponse> list, Long total) {
 			super();
 			this.list = list;
 			this.total = total;
 		}
+
 		List<RoleResponse> list;
 		Long total;
+
 		@SuppressWarnings("unused")
 		public List<RoleResponse> getList() {
 			return list;
@@ -144,6 +163,6 @@ public class RoleController {
 		@SuppressWarnings("unused")
 		public void setTotal(Long total) {
 			this.total = total;
-		}	
+		}
 	}
 }
