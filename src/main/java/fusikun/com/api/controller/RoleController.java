@@ -68,22 +68,6 @@ public class RoleController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
 	}
 
-	@PatchMapping("/roles/{id}/update")
-	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
-			@PathVariable Long id) throws Customize_MethodArgumentNotValidException, NotFoundException {
-		// CUSTOM VALIDATE:
-		roleRequest.setId(id);
-		roleDataValidate.validateExistById(roleRequest.getId());
-		roleDataValidate.validate(roleRequest);
-		// SAVE ROLE:
-		Role oldRole = roleService.findRoleById(id);
-		Role role = roleRequest.getRole();
-		oldRole.setRoleName(role.getRoleName());
-		oldRole.setDescription(role.getDescription());
-		Role saveRole = roleService.save(oldRole);
-		return ResponseEntity.ok(new RoleResponse(saveRole));
-	}
-
 	@GetMapping("/roles/{id}")
 	public ResponseEntity<Object> getRoleById(@PathVariable Long id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
@@ -94,7 +78,13 @@ public class RoleController {
 		List<String> menusMappedNames = auths.stream().map(auth -> auth.getMenu().getName())
 				.collect(Collectors.toList());
 
-		List<Menu> menusNotMapped = menuService.findNotMappedMenus(menusMappedNames);
+		List<Menu> menusNotMapped;
+		if (!menusMappedNames.isEmpty()) {
+			menusNotMapped = menuService.findNotMappedMenus(menusMappedNames);
+		} else {
+			menusNotMapped = menuService.findAll();
+		}
+
 		List<Auth> updatedAuths = auths; // get old auths list:
 		if (!menusNotMapped.isEmpty()) {
 			List<Auth> authAdds = handleGenerateAuthsFromRoleAndMenus(role, menusNotMapped);
@@ -110,6 +100,22 @@ public class RoleController {
 		roleRes.setAuths(updatedAuthResponses);
 
 		return ResponseEntity.ok(roleRes);
+	}
+
+	@PatchMapping("/roles/{id}/update")
+	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
+			@PathVariable Long id) throws Customize_MethodArgumentNotValidException, NotFoundException {
+		// CUSTOM VALIDATE:
+		roleRequest.setId(id);
+		roleDataValidate.validateExistById(roleRequest.getId());
+		roleDataValidate.validate(roleRequest);
+		// SAVE ROLE:
+		Role oldRole = roleService.findRoleById(id);
+		Role role = roleRequest.getRole();
+		oldRole.setRoleName(role.getRoleName());
+		oldRole.setDescription(role.getDescription());
+		Role saveRole = roleService.save(oldRole);
+		return ResponseEntity.ok(new RoleResponse(saveRole));
 	}
 
 	@DeleteMapping("/roles/delete/{id}")
