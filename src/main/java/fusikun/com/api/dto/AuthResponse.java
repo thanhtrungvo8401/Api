@@ -15,6 +15,11 @@ public class AuthResponse {
 		this.isActive = auth.getIsActive();
 		this.menu = menu;
 	}
+	
+	public AuthResponse(Auth auth) {
+		this.id = auth.getId();
+		this.isActive = auth.getIsActive();
+	}
 
 	public Long getId() {
 		return id;
