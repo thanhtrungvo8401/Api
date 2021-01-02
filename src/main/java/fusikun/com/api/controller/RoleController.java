@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,7 +51,8 @@ public class RoleController {
 	public ResponseEntity<Object> getAllRoles() {
 		List<Role> roles = roleService.findAll();
 		List<RoleResponse> rolesRes = roles.stream().map(role -> new RoleResponse(role)).collect(Collectors.toList());
-		return ResponseEntity.ok(rolesRes);
+		Long total = roleService.count();
+		return ResponseEntity.ok(new RoleManagement(rolesRes, total));
 	}
 
 	@PostMapping("/roles/create")
@@ -76,7 +78,13 @@ public class RoleController {
 		List<String> menusMappedNames = auths.stream().map(auth -> auth.getMenu().getName())
 				.collect(Collectors.toList());
 
-		List<Menu> menusNotMapped = menuService.findNotMappedMenus(menusMappedNames);
+		List<Menu> menusNotMapped;
+		if (!menusMappedNames.isEmpty()) {
+			menusNotMapped = menuService.findNotMappedMenus(menusMappedNames);
+		} else {
+			menusNotMapped = menuService.findAll();
+		}
+
 		List<Auth> updatedAuths = auths; // get old auths list:
 		if (!menusNotMapped.isEmpty()) {
 			List<Auth> authAdds = handleGenerateAuthsFromRoleAndMenus(role, menusNotMapped);
@@ -92,6 +100,22 @@ public class RoleController {
 		roleRes.setAuths(updatedAuthResponses);
 
 		return ResponseEntity.ok(roleRes);
+	}
+
+	@PatchMapping("/roles/{id}/update")
+	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
+			@PathVariable Long id) throws Customize_MethodArgumentNotValidException, NotFoundException {
+		// CUSTOM VALIDATE:
+		roleRequest.setId(id);
+		roleDataValidate.validateExistById(roleRequest.getId());
+		roleDataValidate.validate(roleRequest);
+		// SAVE ROLE:
+		Role oldRole = roleService.findRoleById(id);
+		Role role = roleRequest.getRole();
+		oldRole.setRoleName(role.getRoleName());
+		oldRole.setDescription(role.getDescription());
+		Role saveRole = roleService.save(oldRole);
+		return ResponseEntity.ok(new RoleResponse(saveRole));
 	}
 
 	@DeleteMapping("/roles/delete/{id}")
@@ -110,5 +134,41 @@ public class RoleController {
 			auths.add(auth);
 		});
 		return authService.saveAll(auths);
+	}
+
+	private class RoleManagement {
+		@SuppressWarnings("unused")
+		public RoleManagement() {
+
+		}
+
+		public RoleManagement(List<RoleResponse> list, Long total) {
+			super();
+			this.list = list;
+			this.total = total;
+		}
+
+		List<RoleResponse> list;
+		Long total;
+
+		@SuppressWarnings("unused")
+		public List<RoleResponse> getList() {
+			return list;
+		}
+
+		@SuppressWarnings("unused")
+		public void setList(List<RoleResponse> list) {
+			this.list = list;
+		}
+
+		@SuppressWarnings("unused")
+		public Long getTotal() {
+			return total;
+		}
+
+		@SuppressWarnings("unused")
+		public void setTotal(Long total) {
+			this.total = total;
+		}
 	}
 }

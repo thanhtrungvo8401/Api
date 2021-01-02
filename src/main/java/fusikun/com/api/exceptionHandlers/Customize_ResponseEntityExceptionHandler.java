@@ -30,7 +30,7 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleExceptionForAll(Exception ex, WebRequest request) throws Exception {
 		List<Object> errorCodes = new LinkedList<>();
-		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.INTERNAL_SERVER_ERROR));
+		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.INTERNAL_SERVER_ERROR));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
@@ -40,7 +40,7 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 	@ExceptionHandler(NotFoundException.class)
 	public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request) throws Exception {
 		List<Object> errorCodes = new LinkedList<>();
-		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.NOT_FOUND));
+		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.NOT_FOUND));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
@@ -50,7 +50,7 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 	@ExceptionHandler(MethodNotAllowedException.class)
 	public final ResponseEntity<Object> handleBadRequestException(Exception ex, WebRequest request) {
 		List<Object> errorCodes = new LinkedList<>();
-		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.METHOD_NOT_ALLOWED));
+		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.METHOD_NOT_ALLOWED));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(exceptionResponse);
@@ -61,7 +61,7 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 	public final ResponseEntity<Object> handleWrongUsernamePasswordException(Exception ex, WebRequest request)
 			throws Exception {
 		List<Object> errorCodes = new LinkedList<>();
-		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_FORM_ERROR, ConstantErrorCodes.BAD_CREDENTIALS));
+		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_CREDENTIALS));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
@@ -75,10 +75,10 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 		List<Object> errorCodes = new LinkedList<>();
 		for (ObjectError err : ex.getBindingResult().getAllErrors()) {
 			String field = ((org.springframework.validation.FieldError) err).getField();
-			String code = err.getCode();
+			String code = err.getDefaultMessage();
 			errorCodes.add(new FieldError(field, code));
 		}
-		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.BAD_REQUEST));
+		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_REQUEST));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
@@ -96,7 +96,7 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 			String code = err.getCode();
 			errorCodes.add(new FieldError(field, code));
 		});
-		errorCodes.add(new FieldError(ConstantErrorCodes.FIELD_MESS, ConstantErrorCodes.BAD_REQUEST));
+		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_REQUEST));
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);

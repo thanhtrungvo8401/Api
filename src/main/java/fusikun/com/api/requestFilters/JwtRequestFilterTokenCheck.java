@@ -48,7 +48,7 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 			jwt = authorizationHeader.substring(Constant.AUTH_BEARER_INDEX);
 			username = jwtTokenUtil.getUserNameFromToken(jwt);
 		} else {
-			System.out.println("======= JWT does not start with 'bearer' =======");
+			System.out.println("======= JWT does not start with 'bearer' OR NULL =======");
 			throw new InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
 
