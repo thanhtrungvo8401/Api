@@ -114,6 +114,7 @@ public class RoleController {
 	}
 
 	private class RoleManagement {
+		@SuppressWarnings("unused")
 		public RoleManagement() {
 					
 		}
@@ -125,18 +126,22 @@ public class RoleController {
 		}
 		List<RoleResponse> list;
 		Long total;
+		@SuppressWarnings("unused")
 		public List<RoleResponse> getList() {
 			return list;
 		}
 
+		@SuppressWarnings("unused")
 		public void setList(List<RoleResponse> list) {
 			this.list = list;
 		}
 
+		@SuppressWarnings("unused")
 		public Long getTotal() {
 			return total;
 		}
 
+		@SuppressWarnings("unused")
 		public void setTotal(Long total) {
 			this.total = total;
 		}	

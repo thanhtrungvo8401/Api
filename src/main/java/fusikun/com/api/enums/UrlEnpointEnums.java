@@ -9,6 +9,9 @@ public enum UrlEnpointEnums {
 	
 	ROLES("/roles"),
 	ROLES__CREATE("/roles/create"),
+	ROLES__DETAIL("/roles/{id}"),
+	ROLES__UPDATE("/roles/{id}/update"),
+	ROLES__DELETE("/roles/{id}/delete"),	
 	
 	MANAGERS("/managers"),
 	MANAGERS__CREATE("/managers/create"),

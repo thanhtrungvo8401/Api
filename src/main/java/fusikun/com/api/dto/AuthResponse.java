@@ -5,15 +5,15 @@ import fusikun.com.api.model.Auth;
 public class AuthResponse {
 	private Long id;
 	private Boolean isActive;
-	private MenuResponse menus;
+	private MenuResponse menu;
 
 	public AuthResponse() {
 	}
 
-	public AuthResponse(Auth auth, MenuResponse menus) {
+	public AuthResponse(Auth auth, MenuResponse menu) {
 		this.id = auth.getId();
 		this.isActive = auth.getIsActive();
-		this.menus = menus;
+		this.menu = menu;
 	}
 
 	public Long getId() {
@@ -32,11 +32,11 @@ public class AuthResponse {
 		this.isActive = isActive;
 	}
 
-	public MenuResponse getMenus() {
-		return menus;
+	public MenuResponse getMenu() {
+		return menu;
 	}
 
-	public void setMenus(MenuResponse menus) {
-		this.menus = menus;
+	public void setMenu(MenuResponse menu) {
+		this.menu = menu;
 	}
 }
