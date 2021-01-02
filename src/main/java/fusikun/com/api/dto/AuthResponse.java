@@ -2,15 +2,15 @@ package fusikun.com.api.dto;
 
 import fusikun.com.api.model.Auth;
 
-public class AuthenticateResponse {
+public class AuthResponse {
 	private Long id;
 	private Boolean isActive;
 	private MenuResponse menu;
 
-	public AuthenticateResponse() {
+	public AuthResponse() {
 	}
 
-	public AuthenticateResponse(Auth auth, MenuResponse menu) {
+	public AuthResponse(Auth auth, MenuResponse menu) {
 		this.id = auth.getId();
 		this.isActive = auth.getIsActive();
 		this.menu = menu;
