@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import fusikun.com.api.model.JwtUserDetails;
+import fusikun.com.api.utils.Constant;
 import fusikun.com.api.utils.IgnoreUrl;
 
 @Component
@@ -28,6 +29,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		}
 		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
+		// Check ADMIN role:
+		String roleName = jwtUserDetails.getRole().getRoleName();
+		if (roleName.equals(Constant.ADMIN_ROLE)) {
+			return true;
+		}
 		List<String> menuRegexs = jwtUserDetails.getMenus().stream().map(menu -> menu.getRegex())
 				.collect(Collectors.toList());
 		for (String regex : menuRegexs) {
