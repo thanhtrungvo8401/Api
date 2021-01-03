@@ -58,9 +58,11 @@ public class MenuController {
 	private void MenuActionGenerateUitls(UrlEnpointEnums enpoint) throws Customize_MethodArgumentNotValidException {
 		String enpointName = enpoint.toString();
 		String enpointUrl = enpoint.getUrl();
+		String enpointRegex = enpoint.getRegex();
 		MenuRequest menuRequest = new MenuRequest();
 		menuRequest.setName(enpointName);
 		menuRequest.setUrl(enpointUrl);
+		menuRequest.setRegex(enpointRegex);
 		if (!menuService.existsByName(enpointName)) {
 			if (enpointName.indexOf(Constant.MENU_ADDRESS_DEVIDE) >= 0) {
 				String parentName = enpointName.split(Constant.MENU_ADDRESS_DEVIDE)[0];

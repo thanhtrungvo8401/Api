@@ -6,6 +6,7 @@ public class MenuResponse {
 	private Long id;
 	private String url;
 	private String name;
+	private String regex;
 	private Long parentId;
 
 	public MenuResponse() {
@@ -15,6 +16,7 @@ public class MenuResponse {
 		id = menu.getId();
 		url = menu.getUrl();
 		name = menu.getName();
+		regex = menu.getRegex();
 		if (menu.getParentMenu() != null) {
 			parentId = menu.getParentMenu().getId();
 		}
@@ -42,6 +44,14 @@ public class MenuResponse {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getRegex() {
+		return regex;
+	}
+
+	public void setRegex(String regex) {
+		this.regex = regex;
 	}
 
 	public Long getParentId() {
