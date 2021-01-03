@@ -30,17 +30,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 				.getPrincipal();
 		List<String> menuRegexs = jwtUserDetails.getMenus().stream().map(menu -> menu.getRegex())
 				.collect(Collectors.toList());
-		Boolean checkAuthorization = false;
 		for (String regex : menuRegexs) {
 			Pattern p = Pattern.compile(regex);
 			Matcher m = p.matcher(reqUrl);
 			if (m.find()) {
-				checkAuthorization = true;
-				break;
+				return true;
 			}
 		}
-		if (!checkAuthorization)
-			throw new AccessDeniedException("Your access to '" + reqUrl + "' is forbidden");
-		return checkAuthorization;
+		throw new AccessDeniedException("Your access to '" + reqUrl + "' is forbidden");
 	}
 }
