@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import fusikun.com.api.model.JwtUserDetails;
-import fusikun.com.api.utils.ConstantErrorCodes;
 import fusikun.com.api.utils.IgnoreUrl;
 
 @Component
@@ -41,7 +40,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 			}
 		}
 		if (!checkAuthorization)
-			throw new AccessDeniedException(ConstantErrorCodes.ACCESS_DENIED);
+			throw new AccessDeniedException("Your access to '" + reqUrl + "' is forbidden");
 		return checkAuthorization;
 	}
 }

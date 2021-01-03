@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
@@ -44,6 +45,15 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public final ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) throws Exception {
+		List<Object> errorCodes = new LinkedList<>();
+		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.ACCESS_DENIED));
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false), errorCodes);
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionResponse);
 	}
 
 	// METHOD_NOT_ALLOW_EXCEPTION:
