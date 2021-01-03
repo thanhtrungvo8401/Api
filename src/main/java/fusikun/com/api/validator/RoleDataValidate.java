@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
 import fusikun.com.api.dto.RoleRequest;
-import fusikun.com.api.exceptionHandlers.MethodNotAllowedException;
-import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
+import fusikun.com.api.exceptionHandlers.Ex_MethodNotAllowedException;
+import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.Role;
 import fusikun.com.api.model.User;
 import fusikun.com.api.service.RoleService;
@@ -26,7 +26,7 @@ public class RoleDataValidate {
 	@Autowired
 	UserService userService;
 
-	public final void validate(RoleRequest roleRequest) throws Customize_MethodArgumentNotValidException {
+	public final void validate(RoleRequest roleRequest) throws Ex_MethodArgumentNotValidException {
 		// TRYM WHITE SPACE:
 		roleRequest.setDescription(roleRequest.getDescription());
 		roleRequest.setRoleName(roleRequest.getRoleName());
@@ -34,7 +34,7 @@ public class RoleDataValidate {
 		BindException errors = new BindException(roleRequest, RoleRequest.class.getName());
 		roleValidator.validate(roleRequest, errors);
 		if (errors.hasErrors()) {
-			throw new Customize_MethodArgumentNotValidException(errors.getBindingResult());
+			throw new Ex_MethodArgumentNotValidException(errors.getBindingResult());
 		}
 	}
 
@@ -48,7 +48,7 @@ public class RoleDataValidate {
 	public final void validateRoleIsUsedByUser(Long id) {
 		List<User> users = userService.findByRoleId(id);
 		if (!users.isEmpty()) {
-			throw new MethodNotAllowedException("Role is used!");
+			throw new Ex_MethodNotAllowedException("Role is used!");
 		}
 	}
 }

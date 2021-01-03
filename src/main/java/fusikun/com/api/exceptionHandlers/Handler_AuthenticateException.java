@@ -22,7 +22,7 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 import fusikun.com.api.utils.ConstantMessages;
 
 @Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
+public class Handler_AuthenticateException implements AuthenticationEntryPoint, Serializable {
 
 	private static final long serialVersionUID = 4418997171920318541L;
 
@@ -35,7 +35,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 		PrintWriter out = response.getWriter();
 		List<Object> errorCodes = new LinkedList<>();
 		errorCodes.add(ConstantErrorCodes.INVALID_TOKEN);
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), authException.getMessage(),
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), authException.getMessage(),
 				ConstantMessages.INVALID_TOKEN, errorCodes);
 		String exceptionResponseJson = new Gson().toJson(exceptionResponse);
 		out.print(exceptionResponseJson);

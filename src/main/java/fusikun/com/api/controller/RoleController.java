@@ -21,7 +21,7 @@ import fusikun.com.api.dto.AuthResponse;
 import fusikun.com.api.dto.MenuResponse;
 import fusikun.com.api.dto.RoleRequest;
 import fusikun.com.api.dto.RoleResponse;
-import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
+import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.Auth;
 import fusikun.com.api.model.Menu;
 import fusikun.com.api.model.Role;
@@ -57,7 +57,7 @@ public class RoleController {
 
 	@PostMapping("/roles/create")
 	public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
-			throws Customize_MethodArgumentNotValidException {
+			throws Ex_MethodArgumentNotValidException {
 		// CUSTOM VALIDATE:
 		roleDataValidate.validate(roleRequest);
 		// SAVE ROLE:
@@ -104,7 +104,7 @@ public class RoleController {
 
 	@PatchMapping("/roles/{id}/update")
 	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
-			@PathVariable Long id) throws Customize_MethodArgumentNotValidException, NotFoundException {
+			@PathVariable Long id) throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
 		roleRequest.setId(id);
 		roleDataValidate.validateExistById(roleRequest.getId());

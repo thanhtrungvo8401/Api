@@ -4,16 +4,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ExceptionResponse {
+public class Ob_ExceptionResponse {
 	private Date timestamp;
 	private String message;
 	private String path;
 	private List<Object> errorCodes = new LinkedList<>();
 
-	public ExceptionResponse() {
+	public Ob_ExceptionResponse() {
 	}
 
-	public ExceptionResponse(Date timestamp, String message, String path, List<Object> errorCodes) {
+	public Ob_ExceptionResponse(Date timestamp, String message, String path, List<Object> errorCodes) {
 		super();
 		this.timestamp = timestamp;
 		this.message = message;
