@@ -1,4 +1,4 @@
-package fusikun.com.api.requestFilters;
+package fusikun.com.api.filters;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ import fusikun.com.api.utils.IgnoreUrl;
 import fusikun.com.api.utils.JwtTokenUtil;
 
 @Component
-public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
+public class AuthenticateFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
