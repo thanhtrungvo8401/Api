@@ -22,9 +22,11 @@ public class Menu {
 	private Long id;
 
 	private Boolean isActive;
-	
+
 	private String url;
-	
+
+	private String regex;
+
 	private String name;
 
 	private Date createdDate;
@@ -41,14 +43,14 @@ public class Menu {
 	@JoinColumn(name = "parentId")
 	private Menu parentMenu;
 
-	
 	public Menu() {
 	}
-	
-	public Menu(String url, String name) {
+
+	public Menu(String url, String name, String regex) {
 		super();
 		this.url = url;
 		this.name = name;
+		this.regex = regex;
 	}
 
 	public List<Menu> getMenus() {
@@ -81,6 +83,14 @@ public class Menu {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getRegex() {
+		return regex;
+	}
+
+	public void setRegex(String regex) {
+		this.regex = regex;
 	}
 
 	public Boolean getIsActive() {

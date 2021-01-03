@@ -1,13 +1,13 @@
 package fusikun.com.api.exceptionHandlers;
 
-public class FieldError {
+public class Ob_FieldError {
 	private String field;
 	private String code;
 
-	public FieldError() {
+	public Ob_FieldError() {
 	}
 
-	public FieldError(String field, String code) {
+	public Ob_FieldError(String field, String code) {
 		super();
 		this.field = field;
 		this.code = code;

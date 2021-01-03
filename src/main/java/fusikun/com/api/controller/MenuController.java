@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fusikun.com.api.dto.MenuRequest;
 import fusikun.com.api.dto.MenuResponse;
 import fusikun.com.api.enums.UrlEnpointEnums;
-import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
+import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.Menu;
 import fusikun.com.api.service.MenuService;
 import fusikun.com.api.utils.Constant;
@@ -47,7 +47,7 @@ public class MenuController {
 	}
 
 	@GetMapping("/menu-actions/generate")
-	public ResponseEntity<Object> generateActionsMenu() throws Customize_MethodArgumentNotValidException {
+	public ResponseEntity<Object> generateActionsMenu() throws Ex_MethodArgumentNotValidException {
 		deleteMenuActionsNotInList();
 		for (UrlEnpointEnums enpoint : UrlEnpointEnums.values()) {
 			MenuActionGenerateUitls(enpoint);
@@ -55,12 +55,14 @@ public class MenuController {
 		return ResponseEntity.status(201).body("SUCCESS");
 	}
 
-	private void MenuActionGenerateUitls(UrlEnpointEnums enpoint) throws Customize_MethodArgumentNotValidException {
+	private void MenuActionGenerateUitls(UrlEnpointEnums enpoint) throws Ex_MethodArgumentNotValidException {
 		String enpointName = enpoint.toString();
 		String enpointUrl = enpoint.getUrl();
+		String enpointRegex = enpoint.getRegex();
 		MenuRequest menuRequest = new MenuRequest();
 		menuRequest.setName(enpointName);
 		menuRequest.setUrl(enpointUrl);
+		menuRequest.setRegex(enpointRegex);
 		if (!menuService.existsByName(enpointName)) {
 			if (enpointName.indexOf(Constant.MENU_ADDRESS_DEVIDE) >= 0) {
 				String parentName = enpointName.split(Constant.MENU_ADDRESS_DEVIDE)[0];
@@ -71,7 +73,7 @@ public class MenuController {
 		}
 	}
 
-	private void createMenuActions(MenuRequest menuRequest) throws Customize_MethodArgumentNotValidException {
+	private void createMenuActions(MenuRequest menuRequest) throws Ex_MethodArgumentNotValidException {
 		menuDataValidate.validate(menuRequest);
 		Menu menu = menuRequest.getMenu();
 		Menu savedMenu = menuService.save(menu);

@@ -14,9 +14,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import fusikun.com.api.exceptionHandlers.JwtAuthenticationEntryPoint;
-import fusikun.com.api.requestFilters.JwtRequestFilterRoleCheck;
-import fusikun.com.api.requestFilters.JwtRequestFilterTokenCheck;
+import fusikun.com.api.exceptionHandlers.Handler_AuthenticateException;
+import fusikun.com.api.filters.AuthenticateFilter;
 import fusikun.com.api.service.JwtUserDetailsService;
 import fusikun.com.api.utils.IgnoreUrl;
 
@@ -35,13 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private JwtUserDetailsService jwtUserDetailsService;
 
 	@Autowired
-	private JwtRequestFilterTokenCheck jwtRequestFilterTokenCheck;
+	private AuthenticateFilter jwtRequestFilterTokenCheck;
 
 	@Autowired
-	private JwtRequestFilterRoleCheck jwtRequestFilterRoleCheck;
-
-	@Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private Handler_AuthenticateException jwtAuthenticationEntryPoint;
 
 	@Bean
 	@Override
@@ -70,7 +66,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
 		http.addFilterBefore(jwtRequestFilterTokenCheck, UsernamePasswordAuthenticationFilter.class);
-		http.addFilterAfter(jwtRequestFilterRoleCheck, UsernamePasswordAuthenticationFilter.class);
 	}
 
 //	@Autowired

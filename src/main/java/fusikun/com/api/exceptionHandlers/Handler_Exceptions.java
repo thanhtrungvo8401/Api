@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
@@ -25,13 +26,13 @@ import javassist.NotFoundException;
 // ControllerAdvice => use for all project:
 @ControllerAdvice
 @RestController
-public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 	// COMMON ERROR:
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleExceptionForAll(Exception ex, WebRequest request) throws Exception {
 		List<Object> errorCodes = new LinkedList<>();
-		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.INTERNAL_SERVER_ERROR));
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.INTERNAL_SERVER_ERROR));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 	}
@@ -40,18 +41,27 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 	@ExceptionHandler(NotFoundException.class)
 	public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request) throws Exception {
 		List<Object> errorCodes = new LinkedList<>();
-		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.NOT_FOUND));
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.NOT_FOUND));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
 	}
 
+	@ExceptionHandler(AccessDeniedException.class)
+	public final ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) throws Exception {
+		List<Object> errorCodes = new LinkedList<>();
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.ACCESS_DENIED));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false), errorCodes);
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionResponse);
+	}
+
 	// METHOD_NOT_ALLOW_EXCEPTION:
-	@ExceptionHandler(MethodNotAllowedException.class)
+	@ExceptionHandler(Ex_MethodNotAllowedException.class)
 	public final ResponseEntity<Object> handleBadRequestException(Exception ex, WebRequest request) {
 		List<Object> errorCodes = new LinkedList<>();
-		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.METHOD_NOT_ALLOWED));
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.METHOD_NOT_ALLOWED));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(exceptionResponse);
 	}
@@ -61,8 +71,8 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 	public final ResponseEntity<Object> handleWrongUsernamePasswordException(Exception ex, WebRequest request)
 			throws Exception {
 		List<Object> errorCodes = new LinkedList<>();
-		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_CREDENTIALS));
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_CREDENTIALS));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}
@@ -76,16 +86,16 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 		for (ObjectError err : ex.getBindingResult().getAllErrors()) {
 			String field = ((org.springframework.validation.FieldError) err).getField();
 			String code = err.getDefaultMessage();
-			errorCodes.add(new FieldError(field, code));
+			errorCodes.add(new Ob_FieldError(field, code));
 		}
-		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_REQUEST));
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_REQUEST));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}
 
 	// customValidation:
-	@ExceptionHandler({ Customize_MethodArgumentNotValidException.class })
+	@ExceptionHandler({ Ex_MethodArgumentNotValidException.class })
 	public final ResponseEntity<Object> handleExceptionsCustomValidation(Exception exeption, WebRequest request)
 			throws Exception {
 		BindException ex = (BindException) exeption;
@@ -94,10 +104,10 @@ public class Customize_ResponseEntityExceptionHandler extends ResponseEntityExce
 		errorList.forEach((err) -> {
 			String field = ((org.springframework.validation.FieldError) err).getField();
 			String code = err.getCode();
-			errorCodes.add(new FieldError(field, code));
+			errorCodes.add(new Ob_FieldError(field, code));
 		});
-		errorCodes.add(new FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_REQUEST));
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_REQUEST));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}

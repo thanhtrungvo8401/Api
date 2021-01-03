@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
 import fusikun.com.api.dto.MenuRequest;
-import fusikun.com.api.exceptionHandlers.Customize_MethodArgumentNotValidException;
+import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.utils.TrymWhiteSpace;
 
 @Component
@@ -14,7 +14,7 @@ public class MenuDataValidate {
 	@Autowired
 	MenuValidator menuValidator;
 
-	public final void validate(MenuRequest menuRequest) throws Customize_MethodArgumentNotValidException {
+	public final void validate(MenuRequest menuRequest) throws Ex_MethodArgumentNotValidException {
 		// TRYM WHITE SPACE:
 		menuRequest.setName(TrymWhiteSpace.trymWhiteSpace(menuRequest.getName()));
 		menuRequest.setUrl(TrymWhiteSpace.trymWhiteSpace(menuRequest.getUrl()));
@@ -22,7 +22,7 @@ public class MenuDataValidate {
 		BindException errors = new BindException(menuRequest, MenuRequest.class.getName());
 		menuValidator.validate(menuRequest, errors);
 		if (errors.hasErrors()) {
-			throw new Customize_MethodArgumentNotValidException(errors.getBindingResult());
+			throw new Ex_MethodArgumentNotValidException(errors.getBindingResult());
 		}
 	}
 }

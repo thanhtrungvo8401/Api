@@ -1,47 +1,52 @@
 package fusikun.com.api.model;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class JwtUserDetails implements UserDetails{
-	
+public class JwtUserDetails implements UserDetails {
+
 	private static final long serialVersionUID = 1317367368138070184L;
 	private String username;
 	private String password;
 	private boolean isActive;
 	private String accessToken;
-	private List<GrantedAuthority> authorities;
+	private Role role;
+	private List<Menu> menus;
 
 	public JwtUserDetails() {
 	}
-	
+
 	public JwtUserDetails(User user) {
 		if (user != null) {
 			this.username = user.getUsername();
 			this.password = user.getPassword();
 			this.isActive = user.getIsActive();
 			this.accessToken = user.getAccessToken();
-			this.authorities = Arrays.asList(new SimpleGrantedAuthority("USER_ROLE"));
+			this.role = user.getRole();
+			List<Auth> auths = role.getAuths();
+			this.menus = auths.stream().filter(auth -> auth.getIsActive()).map(auth -> auth.getMenu())
+					.collect(Collectors.toList());
 		}
-		
 	}
 
 	public String getAccessToken() {
 		return accessToken;
 	}
-	
+
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.authorities;
+
+	public Role getRole() {
+		return role;
+	}
+
+	public List<Menu> getMenus() {
+		return menus;
 	}
 
 	@Override
@@ -74,4 +79,8 @@ public class JwtUserDetails implements UserDetails{
 		return this.isActive;
 	}
 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
 }

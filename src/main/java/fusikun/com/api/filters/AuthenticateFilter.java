@@ -1,4 +1,4 @@
-package fusikun.com.api.requestFilters;
+package fusikun.com.api.filters;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import fusikun.com.api.exceptionHandlers.InvalidTokenException;
+import fusikun.com.api.exceptionHandlers.Ex_InvalidTokenException;
 import fusikun.com.api.model.JwtUserDetails;
 import fusikun.com.api.service.JwtUserDetailsService;
 import fusikun.com.api.utils.Constant;
@@ -23,7 +23,7 @@ import fusikun.com.api.utils.IgnoreUrl;
 import fusikun.com.api.utils.JwtTokenUtil;
 
 @Component
-public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
+public class AuthenticateFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
@@ -49,7 +49,7 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 			username = jwtTokenUtil.getUserNameFromToken(jwt);
 		} else {
 			System.out.println("======= JWT does not start with 'bearer' OR NULL =======");
-			throw new InvalidTokenException(ConstantMessages.INVALID_TOKEN);
+			throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -63,10 +63,10 @@ public class JwtRequestFilterTokenCheck extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			} else {
 				System.out.println("======= invalid TOKEN =======");
-				throw new InvalidTokenException(ConstantMessages.INVALID_TOKEN);
+				throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 			}
 		} else {
-			throw new InvalidTokenException(ConstantMessages.INVALID_TOKEN);
+			throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
 		chain.doFilter(request, response);
 	}

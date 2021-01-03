@@ -9,7 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import fusikun.com.api.interceptors.AuthorizationInterceptor;
 
 @SpringBootApplication
 @ComponentScan("fusikun.com.api")
@@ -19,6 +22,9 @@ public class ApiApplication {
 
 	@Autowired
 	Environment env;
+
+	@Autowired
+	AuthorizationInterceptor authorizationInterceptor;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiApplication.class, args);
@@ -30,6 +36,11 @@ public class ApiApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**").allowedOrigins(env.getProperty("configure.api.address")).allowedMethods("*");
+			}
+
+			@Override
+			public void addInterceptors(InterceptorRegistry registry) {
+				registry.addInterceptor(authorizationInterceptor);
 			}
 		};
 	}
