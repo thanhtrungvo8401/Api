@@ -29,6 +29,10 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
+
 	public User findById(Long id) {
 		Optional<User> optUser = userRepository.findById(id);
 		if (optUser.isPresent())

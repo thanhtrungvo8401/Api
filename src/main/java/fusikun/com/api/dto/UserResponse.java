@@ -10,7 +10,7 @@ public class UserResponse {
 	private String email;
 	private Date createdDate;
 	private Date updatedDate;
-	private Long roleId;
+	private RoleResponse role;
 
 	public UserResponse() {
 	}
@@ -21,7 +21,7 @@ public class UserResponse {
 		this.email = user.getEmail();
 		this.createdDate = user.getCreatedDate();
 		this.updatedDate = user.getUpdatedDate();
-		this.roleId = user.getRole().getId();
+		this.role = new RoleResponse(user.getRole());
 	}
 
 	public Long getId() {
@@ -64,12 +64,12 @@ public class UserResponse {
 		this.updatedDate = updatedDate;
 	}
 
-	public Long getRoleId() {
-		return roleId;
+	public RoleResponse getRole() {
+		return role;
 	}
 
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
+	public void setRole(RoleResponse role) {
+		this.role = role;
 	}
 
 }
