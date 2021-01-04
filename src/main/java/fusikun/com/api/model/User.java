@@ -10,12 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import fusikun.com.api.utils.ConstantErrorCodes;
 
 @Entity
 @Table(name = "user")
@@ -24,16 +18,10 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
-//	@UniqueElements(message = ConstantErrorCodes.UNIQUE_VALUE)
 	private String username;
 
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	@NotBlank(message = ConstantErrorCodes.NOT_BLANK)
 	private String password;
 
-	@Email(message = ConstantErrorCodes.NOT_MAIL)
 	private String email;
 
 	private Boolean isActive;
@@ -45,8 +33,7 @@ public class User {
 	private Date updatedDate;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "roleId")
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@JoinColumn(name = "roleId", nullable = false)
 	private Role role;
 
 	public Boolean getIsActive() {

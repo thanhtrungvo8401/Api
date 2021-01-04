@@ -1,5 +1,6 @@
 package fusikun.com.api.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,26 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 
+	public User save(User user) {
+		if (user.getId() == null) {
+			user.setCreatedDate(new Date());
+		}
+		if (user.getIsActive() == null) {
+			user.setIsActive(true);
+		}
+		user.setUpdatedDate(new Date());
+
+		return userRepository.save(user);
+	}
+
+	public User findById(Long id) {
+		Optional<User> optUser = userRepository.findById(id);
+		if (optUser.isPresent())
+			return optUser.get();
+		else
+			return null;
+	}
+
 	public User findByUsername(String username) {
 		Optional<User> optUser = userRepository.findByUsername(username);
 		if (optUser.isPresent())
@@ -28,7 +49,11 @@ public class UserService {
 		return userRepository.findByRoleId(roleId);
 	}
 
-	public User updateUser(User user) {
-		return userRepository.saveAndFlush(user);
+	public Long countByUsername(String username) {
+		return userRepository.countByUsername(username);
+	}
+
+	public Long countByEmail(String email) {
+		return userRepository.countByEmail(email);
 	}
 }
