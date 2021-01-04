@@ -35,7 +35,7 @@ public class AuthenticateController {
 
 		User user = userService.findByUsername(authenticationRequest.getUsername());
 		user.setAccessToken(RandomTokenUtil.generateToken(11));
-		userService.updateUser(user);
+		userService.save(user);
 
 		final JwtUserDetails userDetails = new JwtUserDetails(user);
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
@@ -47,7 +47,7 @@ public class AuthenticateController {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userService.findByUsername(userDetails.getUsername());
 		user.setAccessToken(null);
-		userService.updateUser(user);
+		userService.save(user);
 		return ConstantMessages.SUCCESS;
 	}
 

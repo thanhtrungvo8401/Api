@@ -18,4 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query(value = "select * from user as u where u.roleId = ?1", nativeQuery = true)
 	List<User> findByRoleId(Long roleId);
+
+	Long countByUsername(String username);
+
+	Long countByEmail(String email);
 }
