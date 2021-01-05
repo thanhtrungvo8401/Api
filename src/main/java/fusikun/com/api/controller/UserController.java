@@ -33,6 +33,15 @@ public class UserController {
 	@Autowired
 	RoleDataValidate roleDataValidate;
 
+	@GetMapping("/users")
+	public ResponseEntity<Object> handleGetUsers() {
+		List<User> users = userService.findAll();
+		List<UserResponse> userResponses = users.stream().map(user -> new UserResponse(user))
+				.collect(Collectors.toList());
+		Long total = userService.count();
+		return ResponseEntity.ok(new UsersManagement(userResponses, total));
+	}
+
 	@PostMapping("/users/create")
 	public ResponseEntity<Object> handleCreateUser(@Valid @RequestBody UserRequest userRequest)
 			throws Ex_MethodArgumentNotValidException, NotFoundException {
@@ -43,10 +52,37 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(user));
 	}
 
-	@GetMapping("/users")
-	public ResponseEntity<Object> handleGetUsers() {
-		List<User> users = userService.findAll();
-		List<UserResponse> userResponses = users.stream().map(user -> new UserResponse(user)).collect(Collectors.toList());
-		return ResponseEntity.ok(userResponses);
+	private class UsersManagement {
+		List<UserResponse> list;
+		Long total;
+
+		@SuppressWarnings("unused")
+		public UsersManagement() {
+		}
+
+		public UsersManagement(List<UserResponse> list, Long total) {
+			this.list = list;
+			this.total = total;
+		}
+
+		@SuppressWarnings("unused")
+		public List<UserResponse> getList() {
+			return list;
+		}
+
+		@SuppressWarnings("unused")
+		public void setList(List<UserResponse> list) {
+			this.list = list;
+		}
+
+		@SuppressWarnings("unused")
+		public Long getTotal() {
+			return total;
+		}
+
+		@SuppressWarnings("unused")
+		public void setTotal(Long total) {
+			this.total = total;
+		}
 	}
 }
