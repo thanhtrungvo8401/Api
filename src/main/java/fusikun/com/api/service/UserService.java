@@ -29,6 +29,10 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+	public Long count() {
+		return userRepository.count();
+	}
+
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
