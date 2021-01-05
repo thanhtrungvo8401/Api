@@ -14,12 +14,10 @@ import fusikun.com.api.model.User;
 @Repository
 @Transactional(rollbackOn = Exception.class)
 public interface UserRepository extends JpaRepository<User, Long> {
-	Optional<User> findByUsername(String username);
-
+	Optional<User> findByEmail(String email);
+		
 	@Query(value = "select * from user as u where u.roleId = ?1", nativeQuery = true)
 	List<User> findByRoleId(Long roleId);
-
-	Long countByUsername(String username);
 
 	Long countByEmail(String email);
 }

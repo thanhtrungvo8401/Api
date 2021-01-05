@@ -6,7 +6,6 @@ import fusikun.com.api.model.User;
 
 public class UserResponse {
 	private Long id;
-	private String username;
 	private String email;
 	private Date createdDate;
 	private Date updatedDate;
@@ -17,7 +16,6 @@ public class UserResponse {
 
 	public UserResponse(User user) {
 		this.id = user.getId();
-		this.username = user.getUsername();
 		this.email = user.getEmail();
 		this.createdDate = user.getCreatedDate();
 		this.updatedDate = user.getUpdatedDate();
@@ -30,14 +28,6 @@ public class UserResponse {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getEmail() {

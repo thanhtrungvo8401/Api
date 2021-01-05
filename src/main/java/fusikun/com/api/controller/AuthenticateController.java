@@ -31,9 +31,9 @@ public class AuthenticateController {
 	@PostMapping("/authenticate/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		// authenticate userDate here => Error occurs => throw Exception and Stop
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
-		User user = userService.findByUsername(authenticationRequest.getUsername());
+		User user = userService.findByEmail(authenticationRequest.getEmail());
 		user.setAccessToken(RandomTokenUtil.generateToken(11));
 		userService.save(user);
 
@@ -45,13 +45,13 @@ public class AuthenticateController {
 	@PostMapping("/authenticate/logout")
 	public String handleLogout() {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userService.findByUsername(userDetails.getUsername());
+		User user = userService.findByEmail(userDetails.getUsername()); // "username" = "email" in UserDetails interface.
 		user.setAccessToken(null);
 		userService.save(user);
 		return ConstantMessages.SUCCESS;
 	}
 
-	private void authenticate(String username, String password) throws Exception {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+	private void authenticate(String email, String password) throws Exception {
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 	}
 }

@@ -27,7 +27,7 @@ public class AuthenticateFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
-	
+
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
@@ -42,18 +42,18 @@ public class AuthenticateFilter extends OncePerRequestFilter {
 		}
 		// URL not in Ignore list => validate
 		final String authorizationHeader = request.getHeader(Constant.AUTH_AUTHORIZATION);
-		String username = null;
+		String email = null;
 		String jwt = null;
 		if (authorizationHeader != null && authorizationHeader.startsWith(Constant.AUTH_BEARER)) {
 			jwt = authorizationHeader.substring(Constant.AUTH_BEARER_INDEX);
-			username = jwtTokenUtil.getUserNameFromToken(jwt);
+			email = jwtTokenUtil.getUserInfoFromToken(jwt);
 		} else {
 			System.out.println("======= JWT does not start with 'bearer' OR NULL =======");
 			throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
 
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			JwtUserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			JwtUserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email);
 			if (jwtTokenUtil.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
