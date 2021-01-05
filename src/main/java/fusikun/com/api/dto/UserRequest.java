@@ -12,9 +12,6 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 public class UserRequest {
 	private Long id;
 
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
-	private String username;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@NotBlank(message = ConstantErrorCodes.NOT_BLANK)
@@ -22,6 +19,7 @@ public class UserRequest {
 	private String password;
 
 	@Email(message = ConstantErrorCodes.NOT_MAIL)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	private String email;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
@@ -32,7 +30,6 @@ public class UserRequest {
 	public User getUser() {
 		User user = new User();
 		user.setId(this.id);
-		user.setUsername(this.username);
 		user.setEmail(this.email);
 		user.setIsActive(this.isActive);
 		user.setPassword(this.password);
@@ -48,14 +45,6 @@ public class UserRequest {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getPassword() {

@@ -45,8 +45,8 @@ public class UserService {
 			return null;
 	}
 
-	public User findByUsername(String username) {
-		Optional<User> optUser = userRepository.findByUsername(username);
+	public User findByEmail(String email) {
+		Optional<User> optUser = userRepository.findByEmail(email);
 		if (optUser.isPresent())
 			return optUser.get();
 		else
@@ -55,10 +55,6 @@ public class UserService {
 
 	public List<User> findByRoleId(Long roleId) {
 		return userRepository.findByRoleId(roleId);
-	}
-
-	public Long countByUsername(String username) {
-		return userRepository.countByUsername(username);
 	}
 
 	public Long countByEmail(String email) {

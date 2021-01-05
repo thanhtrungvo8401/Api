@@ -68,7 +68,7 @@ public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 
 	// AUTHENTICATE:
 	@ExceptionHandler({ BadCredentialsException.class, AuthenticationException.class, DisabledException.class })
-	public final ResponseEntity<Object> handleWrongUsernamePasswordException(Exception ex, WebRequest request)
+	public final ResponseEntity<Object> handleAuthenticationException(Exception ex, WebRequest request)
 			throws Exception {
 		List<Object> errorCodes = new LinkedList<>();
 		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_CREDENTIALS));

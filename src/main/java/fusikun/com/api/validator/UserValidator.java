@@ -10,7 +10,6 @@ import fusikun.com.api.model.User;
 import fusikun.com.api.service.RoleService;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.utils.ConstantErrorCodes;
-import fusikun.com.api.utils.WhiteSpaceUtils;
 
 @Component
 public class UserValidator implements Validator {
@@ -33,26 +32,15 @@ public class UserValidator implements Validator {
 		if (roleService.findRoleById(userRequest.getRoleId()) == null) {
 			errors.rejectValue("roleId", ConstantErrorCodes.NOT_FOUND);
 		}
-		if (WhiteSpaceUtils.isContainSpace(userRequest.getUsername())) {
-			errors.rejectValue("username", ConstantErrorCodes.NOT_CONTAIN_SPACE);
-		}
-		// check duplicate userName, email
+		// check duplicate email
 		if (userRequest.getId() == null) {
 			// Create user:
-			if (userService.countByUsername(userRequest.getUsername()) > 0) {
-				errors.rejectValue("username", ConstantErrorCodes.UNIQUE_VALUE);
-			}
 			if (userService.countByEmail(userRequest.getEmail()) > 0) {
 				errors.rejectValue("email", ConstantErrorCodes.UNIQUE_VALUE);
 			}
 		} else {
 			// Update user:
 			User oldUser = userService.findById(userRequest.getId());
-			if (oldUser != null && !oldUser.getUsername().equals(userRequest.getUsername())) {
-				if (userService.countByUsername(userRequest.getUsername()) > 0) {
-					errors.rejectValue("username", ConstantErrorCodes.UNIQUE_VALUE);
-				}
-			}
 			if (oldUser != null && !oldUser.getEmail().equals(userRequest.getEmail())) {
 				if (userService.countByEmail(userRequest.getEmail()) > 0) {
 					errors.rejectValue("email", ConstantErrorCodes.UNIQUE_VALUE);

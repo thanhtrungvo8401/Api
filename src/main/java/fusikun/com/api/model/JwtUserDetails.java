@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class JwtUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = 1317367368138070184L;
-	private String username;
+	private String email;
 	private String password;
 	private boolean isActive;
 	private String accessToken;
@@ -22,7 +22,7 @@ public class JwtUserDetails implements UserDetails {
 
 	public JwtUserDetails(User user) {
 		if (user != null) {
-			this.username = user.getUsername();
+			this.email = user.getEmail();
 			this.password = user.getPassword();
 			this.isActive = user.getIsActive();
 			this.accessToken = user.getAccessToken();
@@ -49,6 +49,10 @@ public class JwtUserDetails implements UserDetails {
 		return menus;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
 	@Override
 	public String getPassword() {
 		return this.password;
@@ -56,7 +60,7 @@ public class JwtUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return username;
+		return email;
 	}
 
 	@Override

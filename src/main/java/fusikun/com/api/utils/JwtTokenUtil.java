@@ -26,7 +26,7 @@ public class JwtTokenUtil implements Serializable {
 	private String SECRET_KEY;
 
 	// retrieve user from jwt-token:
-	public String getUserNameFromToken(String token) {
+	public String getUserInfoFromToken(String token) {
 		return getClaimsFromToken(token, Claims::getSubject);
 	}
 
@@ -77,9 +77,9 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	public Boolean validateToken(String token, JwtUserDetails userDetails) {
-		final String username = getUserNameFromToken(token);
+		final String email = getUserInfoFromToken(token);
 		final String accessToken = getAccessTokenFromToken(token);
-		return (username.equals(userDetails.getUsername()) && accessToken.equals(userDetails.getAccessToken())
+		return (email.equals(userDetails.getUsername()) && accessToken.equals(userDetails.getAccessToken())
 				&& !isTokenExpired(token));
 	}
 }
