@@ -14,8 +14,9 @@ public class ConstantErrorCodes {
 	public static final String PARENT_MENU_CONTAINS_BLANK_OR_SLASH = "PARENT_MENU_CONTAINS_BLANK_OR_SLASH";
 	public static final String NOT_EXIST_DATA = "NOT_EXIST_DATA";
 	public static final String NOT_FOUND = "NOT_FOUND";
-	public static final String INTERNAL_SERVER_ERROR="INTERNAL_SERVER_ERROR";
+	public static final String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";
 	public static final String BAD_REQUEST = "BAD_REQUEST";
 	public static final String METHOD_NOT_ALLOWED = "METHOD_NOT_ALLOWED";
 	public static final String ACCESS_DENIED = "ACCESS_DENIED";
+	public static final String NOT_CONTAIN_SPACE = "NOT_CONTAIN_SPACE";
 }

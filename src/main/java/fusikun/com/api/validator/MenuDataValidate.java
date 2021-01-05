@@ -6,7 +6,7 @@ import org.springframework.validation.BindException;
 
 import fusikun.com.api.dto.MenuRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
-import fusikun.com.api.utils.TrymWhiteSpace;
+import fusikun.com.api.utils.WhiteSpaceUtils;
 
 @Component
 public class MenuDataValidate {
@@ -16,8 +16,8 @@ public class MenuDataValidate {
 
 	public final void validate(MenuRequest menuRequest) throws Ex_MethodArgumentNotValidException {
 		// TRYM WHITE SPACE:
-		menuRequest.setName(TrymWhiteSpace.trymWhiteSpace(menuRequest.getName()));
-		menuRequest.setUrl(TrymWhiteSpace.trymWhiteSpace(menuRequest.getUrl()));
+		menuRequest.setName(WhiteSpaceUtils.trymWhiteSpace(menuRequest.getName()));
+		menuRequest.setUrl(WhiteSpaceUtils.trymWhiteSpace(menuRequest.getUrl()));
 		// VALIDATION:
 		BindException errors = new BindException(menuRequest, MenuRequest.class.getName());
 		menuValidator.validate(menuRequest, errors);

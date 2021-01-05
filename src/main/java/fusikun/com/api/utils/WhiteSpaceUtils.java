@@ -1,6 +1,6 @@
 package fusikun.com.api.utils;
 
-public class TrymWhiteSpace {
+public class WhiteSpaceUtils {
 	public static final String trymWhiteSpace(String str) {
 		StringBuilder strB = new StringBuilder(str.trim());
 		for (int i = 0; i < strB.length() - 1; i++) {
@@ -11,5 +11,9 @@ public class TrymWhiteSpace {
 			}
 		}
 		return strB.toString();
+	}
+
+	public static final boolean isContainSpace(String str) {
+		return str.indexOf(" ") > 0;
 	}
 }

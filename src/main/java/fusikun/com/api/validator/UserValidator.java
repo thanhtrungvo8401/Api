@@ -10,6 +10,7 @@ import fusikun.com.api.model.User;
 import fusikun.com.api.service.RoleService;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.utils.ConstantErrorCodes;
+import fusikun.com.api.utils.WhiteSpaceUtils;
 
 @Component
 public class UserValidator implements Validator {
@@ -31,6 +32,9 @@ public class UserValidator implements Validator {
 		// check roleId exist:
 		if (roleService.findRoleById(userRequest.getRoleId()) == null) {
 			errors.rejectValue("roleId", ConstantErrorCodes.NOT_FOUND);
+		}
+		if (WhiteSpaceUtils.isContainSpace(userRequest.getUsername())) {
+			errors.rejectValue("username", ConstantErrorCodes.NOT_CONTAIN_SPACE);
 		}
 		// check duplicate userName, email
 		if (userRequest.getId() == null) {
