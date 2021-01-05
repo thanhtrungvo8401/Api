@@ -34,7 +34,7 @@ public class AuthenticateController {
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
 		User user = userService.findByEmail(authenticationRequest.getEmail());
-		user.setAccessToken(RandomTokenUtil.generateToken(11));
+		user.setAccessToken(RandomTokenUtil.generateToken(11) + "_" + user.getId());
 		userService.save(user);
 
 		final JwtUserDetails userDetails = new JwtUserDetails(user);
@@ -45,7 +45,8 @@ public class AuthenticateController {
 	@PostMapping("/authenticate/logout")
 	public String handleLogout() {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userService.findByEmail(userDetails.getUsername()); // "username" = "email" in UserDetails interface.
+		User user = userService.findByEmail(userDetails.getUsername()); // "username" = "email" in UserDetails
+																		// interface.
 		user.setAccessToken(null);
 		userService.save(user);
 		return ConstantMessages.SUCCESS;
