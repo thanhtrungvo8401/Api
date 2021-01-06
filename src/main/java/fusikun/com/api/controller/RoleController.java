@@ -123,8 +123,9 @@ public class RoleController {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);
 		roleDataValidate.validateRoleIsUsedByUser(id);
-		roleService.deleteById(id);
-		return ResponseEntity.ok(ConstantMessages.SUCCESS);
+		Role role = roleService.findRoleById(id);
+		roleService.delete(role);
+		return ResponseEntity.ok(new RoleResponse(role));
 	}
 
 	private List<Auth> handleGenerateAuthsFromRoleAndMenus(Role savedRole, List<Menu> menus) {
