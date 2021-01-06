@@ -13,6 +13,7 @@ import fusikun.com.api.model.Role;
 import fusikun.com.api.model.User;
 import fusikun.com.api.service.RoleService;
 import fusikun.com.api.service.UserService;
+import fusikun.com.api.utils.SpaceUtils;
 import javassist.NotFoundException;
 
 @Component
@@ -28,8 +29,8 @@ public class RoleDataValidate {
 
 	public final void validate(RoleRequest roleRequest) throws Ex_MethodArgumentNotValidException {
 		// TRYM WHITE SPACE:
-		roleRequest.setDescription(roleRequest.getDescription());
-		roleRequest.setRoleName(roleRequest.getRoleName());
+		roleRequest.setDescription(SpaceUtils.trymWhiteSpace(roleRequest.getDescription()));
+		roleRequest.setRoleName(SpaceUtils.trymWhiteSpace(roleRequest.getRoleName()));
 		// VALIDATION:
 		BindException errors = new BindException(roleRequest, RoleRequest.class.getName());
 		roleValidator.validate(roleRequest, errors);

@@ -2,6 +2,7 @@ package fusikun.com.api.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -38,12 +39,31 @@ public class UserValidator implements Validator {
 			if (userService.countByEmail(userRequest.getEmail()) > 0) {
 				errors.rejectValue("email", ConstantErrorCodes.UNIQUE_VALUE);
 			}
+
+			if (userRequest.getPassword() == null) {
+				errors.rejectValue("password", ConstantErrorCodes.NOT_NULL);
+			} else {
+				if (StringUtils.containsWhitespace(userRequest.getPassword())) {
+					errors.rejectValue("password", ConstantErrorCodes.NOT_CONTAIN_SPACE);
+				}
+				if (!StringUtils.hasText(userRequest.getPassword())) {
+					errors.rejectValue("password", ConstantErrorCodes.NOT_EMPTY);
+				}
+			}
 		} else {
 			// Update user:
 			User oldUser = userService.findById(userRequest.getId());
 			if (oldUser != null && !oldUser.getEmail().equals(userRequest.getEmail())) {
 				if (userService.countByEmail(userRequest.getEmail()) > 0) {
 					errors.rejectValue("email", ConstantErrorCodes.UNIQUE_VALUE);
+				}
+			}
+			if (userRequest.getPassword() != null) {
+				if (StringUtils.containsWhitespace(userRequest.getPassword())) {
+					errors.rejectValue("password", ConstantErrorCodes.NOT_CONTAIN_SPACE);
+				}
+				if (!StringUtils.hasText(userRequest.getPassword())) {
+					errors.rejectValue("password", ConstantErrorCodes.NOT_EMPTY);
 				}
 			}
 		}

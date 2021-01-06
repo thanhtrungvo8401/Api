@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +20,6 @@ import fusikun.com.api.dto.UserResponse;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.User;
 import fusikun.com.api.service.UserService;
-import fusikun.com.api.validator.RoleDataValidate;
 import fusikun.com.api.validator.UserDataValidate;
 import javassist.NotFoundException;
 
@@ -29,9 +30,6 @@ public class UserController {
 
 	@Autowired
 	UserDataValidate userDataValidate;
-
-	@Autowired
-	RoleDataValidate roleDataValidate;
 
 	@GetMapping("/users")
 	public ResponseEntity<Object> handleGetUsers() {
@@ -50,6 +48,31 @@ public class UserController {
 		User user = userRequest.getUser();
 		userService.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(user));
+	}
+
+	@GetMapping("/users/{id}")
+	public ResponseEntity<Object> getUserById(@PathVariable Long id) throws NotFoundException {
+		// Validate data exist or not:
+		userDataValidate.validateExistById(id);
+		User user = userService.findById(id);
+		return ResponseEntity.ok(new UserResponse(user));
+	}
+
+	@PatchMapping("/users/{id}/update")
+	public ResponseEntity<Object> handleUpdateUserById(@Valid @RequestBody UserRequest userRequest,
+			@PathVariable Long id) throws NotFoundException, Ex_MethodArgumentNotValidException {
+		// Validate data: (validate email, if password was posted => also validate)
+		userRequest.setId(id);
+		userDataValidate.validateExistById(id);
+		userDataValidate.validate(userRequest);
+		// Update user:
+		User user = userService.findById(id);
+		user.setEmail(userRequest.getEmail());
+		if (userRequest.getPassword() != null) {
+			user.setPassword(userRequest.getPassword());
+		}
+		userService.save(user);
+		return ResponseEntity.ok(new UserResponse(user));
 	}
 
 	private class UsersManagement {

@@ -8,6 +8,7 @@ import fusikun.com.api.dto.UserRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.User;
 import fusikun.com.api.service.UserService;
+import fusikun.com.api.utils.SpaceUtils;
 import javassist.NotFoundException;
 
 @Component
@@ -21,7 +22,7 @@ public class UserDataValidate {
 
 	public final void validate(UserRequest userRequest) throws Ex_MethodArgumentNotValidException {
 		// TRYM WHITE SPACE:
-		userRequest.setEmail(userRequest.getEmail());
+		userRequest.setEmail(SpaceUtils.trymWhiteSpace(userRequest.getEmail()));
 		// VALIDATION:
 		BindException errors = new BindException(userRequest, UserRequest.class.getName());
 		userValidator.validate(userRequest, errors);
