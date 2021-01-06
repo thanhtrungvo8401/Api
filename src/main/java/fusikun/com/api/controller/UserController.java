@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,6 +73,15 @@ public class UserController {
 			user.setPassword(userRequest.getPassword());
 		}
 		userService.save(user);
+		return ResponseEntity.ok(new UserResponse(user));
+	}
+
+	@DeleteMapping("/users/delete/{id}")
+	public ResponseEntity<Object> handleDeleteUserById(@PathVariable Long id) throws NotFoundException {
+		// VALIDATE DATA:
+		userDataValidate.validateExistById(id);
+		User user = userService.findById(id);
+		userService.delete(user);
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
