@@ -1,7 +1,6 @@
 package fusikun.com.api.dto;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,9 +11,6 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 public class UserRequest {
 	private Long id;
 
-
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	@NotBlank(message = ConstantErrorCodes.NOT_BLANK)
 	@Size(min = 8, message = ConstantErrorCodes.NOT_BELOW_8_LETTER)
 	private String password;
 
