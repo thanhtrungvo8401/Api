@@ -1,10 +1,13 @@
 package fusikun.com.api.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +40,16 @@ public class UserService {
 		return userRepository.count(specification);
 	}
 
-	public List<User> findAll(Specification_User specification) {
-		return userRepository.findAll(specification);
+	public List<User> findAll(Specification_User specification, Pageable pageable) {
+		Page<User> page = userRepository.findAll(specification, pageable);
+		if (page.hasContent()) {
+			return page.getContent();
+		}
+		return new ArrayList<User>();
+	}
+
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
 
 	public User findById(Long id) {

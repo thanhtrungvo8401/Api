@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,7 @@ import fusikun.com.api.model.User;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.specificationSearch.SearchHelpers_Users;
 import fusikun.com.api.specificationSearch.Specification_User;
+import fusikun.com.api.utils.SortHelper;
 import fusikun.com.api.validator.UserDataValidate;
 import javassist.NotFoundException;
 
@@ -39,7 +41,8 @@ public class UserController {
 	@GetMapping("/users")
 	public ResponseEntity<Object> handleGetUsers(@RequestParam(required = false) Map<String, String> filters) {
 		Specification_User userSpecification = new SearchHelpers_Users(filters).getUserSpecification();
-		List<User> users = userService.findAll(userSpecification);
+		Pageable pageable = SortHelper.getSort(filters);
+		List<User> users = userService.findAll(userSpecification, pageable);
 		Long total = userService.count(userSpecification);
 		List<UserResponse> userResponses = users.stream().map(user -> new UserResponse(user))
 				.collect(Collectors.toList());
