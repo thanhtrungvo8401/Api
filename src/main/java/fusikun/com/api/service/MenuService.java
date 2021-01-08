@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fusikun.com.api.dao.MenuRepository;
 import fusikun.com.api.model.Menu;
-import fusikun.com.api.specificationSearch.MenuSpecification;
-import fusikun.com.api.specificationSearch.SearchCriteria;
-import fusikun.com.api.specificationSearch.SearchOperator;
+import fusikun.com.api.specificationSearch.Specification_Menu;
+import fusikun.com.api.specificationSearch._SearchCriteria;
+import fusikun.com.api.specificationSearch._SearchOperator;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -52,8 +52,8 @@ public class MenuService {
 	}
 
 	public List<Menu> findNotMappedMenus(List<String> listName) {
-		MenuSpecification menuSpecification = new MenuSpecification();
-		menuSpecification.add(new SearchCriteria("name", SearchOperator.NOT_IN, listName));
+		Specification_Menu menuSpecification = new Specification_Menu();
+		menuSpecification.add(new _SearchCriteria("name", _SearchOperator.NOT_IN, listName));
 		return menuRepository.findAll(menuSpecification);
 	}
 
@@ -86,8 +86,8 @@ public class MenuService {
 	}
 
 	public void deleteMenuHasNameNotInList(List<String> listName) {
-		MenuSpecification menuSpecification = new MenuSpecification();
-		menuSpecification.add(new SearchCriteria("name", SearchOperator.NOT_IN, listName));
+		Specification_Menu menuSpecification = new Specification_Menu();
+		menuSpecification.add(new _SearchCriteria("name", _SearchOperator.NOT_IN, listName));
 		List<Menu> menusNotInList = menuRepository.findAll(menuSpecification);
 		menuRepository.deleteAll(menusNotInList);
 	}

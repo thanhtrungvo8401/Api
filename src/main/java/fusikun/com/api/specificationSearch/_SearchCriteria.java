@@ -1,14 +1,14 @@
 package fusikun.com.api.specificationSearch;
 
-public class SearchCriteria {
+public class _SearchCriteria {
 	private String key;
 	private Object value;
-	private SearchOperator operator;
+	private _SearchOperator operator;
 
-	public SearchCriteria() {
+	public _SearchCriteria() {
 	}
 
-	public SearchCriteria(String key, SearchOperator operator, Object value) {
+	public _SearchCriteria(String key, _SearchOperator operator, Object value) {
 		this.key = key;
 		this.value = value;
 		this.operator = operator;
@@ -30,11 +30,11 @@ public class SearchCriteria {
 		this.value = value;
 	}
 
-	public SearchOperator getOperator() {
+	public _SearchOperator getOperator() {
 		return operator;
 	}
 
-	public void setOperator(SearchOperator operator) {
+	public void setOperator(_SearchOperator operator) {
 		this.operator = operator;
 	}
 

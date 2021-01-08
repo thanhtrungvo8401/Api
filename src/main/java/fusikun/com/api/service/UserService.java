@@ -10,12 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fusikun.com.api.dao.UserRepository;
 import fusikun.com.api.model.User;
+import fusikun.com.api.specificationSearch.Specification_User;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserService {
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	RoleService roleService;
 
 	public User save(User user) {
 		if (user.getId() == null) {
@@ -29,12 +33,12 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public Long count() {
-		return userRepository.count();
+	public Long count(Specification_User specification) {
+		return userRepository.count(specification);
 	}
 
-	public List<User> findAll() {
-		return userRepository.findAll();
+	public List<User> findAll(Specification_User specification) {
+		return userRepository.findAll(specification);
 	}
 
 	public User findById(Long id) {
@@ -60,11 +64,11 @@ public class UserService {
 	public Long countByEmail(String email) {
 		return userRepository.countByEmail(email);
 	}
-	
+
 	public void deleteById(Long id) {
 		userRepository.deleteById(id);
 	}
-	
+
 	public void delete(User user) {
 		userRepository.delete(user);
 	}

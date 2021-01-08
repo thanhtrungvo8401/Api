@@ -1,6 +1,6 @@
 package fusikun.com.api.specificationSearch;
 
-public enum SearchOperator {
+public enum _SearchOperator {
 	GREATER_THAN,
     LESS_THAN,
     GREATER_THAN_EQUAL,

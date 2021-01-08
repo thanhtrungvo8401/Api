@@ -6,6 +6,7 @@ public class Constant {
 	public static final int AUTH_BEARER_INDEX = 7;
 	public final static String BLANK = " ";
 	public final static String SLASH = "/";
+	public final static String COMMA = ",";
 	public final static String MENU_ADDRESS_DEVIDE = "__";
 	public final static String ADMIN_ROLE = "ADMIN";
 }

@@ -1,6 +1,7 @@
 package fusikun.com.api.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fusikun.com.api.dto.UserRequest;
@@ -21,6 +23,8 @@ import fusikun.com.api.dto.UserResponse;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.User;
 import fusikun.com.api.service.UserService;
+import fusikun.com.api.specificationSearch.SearchHelpers_Users;
+import fusikun.com.api.specificationSearch.Specification_User;
 import fusikun.com.api.validator.UserDataValidate;
 import javassist.NotFoundException;
 
@@ -33,11 +37,12 @@ public class UserController {
 	UserDataValidate userDataValidate;
 
 	@GetMapping("/users")
-	public ResponseEntity<Object> handleGetUsers() {
-		List<User> users = userService.findAll();
+	public ResponseEntity<Object> handleGetUsers(@RequestParam(required = false) Map<String, String> filters) {
+		Specification_User userSpecification = new SearchHelpers_Users(filters).getUserSpecification();
+		List<User> users = userService.findAll(userSpecification);
+		Long total = userService.count(userSpecification);
 		List<UserResponse> userResponses = users.stream().map(user -> new UserResponse(user))
 				.collect(Collectors.toList());
-		Long total = userService.count();
 		return ResponseEntity.ok(new UsersManagement(userResponses, total));
 	}
 
