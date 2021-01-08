@@ -10,15 +10,15 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
-public class Customize_Specification<T> implements Specification<T> {
+public class Specification_Customize<T> implements Specification<T> {
 	private static final long serialVersionUID = -5036585350713413952L;
-	private List<SearchCriteria> list;
+	private List<_SearchCriteria> list;
 
-	public Customize_Specification() {
+	public Specification_Customize() {
 		this.list = new ArrayList<>();
 	}
 
-	public void add(SearchCriteria criteria) {
+	public void add(_SearchCriteria criteria) {
 		list.add(criteria);
 	}
 
@@ -26,7 +26,7 @@ public class Customize_Specification<T> implements Specification<T> {
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 		List<Predicate> predicates = new ArrayList<>();
 		// Compare criteria.Operator => Predicates.add(operator, value);
-		for (SearchCriteria criteria : list) {
+		for (_SearchCriteria criteria : list) {
 			switch (criteria.getOperator()) {
 			case GREATER_THAN:
 				predicates.add(builder.greaterThan(root.get(criteria.getKey()), criteria.getValue().toString()));
@@ -51,11 +51,11 @@ public class Customize_Specification<T> implements Specification<T> {
 				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
 						"%" + criteria.getValue().toString().toLowerCase() + "%"));
 				break;
-			case MATCH_END:
+			case MATCH_START:
 				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
 						criteria.getValue().toString().toLowerCase() + "%"));
 				break;
-			case MATCH_START:
+			case MATCH_END:
 				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
 						"%" + criteria.getValue().toString().toLowerCase()));
 				break;

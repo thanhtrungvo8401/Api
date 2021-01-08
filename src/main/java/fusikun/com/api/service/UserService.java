@@ -1,21 +1,28 @@
 package fusikun.com.api.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fusikun.com.api.dao.UserRepository;
 import fusikun.com.api.model.User;
+import fusikun.com.api.specificationSearch.Specification_User;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserService {
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	RoleService roleService;
 
 	public User save(User user) {
 		if (user.getId() == null) {
@@ -29,8 +36,16 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public Long count() {
-		return userRepository.count();
+	public Long count(Specification_User specification) {
+		return userRepository.count(specification);
+	}
+
+	public List<User> findAll(Specification_User specification, Pageable pageable) {
+		Page<User> page = userRepository.findAll(specification, pageable);
+		if (page.hasContent()) {
+			return page.getContent();
+		}
+		return new ArrayList<User>();
 	}
 
 	public List<User> findAll() {
@@ -60,11 +75,11 @@ public class UserService {
 	public Long countByEmail(String email) {
 		return userRepository.countByEmail(email);
 	}
-	
+
 	public void deleteById(Long id) {
 		userRepository.deleteById(id);
 	}
-	
+
 	public void delete(User user) {
 		userRepository.delete(user);
 	}

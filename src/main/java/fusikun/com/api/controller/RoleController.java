@@ -28,7 +28,6 @@ import fusikun.com.api.model.Role;
 import fusikun.com.api.service.AuthService;
 import fusikun.com.api.service.MenuService;
 import fusikun.com.api.service.RoleService;
-import fusikun.com.api.utils.ConstantMessages;
 import fusikun.com.api.validator.RoleDataValidate;
 import javassist.NotFoundException;
 
