@@ -2,6 +2,8 @@ package fusikun.com.api.specificationSearch;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fusikun.com.api.exceptionHandlers.Ex_InvalidSearch;
 import fusikun.com.api.utils.Constant;
@@ -26,7 +28,13 @@ public class SearchHelpers {
 		String objectValue = arr[1];
 		_SearchOperator operator = getSearchOperator(operatorKey);
 		Object value = getValue(operatorKey, objectValue);
-		return new _SearchCriteria(field, operator, value);
+		if (this.field.contains(Constant.DOT)) {
+			String key = field.split(Constant.DOT_REGEX)[0];
+			String subKey = field.split(Constant.DOT_REGEX)[1];
+			return new _SearchCriteria(key, operator, value, subKey);
+		} else {
+			return new _SearchCriteria(field, operator, value);
+		}
 	}
 
 	static public _SearchOperator getSearchOperator(String operatorkey) {
@@ -75,11 +83,11 @@ public class SearchHelpers {
 	}
 
 	static public String[] extractStringToArray(String filter) {
-		if (filter == null)
-			throw new Ex_InvalidSearch("Filter is invalid filter!");
-		String[] arr = filter.split(Constant.BLANK);
-		if (arr.length != 2)
-			throw new Ex_InvalidSearch(filter + " is invalid filter!");
+		Pattern p = Pattern.compile("^[a-z.-]{2,}<!>[a-zA-Z0-9 -]{1,}$");
+		Matcher m = p.matcher(filter);
+		if (!m.matches())
+			throw new Ex_InvalidSearch("Filter = [" + filter + "] is invalid filter!");
+		String[] arr = filter.split(Constant.FILTER_DIVICE);
 		return arr;
 	}
 

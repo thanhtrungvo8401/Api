@@ -2,6 +2,7 @@ package fusikun.com.api.specificationSearch;
 
 public class _SearchCriteria {
 	private String key;
+	private String subKey;
 	private Object value;
 	private _SearchOperator operator;
 
@@ -12,6 +13,25 @@ public class _SearchCriteria {
 		this.key = key;
 		this.value = value;
 		this.operator = operator;
+	}
+
+	public _SearchCriteria(String key, _SearchOperator operator, Object value, String subKey) {
+		this.key = key;
+		this.value = value;
+		this.operator = operator;
+		this.subKey = subKey;
+	}
+
+	public Boolean hasSubkey() {
+		return this.subKey != null;
+	}
+
+	public String getSubKey() {
+		return subKey;
+	}
+
+	public void setSubKey(String subKey) {
+		this.subKey = subKey;
 	}
 
 	public String getKey() {
