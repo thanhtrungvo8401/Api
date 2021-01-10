@@ -29,41 +29,105 @@ public class Specification_Customize<T> implements Specification<T> {
 		for (_SearchCriteria criteria : list) {
 			switch (criteria.getOperator()) {
 			case GREATER_THAN:
-				predicates.add(builder.greaterThan(root.get(criteria.getKey()), criteria.getValue().toString()));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.greaterThan(root.join(criteria.getKey()).get(criteria.getSubKey()),
+							criteria.getValue().toString()));
+				} else {
+					predicates.add(builder.greaterThan(root.get(criteria.getKey()), criteria.getValue().toString()));
+				}
 				break;
 			case LESS_THAN:
-				predicates.add(builder.lessThan(root.get(criteria.getKey()), criteria.getValue().toString()));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.lessThan(root.join(criteria.getKey()).get(criteria.getSubKey()),
+							criteria.getValue().toString()));
+				} else {
+					predicates.add(builder.lessThan(root.get(criteria.getKey()), criteria.getValue().toString()));
+				}
+
 				break;
 			case GREATER_THAN_EQUAL:
-				predicates
-						.add(builder.greaterThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.greaterThanOrEqualTo(root.join(criteria.getKey()).get(criteria.getSubKey()),
+							criteria.getValue().toString()));
+				} else {
+					predicates.add(
+							builder.greaterThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
+				}
+
 				break;
 			case LESS_THAN_EQUAL:
-				predicates.add(builder.lessThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.lessThanOrEqualTo(root.join(criteria.getKey()).get(criteria.getSubKey()),
+							criteria.getValue().toString()));
+				} else {
+					predicates.add(
+							builder.lessThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
+				}
+
 				break;
 			case NOT_EQUAL:
-				predicates.add(builder.notEqual(root.get(criteria.getKey()), criteria.getValue()));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.notEqual(root.join(criteria.getKey()).get(criteria.getSubKey()),
+							criteria.getValue()));
+				} else {
+					predicates.add(builder.notEqual(root.get(criteria.getKey()), criteria.getValue()));
+				}
 				break;
 			case EQUAL:
-				predicates.add(builder.equal(root.get(criteria.getKey()), criteria.getValue()));
+				if (criteria.hasSubkey()) {
+					predicates.add(
+							builder.equal(root.join(criteria.getKey()).get(criteria.getSubKey()), criteria.getValue()));
+				} else {
+					predicates.add(builder.equal(root.get(criteria.getKey()), criteria.getValue()));
+				}
 				break;
 			case MATCH:
-				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
-						"%" + criteria.getValue().toString().toLowerCase() + "%"));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.like(builder.lower(root.join(criteria.getKey()).get(criteria.getSubKey())),
+							"%" + criteria.getValue().toString().toLowerCase() + "%"));
+				} else {
+					predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
+							"%" + criteria.getValue().toString().toLowerCase() + "%"));
+				}
+
 				break;
 			case MATCH_START:
-				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
-						criteria.getValue().toString().toLowerCase() + "%"));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.like(builder.lower(root.join(criteria.getKey()).get(criteria.getSubKey())),
+							criteria.getValue().toString().toLowerCase() + "%"));
+				} else {
+					predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
+							criteria.getValue().toString().toLowerCase() + "%"));
+				}
+
 				break;
 			case MATCH_END:
-				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
-						"%" + criteria.getValue().toString().toLowerCase()));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.like(builder.lower(root.join(criteria.getKey()).get(criteria.getSubKey())),
+							"%" + criteria.getValue().toString().toLowerCase()));
+				} else {
+					predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
+							"%" + criteria.getValue().toString().toLowerCase()));
+				}
+
 				break;
 			case IN:
-				predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()));
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.in(root.join(criteria.getKey()).get(criteria.getSubKey()))
+							.value(criteria.getValue()));
+				} else {
+					predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()));
+				}
+
 				break;
 			case NOT_IN:
-				predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()).not());
+				if (criteria.hasSubkey()) {
+					predicates.add(builder.in(root.join(criteria.getKey()).get(criteria.getSubKey()))
+							.value(criteria.getValue()).not());
+				} else {
+					predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()).not());
+				}
+
 				break;
 			default:
 				break;
