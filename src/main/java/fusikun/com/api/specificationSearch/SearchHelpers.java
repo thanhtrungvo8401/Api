@@ -83,7 +83,7 @@ public class SearchHelpers {
 	}
 
 	static public String[] extractStringToArray(String filter) {
-		Pattern p = Pattern.compile("^[a-z.-]{2,}<!>[a-zA-Z0-9 -]{1,}$");
+		Pattern p = Pattern.compile("^[a-z.-]{2,}<!>.{1,}$");
 		Matcher m = p.matcher(filter);
 		if (!m.matches())
 			throw new Ex_InvalidSearch("Filter = [" + filter + "] is invalid filter!");
