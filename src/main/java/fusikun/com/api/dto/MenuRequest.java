@@ -1,5 +1,7 @@
 package fusikun.com.api.dto;
 
+import java.util.UUID;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,7 +10,7 @@ import fusikun.com.api.model.Menu;
 import fusikun.com.api.utils.ConstantErrorCodes;
 
 public class MenuRequest {
-	private Long id;
+	private UUID id;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
@@ -25,7 +27,7 @@ public class MenuRequest {
 	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
 	private String regex;
 
-	private Long parentId;
+	private UUID parentId;
 
 	public Menu getMenu() {
 		Menu menu = new Menu();
@@ -41,20 +43,20 @@ public class MenuRequest {
 		return menu;
 	}
 
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
-
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public UUID getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(UUID parentId) {
+		this.parentId = parentId;
 	}
 
 	public String getUrl() {

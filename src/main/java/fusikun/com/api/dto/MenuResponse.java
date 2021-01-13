@@ -1,13 +1,15 @@
 package fusikun.com.api.dto;
 
+import java.util.UUID;
+
 import fusikun.com.api.model.Menu;
 
 public class MenuResponse {
-	private Long id;
+	private UUID id;
 	private String url;
 	private String name;
 	private String regex;
-	private Long parentId;
+	private UUID parentId;
 
 	public MenuResponse() {
 	}
@@ -22,11 +24,11 @@ public class MenuResponse {
 		}
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
@@ -54,11 +56,11 @@ public class MenuResponse {
 		this.regex = regex;
 	}
 
-	public Long getParentId() {
+	public UUID getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(Long parentId) {
+	public void setParentId(UUID parentId) {
 		this.parentId = parentId;
 	}
 }

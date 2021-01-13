@@ -1,5 +1,7 @@
 package fusikun.com.api.dto;
 
+import java.util.UUID;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -9,7 +11,7 @@ import fusikun.com.api.model.User;
 import fusikun.com.api.utils.ConstantErrorCodes;
 
 public class UserRequest {
-	private Long id;
+	private UUID id;
 
 	@Size(min = 8, message = ConstantErrorCodes.NOT_BELOW_8_LETTER)
 	private String password;
@@ -19,7 +21,7 @@ public class UserRequest {
 	private String email;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	private Long roleId;
+	private UUID roleId;
 
 	private Boolean isActive;
 
@@ -35,11 +37,11 @@ public class UserRequest {
 		return user;
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
@@ -59,11 +61,11 @@ public class UserRequest {
 		this.email = email;
 	}
 
-	public Long getRoleId() {
+	public UUID getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Long roleId) {
+	public void setRoleId(UUID roleId) {
 		this.roleId = roleId;
 	}
 

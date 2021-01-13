@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,7 +53,7 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public User findById(Long id) {
+	public User findById(UUID id) {
 		Optional<User> optUser = userRepository.findById(id);
 		if (optUser.isPresent())
 			return optUser.get();
@@ -68,7 +69,7 @@ public class UserService {
 			return null;
 	}
 
-	public List<User> findByRoleId(Long roleId) {
+	public List<User> findByRoleId(UUID roleId) {
 		return userRepository.findByRoleId(roleId);
 	}
 
@@ -76,7 +77,7 @@ public class UserService {
 		return userRepository.countByEmail(email);
 	}
 
-	public void deleteById(Long id) {
+	public void deleteById(UUID id) {
 		userRepository.deleteById(id);
 	}
 

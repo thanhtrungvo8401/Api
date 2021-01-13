@@ -3,6 +3,7 @@ package fusikun.com.api.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class AuthService {
 		return authRepository.saveAll(auths);
 	}
 
-	public Auth findById(Long id) {
+	public Auth findById(UUID id) {
 		Optional<Auth> authOpt = authRepository.findById(id);
 		if (authOpt.isPresent()) {
 			return authOpt.get();

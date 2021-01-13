@@ -1,9 +1,11 @@
 package fusikun.com.api.dto;
 
+import java.util.UUID;
+
 import fusikun.com.api.model.Auth;
 
 public class AuthResponse {
-	private Long id;
+	private UUID id;
 	private Boolean isActive;
 	private MenuResponse menu;
 
@@ -15,17 +17,17 @@ public class AuthResponse {
 		this.isActive = auth.getIsActive();
 		this.menu = menu;
 	}
-	
+
 	public AuthResponse(Auth auth) {
 		this.id = auth.getId();
 		this.isActive = auth.getIsActive();
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

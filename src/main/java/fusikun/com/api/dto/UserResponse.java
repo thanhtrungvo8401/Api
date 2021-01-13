@@ -1,11 +1,12 @@
 package fusikun.com.api.dto;
 
 import java.util.Date;
+import java.util.UUID;
 
 import fusikun.com.api.model.User;
 
 public class UserResponse {
-	private Long id;
+	private UUID id;
 	private String email;
 	private Date createdDate;
 	private Date updatedDate;
@@ -22,11 +23,11 @@ public class UserResponse {
 		this.role = new RoleResponse(user.getRole());
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

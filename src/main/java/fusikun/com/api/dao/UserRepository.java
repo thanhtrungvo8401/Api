@@ -2,6 +2,7 @@ package fusikun.com.api.dao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -16,11 +17,11 @@ import fusikun.com.api.model.User;
 @Repository
 @Transactional(rollbackOn = Exception.class)
 public interface UserRepository
-		extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>, PagingAndSortingRepository<User, Long> {
+		extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User>, PagingAndSortingRepository<User, UUID> {
 	Optional<User> findByEmail(String email);
 
 	@Query(value = "select * from user as u where u.roleId = ?1", nativeQuery = true)
-	List<User> findByRoleId(Long roleId);
+	List<User> findByRoleId(UUID roleId);
 
 	Long countByEmail(String email);
 }

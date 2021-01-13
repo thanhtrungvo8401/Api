@@ -1,5 +1,7 @@
 package fusikun.com.api.validator;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -35,13 +37,13 @@ public class UserDataValidate {
 		}
 	}
 
-	public final void validateExistById(Long id) throws NotFoundException {
+	public final void validateExistById(UUID id) throws NotFoundException {
 		User user = userService.findById(id);
 		if (user == null)
 			throw new NotFoundException("User with id=" + id + "is not existed");
 	}
 
-	public final void validateNotDeleteYourself(Long id) {
+	public final void validateNotDeleteYourself(UUID id) {
 		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		User user = userService.findById(id);

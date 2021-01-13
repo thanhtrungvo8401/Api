@@ -3,6 +3,7 @@ package fusikun.com.api.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class MenuService {
 	@Autowired
 	MenuRepository menuRepository;
 
-	public Menu findById(Long id) {
+	public Menu findById(UUID id) {
 		Optional<Menu> optMenu = menuRepository.findById(id);
 		if (optMenu.isPresent()) {
 			return optMenu.get();
@@ -61,7 +62,7 @@ public class MenuService {
 		return menuRepository.findAllParentMenu();
 	}
 
-	public Boolean existsById(Long id) {
+	public Boolean existsById(UUID id) {
 		return menuRepository.existsById(id);
 	}
 
@@ -81,7 +82,7 @@ public class MenuService {
 		return menuRepository.countByUrl(url);
 	}
 
-	public void deleteById(Long id) {
+	public void deleteById(UUID id) {
 		menuRepository.deleteById(id);
 	}
 

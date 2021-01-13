@@ -1,5 +1,7 @@
 package fusikun.com.api.validator;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,7 @@ public class AuthDataValidate {
 	@Autowired
 	AuthService authService;
 	
-	public final void validateExistById(Long id) throws NotFoundException {
+	public final void validateExistById(UUID id) throws NotFoundException {
 		Auth auth = authService.findById(id);
 		if (auth == null) {
 			throw new NotFoundException("Auth with id=" + id + " is not found");

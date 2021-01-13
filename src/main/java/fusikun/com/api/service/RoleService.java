@@ -3,6 +3,7 @@ package fusikun.com.api.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -18,7 +19,7 @@ public class RoleService {
 	@Autowired
 	RoleRepository roleRepository;
 
-	public void deleteById(Long id) {
+	public void deleteById(UUID id) {
 		roleRepository.deleteById(id);
 	}
 	
@@ -26,7 +27,7 @@ public class RoleService {
 		roleRepository.delete(role);	
 	}
 
-	public Role findRoleById(Long id) {
+	public Role findRoleById(UUID id) {
 		Optional<Role> optRole = roleRepository.findById(id);
 		if (optRole.isPresent())
 			return optRole.get();

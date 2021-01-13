@@ -2,6 +2,7 @@ package fusikun.com.api.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -60,7 +61,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{id}")
-	public ResponseEntity<Object> getUserById(@PathVariable Long id) throws NotFoundException {
+	public ResponseEntity<Object> getUserById(@PathVariable UUID id) throws NotFoundException {
 		// Validate data exist or not:
 		userDataValidate.validateExistById(id);
 		User user = userService.findById(id);
@@ -69,7 +70,7 @@ public class UserController {
 
 	@PatchMapping("/users/{id}/update")
 	public ResponseEntity<Object> handleUpdateUserById(@Valid @RequestBody UserRequest userRequest,
-			@PathVariable Long id) throws NotFoundException, Ex_MethodArgumentNotValidException {
+			@PathVariable UUID id) throws NotFoundException, Ex_MethodArgumentNotValidException {
 		// Validate data: (validate email, if password was posted => also validate)
 		userRequest.setId(id);
 		userDataValidate.validateExistById(id);
@@ -84,7 +85,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/users/delete/{id}")
-	public ResponseEntity<Object> handleDeleteUserById(@PathVariable Long id) throws NotFoundException {
+	public ResponseEntity<Object> handleDeleteUserById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA:
 		userDataValidate.validateExistById(id);
 		userDataValidate.validateNotDeleteYourself(id);
