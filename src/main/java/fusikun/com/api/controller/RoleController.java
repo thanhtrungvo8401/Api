@@ -2,6 +2,7 @@ package fusikun.com.api.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -68,7 +69,7 @@ public class RoleController {
 	}
 
 	@GetMapping("/roles/{id}")
-	public ResponseEntity<Object> getRoleById(@PathVariable Long id) throws NotFoundException {
+	public ResponseEntity<Object> getRoleById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);
 		Role role = roleService.findRoleById(id);
@@ -103,7 +104,7 @@ public class RoleController {
 
 	@PatchMapping("/roles/{id}/update")
 	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
-			@PathVariable Long id) throws Ex_MethodArgumentNotValidException, NotFoundException {
+			@PathVariable UUID id) throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
 		roleRequest.setId(id);
 		roleDataValidate.validateExistById(roleRequest.getId());
@@ -118,7 +119,7 @@ public class RoleController {
 	}
 
 	@DeleteMapping("/roles/delete/{id}")
-	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable Long id) throws NotFoundException {
+	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);
 		roleDataValidate.validateRoleIsUsedByUser(id);

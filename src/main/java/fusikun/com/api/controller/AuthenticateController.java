@@ -34,7 +34,7 @@ public class AuthenticateController {
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
 		User user = userService.findByEmail(authenticationRequest.getEmail());
-		user.setAccessToken(RandomTokenUtil.generateToken(11) + "_" + user.getId());
+		user.setAccessToken(RandomTokenUtil.generateToken(4) + "_" + user.getId());
 		userService.save(user);
 
 		final JwtUserDetails userDetails = new JwtUserDetails(user);

@@ -1,6 +1,7 @@
 package fusikun.com.api.validator;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,14 +40,14 @@ public class RoleDataValidate {
 		}
 	}
 
-	public final void validateExistById(Long id) throws NotFoundException {
+	public final void validateExistById(UUID id) throws NotFoundException {
 		Role role = roleService.findRoleById(id);
 		if (role == null) {
 			throw new NotFoundException("Role with id=" + id + " is not existed!!");
 		}
 	}
 
-	public final void validateRoleIsUsedByUser(Long id) {
+	public final void validateRoleIsUsedByUser(UUID id) {
 		List<User> users = userService.findByRoleId(id);
 		if (!users.isEmpty()) {
 			throw new Ex_MethodNotAllowedException("Role is used!");

@@ -1,12 +1,14 @@
 package fusikun.com.api.dto;
 
+import java.util.UUID;
+
 import javax.validation.constraints.NotNull;
 
 import fusikun.com.api.model.Auth;
 import fusikun.com.api.utils.ConstantErrorCodes;
 
 public class AuthRequest {
-	Long id;
+	UUID id;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	Boolean isActive;
@@ -18,11 +20,11 @@ public class AuthRequest {
 		return auth;
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
@@ -33,6 +35,5 @@ public class AuthRequest {
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-	
-		
+
 }

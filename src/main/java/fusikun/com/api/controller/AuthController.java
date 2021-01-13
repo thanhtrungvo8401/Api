@@ -1,5 +1,7 @@
 package fusikun.com.api.controller;
 
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ public class AuthController {
 
 	@PatchMapping("/auths/{id}/update")
 	public ResponseEntity<Object> handleUpdateAuthById(@Valid @RequestBody AuthRequest authRequest,
-			@PathVariable Long id) throws NotFoundException {
+			@PathVariable UUID id) throws NotFoundException {
 		// CUSTOM VALIDATE:
 		authRequest.setId(id);
 		authDataValidate.validateExistById(authRequest.getId());
@@ -35,5 +37,5 @@ public class AuthController {
 		oldAuth.setIsActive(authRequest.getIsActive());
 		Auth savedAuth = authService.save(oldAuth);
 		return ResponseEntity.ok(new AuthResponse(savedAuth));
-		}
+	}
 }
