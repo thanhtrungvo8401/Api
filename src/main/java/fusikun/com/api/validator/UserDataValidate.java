@@ -26,6 +26,7 @@ public class UserDataValidate {
 	public final void validate(UserRequest userRequest) throws Ex_MethodArgumentNotValidException {
 		// TRYM WHITE SPACE:
 		userRequest.setEmail(SpaceUtils.trymWhiteSpace(userRequest.getEmail()));
+		userRequest.setEmail(userRequest.getEmail().toLowerCase());
 		// VALIDATION:
 		BindException errors = new BindException(userRequest, UserRequest.class.getName());
 		userValidator.validate(userRequest, errors);
