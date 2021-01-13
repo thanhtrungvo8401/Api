@@ -87,6 +87,7 @@ public class UserController {
 	public ResponseEntity<Object> handleDeleteUserById(@PathVariable Long id) throws NotFoundException {
 		// VALIDATE DATA:
 		userDataValidate.validateExistById(id);
+		userDataValidate.validateNotDeleteYourself(id);
 		User user = userService.findById(id);
 		userService.delete(user);
 		return ResponseEntity.ok(new UserResponse(user));

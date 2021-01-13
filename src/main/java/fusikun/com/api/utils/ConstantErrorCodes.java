@@ -19,4 +19,5 @@ public class ConstantErrorCodes {
 	public static final String METHOD_NOT_ALLOWED = "METHOD_NOT_ALLOWED";
 	public static final String ACCESS_DENIED = "ACCESS_DENIED";
 	public static final String NOT_CONTAIN_SPACE = "NOT_CONTAIN_SPACE";
+	public static final String NOT_DELETE_YOURSELF = "NOT_DELETE_YOURSELF";
 }

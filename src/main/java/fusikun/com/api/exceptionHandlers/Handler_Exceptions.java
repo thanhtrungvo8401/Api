@@ -66,6 +66,15 @@ public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(exceptionResponse);
 	}
 
+	@ExceptionHandler(Ex_NotAllowDeleteYourSelf.class)
+	public final ResponseEntity<Object> handleNotAllowDelete(Exception ex, WebRequest request) {
+		List<Object> errorCodes = new LinkedList<>();
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.NOT_DELETE_YOURSELF));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false), errorCodes);
+		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(exceptionResponse);
+	}
+
 	// AUTHENTICATE:
 	@ExceptionHandler({ BadCredentialsException.class, AuthenticationException.class, DisabledException.class })
 	public final ResponseEntity<Object> handleAuthenticationException(Exception ex, WebRequest request)
