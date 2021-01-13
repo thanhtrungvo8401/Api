@@ -76,10 +76,9 @@ public class UserController {
 		userDataValidate.validate(userRequest);
 		// Update user:
 		User user = userService.findById(id);
-		user.setEmail(userRequest.getEmail());
-		if (userRequest.getPassword() != null) {
-			user.setPassword(userRequest.getPassword());
-		}
+		User userFromRequest = userRequest.getUser();
+		user.setEmail(userFromRequest.getEmail());
+		user.setRole(userFromRequest.getRole());
 		userService.save(user);
 		return ResponseEntity.ok(new UserResponse(user));
 	}
