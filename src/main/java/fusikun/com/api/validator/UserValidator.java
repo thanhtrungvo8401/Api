@@ -58,14 +58,6 @@ public class UserValidator implements Validator {
 					errors.rejectValue("email", ConstantErrorCodes.UNIQUE_VALUE);
 				}
 			}
-			if (userRequest.getPassword() != null) {
-				if (StringUtils.containsWhitespace(userRequest.getPassword())) {
-					errors.rejectValue("password", ConstantErrorCodes.NOT_CONTAIN_SPACE);
-				}
-				if (!StringUtils.hasText(userRequest.getPassword())) {
-					errors.rejectValue("password", ConstantErrorCodes.NOT_EMPTY);
-				}
-			}
 		}
 	}
 
