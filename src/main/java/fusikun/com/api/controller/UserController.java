@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,6 +40,9 @@ public class UserController {
 	@Autowired
 	UserDataValidate userDataValidate;
 
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
 	@GetMapping("/users")
 	public ResponseEntity<Object> handleGetUsers(@RequestParam(required = false) Map<String, String> filters) {
 		Specification_User userSpecification = new SearchHelpers_Users(filters).getUserSpecification();
@@ -56,6 +60,7 @@ public class UserController {
 		// CUSTOM VALIDATE:
 		userDataValidate.validate(userRequest);
 		User user = userRequest.getUser();
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userService.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(user));
 	}
