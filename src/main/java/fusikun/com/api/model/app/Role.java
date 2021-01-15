@@ -22,7 +22,7 @@ public class Role {
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+	@Column(name = "id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
 	private String roleName;
@@ -35,10 +35,10 @@ public class Role {
 
 	private Date updatedDate;
 
-	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<User> users;
 
-	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<Auth> auths;
 
 	public List<Auth> getAuths() {
