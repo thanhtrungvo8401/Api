@@ -1,4 +1,4 @@
-package fusikun.com.api.model;
+package fusikun.com.api.model.app;
 
 import java.util.Collection;
 import java.util.List;

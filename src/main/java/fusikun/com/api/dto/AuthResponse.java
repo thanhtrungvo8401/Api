@@ -2,7 +2,7 @@ package fusikun.com.api.dto;
 
 import java.util.UUID;
 
-import fusikun.com.api.model.Auth;
+import fusikun.com.api.model.app.Auth;
 
 public class AuthResponse {
 	private UUID id;

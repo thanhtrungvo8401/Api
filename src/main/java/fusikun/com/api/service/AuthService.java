@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fusikun.com.api.dao.AuthRepository;
-import fusikun.com.api.model.Auth;
+import fusikun.com.api.model.app.Auth;
 
 @Service
 @Transactional(rollbackFor = Exception.class)

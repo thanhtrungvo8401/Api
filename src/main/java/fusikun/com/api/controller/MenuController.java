@@ -12,7 +12,7 @@ import fusikun.com.api.dto.MenuRequest;
 import fusikun.com.api.dto.MenuResponse;
 import fusikun.com.api.enums.UrlEnpointEnums;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
-import fusikun.com.api.model.Menu;
+import fusikun.com.api.model.app.Menu;
 import fusikun.com.api.service.MenuService;
 import fusikun.com.api.utils.Constant;
 import fusikun.com.api.validator.MenuDataValidate;

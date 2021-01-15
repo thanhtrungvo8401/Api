@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fusikun.com.api.dao.RoleRepository;
-import fusikun.com.api.model.Role;
+import fusikun.com.api.model.app.Role;
 
 @Service
 @Transactional(rollbackOn = Exception.class)

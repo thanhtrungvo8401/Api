@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import fusikun.com.api.model.Role;
+import fusikun.com.api.model.app.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, UUID>, JpaSpecificationExecutor<Role> {

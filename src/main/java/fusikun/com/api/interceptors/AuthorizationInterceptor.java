@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import fusikun.com.api.model.JwtUserDetails;
+import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.utils.Constant;
 import fusikun.com.api.utils.IgnoreUrl;
 

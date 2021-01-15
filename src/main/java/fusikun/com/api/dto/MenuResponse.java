@@ -2,7 +2,7 @@ package fusikun.com.api.dto;
 
 import java.util.UUID;
 
-import fusikun.com.api.model.Menu;
+import fusikun.com.api.model.app.Menu;
 
 public class MenuResponse {
 	private UUID id;

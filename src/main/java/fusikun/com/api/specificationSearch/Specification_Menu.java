@@ -1,6 +1,6 @@
 package fusikun.com.api.specificationSearch;
 
-import fusikun.com.api.model.Menu;
+import fusikun.com.api.model.app.Menu;
 
 public class Specification_Menu extends Specification_Customize<Menu> {
 	private static final long serialVersionUID = -754712624623316385L;

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fusikun.com.api.dao.UserRepository;
-import fusikun.com.api.model.User;
+import fusikun.com.api.model.app.User;
 import fusikun.com.api.specificationSearch.Specification_User;
 
 @Service

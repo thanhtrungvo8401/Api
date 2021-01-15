@@ -9,9 +9,9 @@ import org.springframework.validation.BindException;
 
 import fusikun.com.api.dto.RoleRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodNotAllowedException;
+import fusikun.com.api.model.app.Role;
+import fusikun.com.api.model.app.User;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
-import fusikun.com.api.model.Role;
-import fusikun.com.api.model.User;
 import fusikun.com.api.service.RoleService;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.utils.SpaceUtils;
