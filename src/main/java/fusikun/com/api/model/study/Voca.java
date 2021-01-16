@@ -98,4 +98,13 @@ public class Voca {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
 }
