@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,11 +14,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import fusikun.com.api.model.app.User;
 
+@Entity
+@Table(name = "set_voca")
 public class SetVoca {
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -38,8 +42,8 @@ public class SetVoca {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "setVoca", cascade = CascadeType.REMOVE)
 	private List<Voca> vocas;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "setsOfRoom")
-	private List<Room> roomsOfSet;
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "setVocas")
+	private List<Room> rooms;
 
 	public String getSetName() {
 		return setName;
@@ -81,12 +85,12 @@ public class SetVoca {
 		this.vocas = vocas;
 	}
 
-	public List<Room> getRoomsOfSet() {
-		return roomsOfSet;
+	public List<Room> getRooms() {
+		return rooms;
 	}
 
-	public void setRoomsOfSet(List<Room> roomsOfSet) {
-		this.roomsOfSet = roomsOfSet;
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
 	}
 
 	public Boolean getIsActive() {
