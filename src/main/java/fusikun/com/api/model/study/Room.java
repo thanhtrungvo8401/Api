@@ -1,5 +1,6 @@
 package fusikun.com.api.model.study;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +39,10 @@ public class Room {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "room_setVocas", joinColumns = @JoinColumn(name = "roomId"), inverseJoinColumns = @JoinColumn(name = "setVocaId"))
 	private List<SetVoca> setVocas;
+
+	private Boolean isActive;
+	private Date createdDate;
+	private Date updatedDate;
 
 	private String roomName;
 
@@ -87,6 +92,30 @@ public class Room {
 
 	public void setMembers(List<User> members) {
 		this.members = members;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 
 }
