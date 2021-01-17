@@ -34,6 +34,8 @@ public class User {
 
 	private Boolean isActive;
 
+	private Integer maxSetVocas;
+
 	private String accessToken;
 
 	private Date createdDate;
@@ -113,6 +115,14 @@ public class User {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public Integer getMaxSetVocas() {
+		return maxSetVocas;
+	}
+
+	public void setMaxSetVocas(Integer maxSetVocas) {
+		this.maxSetVocas = maxSetVocas;
 	}
 
 }

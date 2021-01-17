@@ -12,4 +12,5 @@ public class Constant {
 	public final static String MENU_ADDRESS_DEVIDE = "__";
 	public final static String FILTER_DIVICE = "<!>";
 	public final static String ADMIN_ROLE = "ADMIN";
+	public final static Integer MAX_SET_VOCAS = 2;
 }

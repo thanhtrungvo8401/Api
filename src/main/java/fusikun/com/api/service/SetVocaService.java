@@ -50,4 +50,8 @@ public class SetVocaService {
 		else
 			return null;
 	}
+
+	public Long count(Specification_SetVoca specification) {
+		return setVocaRepository.count(specification);
+	}
 }

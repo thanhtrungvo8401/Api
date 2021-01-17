@@ -47,6 +47,8 @@ public class SetVocaController {
 			throws NotFoundException {
 		setVocaDataValidate.validate(setVocaRequest);
 		setVocaDataValidate.validateAuthorNotExistById(setVocaRequest.getAuthorId());
+		setVocaDataValidate.validateSetVocasOverRange(setVocaRequest.getAuthorId(),
+				getSetVocaSpecification(setVocaRequest.getAuthorId()));
 		SetVoca setVoca = setVocaRequest.getSetVoca();
 		setVocaService.save(setVoca);
 		SetVocaResponse setVocaResponse = new SetVocaResponse(setVoca);
@@ -57,14 +59,19 @@ public class SetVocaController {
 	public ResponseEntity<Object> handleGetSetVocasCreatedByAuthor(@PathVariable UUID authorId)
 			throws NotFoundException {
 		setVocaDataValidate.validateAuthorNotExistById(authorId);
-		Specification_SetVoca specification = new Specification_SetVoca();
-		User author = userService.findById(authorId);
-		specification.add(new _SearchCriteria("author", _SearchOperator.EQUAL, author));
+		Specification_SetVoca specification = getSetVocaSpecification(authorId);
 		Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
 		List<SetVoca> setVocas = setVocaService.findAll(specification, pageable);
 		List<SetVocaResponse> setVocaResponses = setVocas.stream().map(setVoca -> new SetVocaResponse(setVoca))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(setVocaResponses);
+	}
+
+	private Specification_SetVoca getSetVocaSpecification(UUID authorId) {
+		Specification_SetVoca specification = new Specification_SetVoca();
+		User author = userService.findById(authorId);
+		specification.add(new _SearchCriteria("author", _SearchOperator.EQUAL, author));
+		return specification;
 	}
 
 }
