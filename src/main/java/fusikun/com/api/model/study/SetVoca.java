@@ -30,7 +30,7 @@ public class SetVoca {
 	private UUID id;
 
 	private String setName;
-	private Integer MaxVoca;
+	private Integer maxVoca;
 	private Boolean isActive;
 	private Date createdDate;
 	private Date updatedDate;
@@ -54,11 +54,11 @@ public class SetVoca {
 	}
 
 	public Integer getMaxVoca() {
-		return MaxVoca;
+		return maxVoca;
 	}
 
 	public void setMaxVoca(Integer maxVoca) {
-		MaxVoca = maxVoca;
+		this.maxVoca = maxVoca;
 	}
 
 	public UUID getId() {
