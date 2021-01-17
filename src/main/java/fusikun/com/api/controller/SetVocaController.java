@@ -54,9 +54,10 @@ public class SetVocaController {
 	}
 
 	@GetMapping("/users/{authorId}/set-vocas")
-	public ResponseEntity<Object> handleGetSetVocas(@PathVariable UUID authorId) throws NotFoundException {
-		Specification_SetVoca specification = new Specification_SetVoca();
+	public ResponseEntity<Object> handleGetSetVocasCreatedByAuthor(@PathVariable UUID authorId)
+			throws NotFoundException {
 		setVocaDataValidate.validateAuthorNotExistById(authorId);
+		Specification_SetVoca specification = new Specification_SetVoca();
 		User author = userService.findById(authorId);
 		specification.add(new _SearchCriteria("author", _SearchOperator.EQUAL, author));
 		Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
