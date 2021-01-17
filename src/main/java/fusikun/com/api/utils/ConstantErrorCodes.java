@@ -21,4 +21,5 @@ public class ConstantErrorCodes {
 	public static final String ACCESS_DENIED = "ACCESS_DENIED";
 	public static final String NOT_CONTAIN_SPACE = "NOT_CONTAIN_SPACE";
 	public static final String NOT_DELETE_YOURSELF = "NOT_DELETE_YOURSELF";
+	public static final String OVER_RANGE_EXCEPTION = "OVER_RANGE_EXCEPTION";
 }

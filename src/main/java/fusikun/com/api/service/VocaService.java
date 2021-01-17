@@ -46,4 +46,8 @@ public class VocaService {
 		return new ArrayList<Voca>();
 
 	}
+
+	public Long count(Specification_Voca specification) {
+		return vocaRepository.count(specification);
+	}
 }

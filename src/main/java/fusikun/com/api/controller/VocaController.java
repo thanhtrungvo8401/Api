@@ -47,6 +47,9 @@ public class VocaController {
 			throws NotFoundException {
 		vocaDataValidate.validate(vocaRequest);
 		vocaDataValidate.validateExistSetVocaById(vocaRequest.getSetId());
+		vocaDataValidate.validateOverMaxVoca(vocaRequest.getSetId(),
+				getVocaSpecificationFromSetVocasId(vocaRequest.getSetId()));
+		
 		Voca voca = vocaRequest.getVocaObject();
 		vocaService.save(voca);
 
@@ -56,14 +59,19 @@ public class VocaController {
 	@GetMapping("/set-vocas/{id}/vocas")
 	public ResponseEntity<Object> handleGetVocasInSetVoca(@PathVariable UUID id) throws NotFoundException {
 		vocaDataValidate.validateExistSetVocaById(id);
-		Specification_Voca specification = new Specification_Voca();
-		SetVoca setVoca = setVocaService.findById(id);
-		specification.add(new _SearchCriteria("setVoca", _SearchOperator.EQUAL, setVoca));
+		Specification_Voca specification = getVocaSpecificationFromSetVocasId(id);
 		Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
 		List<Voca> vocas = vocaService.findAll(specification, pageable);
 		List<VocaResponse> vocaResponses = vocas.stream().map(voca -> new VocaResponse(voca))
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(vocaResponses);
+	}
+
+	private Specification_Voca getVocaSpecificationFromSetVocasId(UUID id) {
+		SetVoca setVoca = setVocaService.findById(id);
+		Specification_Voca specification = new Specification_Voca();
+		specification.add(new _SearchCriteria("setVoca", _SearchOperator.EQUAL, setVoca));
+		return specification;
 	}
 }
