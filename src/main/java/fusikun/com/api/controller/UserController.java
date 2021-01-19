@@ -14,9 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,7 +54,7 @@ public class UserController {
 		return ResponseEntity.ok(new UsersManagement(userResponses, total));
 	}
 
-	@PostMapping("/users/create")
+	@PostMapping("/users")
 	public ResponseEntity<Object> handleCreateUser(@Valid @RequestBody UserRequest userRequest)
 			throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
@@ -73,7 +73,7 @@ public class UserController {
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
-	@PatchMapping("/users/{id}/update")
+	@PutMapping("/users/{id}")
 	public ResponseEntity<Object> handleUpdateUserById(@Valid @RequestBody UserRequest userRequest,
 			@PathVariable UUID id) throws NotFoundException, Ex_MethodArgumentNotValidException {
 		// Validate data: (validate email, if password was posted => also validate)
@@ -89,7 +89,7 @@ public class UserController {
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
-	@DeleteMapping("/users/delete/{id}")
+	@DeleteMapping("/users/{id}")
 	public ResponseEntity<Object> handleDeleteUserById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA:
 		userDataValidate.validateExistById(id);
