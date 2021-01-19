@@ -12,9 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,7 +55,7 @@ public class RoleController {
 		return ResponseEntity.ok(new RoleManagement(rolesRes, total));
 	}
 
-	@PostMapping("/roles/create")
+	@PostMapping("/roles")
 	public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
 			throws Ex_MethodArgumentNotValidException {
 		// CUSTOM VALIDATE:
@@ -102,7 +102,7 @@ public class RoleController {
 		return ResponseEntity.ok(roleRes);
 	}
 
-	@PatchMapping("/roles/{id}/update")
+	@PutMapping("/roles/{id}")
 	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
 			@PathVariable UUID id) throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
@@ -118,7 +118,7 @@ public class RoleController {
 		return ResponseEntity.ok(new RoleResponse(saveRole));
 	}
 
-	@DeleteMapping("/roles/delete/{id}")
+	@DeleteMapping("/roles/{id}")
 	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);

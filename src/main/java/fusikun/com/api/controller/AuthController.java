@@ -6,8 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +26,7 @@ public class AuthController {
 	@Autowired
 	AuthDataValidate authDataValidate;
 
-	@PatchMapping("/auths/{id}/update")
+	@PutMapping("/auths/{id}")
 	public ResponseEntity<Object> handleUpdateAuthById(@Valid @RequestBody AuthRequest authRequest,
 			@PathVariable UUID id) throws NotFoundException {
 		// CUSTOM VALIDATE:
