@@ -89,7 +89,7 @@ public class UserController {
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
-	@DeleteMapping("/users/delete/{id}")
+	@DeleteMapping("/users/{id}")
 	public ResponseEntity<Object> handleDeleteUserById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA:
 		userDataValidate.validateExistById(id);
