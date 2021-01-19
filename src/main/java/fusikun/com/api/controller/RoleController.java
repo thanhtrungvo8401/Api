@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -102,7 +103,7 @@ public class RoleController {
 		return ResponseEntity.ok(roleRes);
 	}
 
-	@PatchMapping("/roles/{id}/update")
+	@PutMapping("/roles/{id}")
 	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
 			@PathVariable UUID id) throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
