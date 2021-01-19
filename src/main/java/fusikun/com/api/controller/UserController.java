@@ -54,7 +54,7 @@ public class UserController {
 		return ResponseEntity.ok(new UsersManagement(userResponses, total));
 	}
 
-	@PostMapping("/users/create")
+	@PostMapping("/users")
 	public ResponseEntity<Object> handleCreateUser(@Valid @RequestBody UserRequest userRequest)
 			throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
