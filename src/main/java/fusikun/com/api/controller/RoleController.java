@@ -55,7 +55,7 @@ public class RoleController {
 		return ResponseEntity.ok(new RoleManagement(rolesRes, total));
 	}
 
-	@PostMapping("/roles/create")
+	@PostMapping("/roles")
 	public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
 			throws Ex_MethodArgumentNotValidException {
 		// CUSTOM VALIDATE:
