@@ -1,6 +1,7 @@
-package fusikun.com.api.model;
+package fusikun.com.api.model.study;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -9,23 +10,32 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import fusikun.com.api.utils.ConstantErrorCodes;
+import fusikun.com.api.model.app.User;
 
 @Entity
-@Table(name = "auth")
-public class Auth {
+@Table(name = "center")
+public class Center {
 
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+	@Column(name = "id", columnDefinition = "BINARY(16)")
 	private UUID id;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "center")
+	private List<User> members;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "adminId", nullable = false)
+	private User admin;
+
+	private String centerName;
 
 	private Boolean isActive;
 
@@ -33,39 +43,20 @@ public class Auth {
 
 	private Date updatedDate;
 
-	public Auth() {
+	public User getAdmin() {
+		return admin;
 	}
 
-	public Auth(Role role, Menu menu, Boolean isActive) {
-		this.role = role;
-		this.menu = menu;
-		this.isActive = isActive;
+	public void setAdmin(User admin) {
+		this.admin = admin;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	@JoinColumn(name = "roleId")
-	private Role role;
-
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@NotNull(message = ConstantErrorCodes.NOT_NULL)
-	@JoinColumn(name = "menuId")
-	private Menu menu;
-
-	public Role getRole() {
-		return role;
+	public String getCenterName() {
+		return centerName;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	public Menu getMenu() {
-		return menu;
-	}
-
-	public void setMenu(Menu menu) {
-		this.menu = menu;
+	public void setCenterName(String centerName) {
+		this.centerName = centerName;
 	}
 
 	public UUID getId() {
@@ -99,4 +90,13 @@ public class Auth {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
+
+	public List<User> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<User> members) {
+		this.members = members;
+	}
+
 }

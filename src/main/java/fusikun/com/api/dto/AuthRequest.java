@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
-import fusikun.com.api.model.Auth;
+import fusikun.com.api.model.app.Auth;
 import fusikun.com.api.utils.ConstantErrorCodes;
 
 public class AuthRequest {

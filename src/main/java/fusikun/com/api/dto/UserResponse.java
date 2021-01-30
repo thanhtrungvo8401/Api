@@ -3,7 +3,7 @@ package fusikun.com.api.dto;
 import java.util.Date;
 import java.util.UUID;
 
-import fusikun.com.api.model.User;
+import fusikun.com.api.model.app.User;
 
 public class UserResponse {
 	private UUID id;

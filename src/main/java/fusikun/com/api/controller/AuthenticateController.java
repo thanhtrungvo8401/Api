@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fusikun.com.api.dto.JwtRequest;
 import fusikun.com.api.dto.JwtResponse;
-import fusikun.com.api.model.JwtUserDetails;
-import fusikun.com.api.model.User;
+import fusikun.com.api.model.app.JwtUserDetails;
+import fusikun.com.api.model.app.User;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.utils.ConstantMessages;
 import fusikun.com.api.utils.JwtTokenUtil;

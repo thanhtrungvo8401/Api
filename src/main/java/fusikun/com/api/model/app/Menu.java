@@ -1,4 +1,4 @@
-package fusikun.com.api.model;
+package fusikun.com.api.model.app;
 
 import java.util.Date;
 import java.util.List;
@@ -23,7 +23,7 @@ public class Menu {
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+	@Column(name = "id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
 	private Boolean isActive;
@@ -38,7 +38,7 @@ public class Menu {
 
 	private Date updatedDate;
 
-	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Auth> auths;
 
 	@OneToMany(mappedBy = "parentMenu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

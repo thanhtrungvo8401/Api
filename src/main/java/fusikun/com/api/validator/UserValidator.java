@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import fusikun.com.api.dto.UserRequest;
-import fusikun.com.api.model.User;
+import fusikun.com.api.model.app.User;
 import fusikun.com.api.service.RoleService;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.utils.ConstantErrorCodes;

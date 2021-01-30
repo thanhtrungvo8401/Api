@@ -120,4 +120,14 @@ public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}
+
+	// OVER_RANGE EXCEPTION
+	@ExceptionHandler({ Ex_OverRangeException.class })
+	public final ResponseEntity<Object> handleExceptionOverRange(Exception ex, WebRequest request) {
+		List<Object> errorCodes = new LinkedList<>();
+		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.OVER_RANGE_EXCEPTION));
+		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false), errorCodes);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+	}
 }

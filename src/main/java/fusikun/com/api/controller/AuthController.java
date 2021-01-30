@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fusikun.com.api.dto.AuthRequest;
 import fusikun.com.api.dto.AuthResponse;
-import fusikun.com.api.model.Auth;
+import fusikun.com.api.model.app.Auth;
 import fusikun.com.api.service.AuthService;
 import fusikun.com.api.validator.AuthDataValidate;
 import javassist.NotFoundException;

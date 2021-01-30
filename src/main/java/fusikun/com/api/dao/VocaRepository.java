@@ -6,11 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import fusikun.com.api.model.app.Role;
+import fusikun.com.api.model.study.Voca;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, UUID>, JpaSpecificationExecutor<Role> {
-	Role findByRoleName(String roleName);
+public interface VocaRepository extends JpaRepository<Voca, UUID>, JpaSpecificationExecutor<Voca> {
 
-	Integer countByRoleName(String roleName);
 }

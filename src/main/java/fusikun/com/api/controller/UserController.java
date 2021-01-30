@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fusikun.com.api.dto.UserRequest;
 import fusikun.com.api.dto.UserResponse;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
-import fusikun.com.api.model.User;
+import fusikun.com.api.model.app.User;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.specificationSearch.SearchHelpers_Users;
 import fusikun.com.api.specificationSearch.Specification_User;

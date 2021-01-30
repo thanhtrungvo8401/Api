@@ -1,39 +1,60 @@
-package fusikun.com.api.dto;
+package fusikun.com.api.model.app;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import fusikun.com.api.model.app.Role;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-public class RoleResponse {
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "role")
+public class Role {
+
+	@Id
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(name = "id", columnDefinition = "BINARY(16)")
 	private UUID id;
+
 	private String roleName;
+
 	private String description;
+
 	private Boolean isActive;
+
 	private Date createdDate;
+
 	private Date updatedDate;
-	// SETTER ONLY:
-	private List<AuthResponse> auths;
 
-	public RoleResponse() {
-	}
+	@OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	private List<User> users;
 
-	public RoleResponse(Role role) {
-		this.id = role.getId();
-		this.roleName = role.getRoleName();
-		this.description = role.getDescription();
-		this.isActive = role.getIsActive();
-		this.createdDate = role.getCreatedDate();
-		this.updatedDate = role.getUpdatedDate();
-	}
+	@OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	private List<Auth> auths;
 
-	public List<AuthResponse> getAuths() {
+	public List<Auth> getAuths() {
 		return auths;
 	}
 
-	public void setAuths(List<AuthResponse> auths) {
+	public void setAuths(List<Auth> auths) {
 		this.auths = auths;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	public UUID getId() {

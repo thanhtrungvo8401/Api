@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import fusikun.com.api.exceptionHandlers.Ex_InvalidTokenException;
-import fusikun.com.api.model.JwtUserDetails;
+import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.service.JwtUserDetailsService;
 import fusikun.com.api.utils.Constant;
 import fusikun.com.api.utils.ConstantMessages;

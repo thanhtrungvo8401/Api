@@ -11,7 +11,7 @@ public class SortHelper {
 	public static Pageable getSort(Map<String, String> sorts) {
 		Integer limit = (StringUtils.hasText(sorts.get("limit"))) ? Integer.parseInt(sorts.get("limit")) : 10;
 		Integer page = (StringUtils.hasText(sorts.get("page"))) ? Integer.parseInt(sorts.get("page")) : 0;
-		String sortBy = (StringUtils.hasText(sorts.get("sortBy"))) ? sorts.get("sortBy") : "id";
+		String sortBy = (StringUtils.hasText(sorts.get("sortBy"))) ? sorts.get("sortBy") : "createdDate";
 		Direction direction = (sorts.get("order").equals(Direction.ASC.toString())) ? Direction.ASC : Direction.DESC;
 		return PageRequest.of(page, limit, direction, sortBy);
 	}

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import fusikun.com.api.model.Role;
+import fusikun.com.api.model.app.Role;
 import fusikun.com.api.utils.ConstantErrorCodes;
 
 public class RoleRequest {

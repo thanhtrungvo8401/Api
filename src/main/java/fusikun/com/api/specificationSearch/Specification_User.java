@@ -1,6 +1,6 @@
 package fusikun.com.api.specificationSearch;
 
-import fusikun.com.api.model.User;
+import fusikun.com.api.model.app.User;
 
 public class Specification_User extends Specification_Customize<User> {
 

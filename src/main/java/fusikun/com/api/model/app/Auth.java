@@ -1,23 +1,25 @@
-package fusikun.com.api.model;
+package fusikun.com.api.model.app;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import fusikun.com.api.utils.ConstantErrorCodes;
+
 @Entity
-@Table(name = "role")
-public class Role {
+@Table(name = "auth")
+public class Auth {
 
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -25,36 +27,45 @@ public class Role {
     @Column(name = "id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
-	private String roleName;
-
-	private String description;
-
 	private Boolean isActive;
 
 	private Date createdDate;
 
 	private Date updatedDate;
 
-	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<User> users;
-
-	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Auth> auths;
-
-	public List<Auth> getAuths() {
-		return auths;
+	public Auth() {
 	}
 
-	public void setAuths(List<Auth> auths) {
-		this.auths = auths;
+	public Auth(Role role, Menu menu, Boolean isActive) {
+		this.role = role;
+		this.menu = menu;
+		this.isActive = isActive;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@JoinColumn(name = "roleId")
+	private Role role;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@JoinColumn(name = "menuId")
+	private Menu menu;
+
+	public Role getRole() {
+		return role;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
 
 	public UUID getId() {
@@ -63,22 +74,6 @@ public class Role {
 
 	public void setId(UUID id) {
 		this.id = id;
-	}
-
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Boolean getIsActive() {

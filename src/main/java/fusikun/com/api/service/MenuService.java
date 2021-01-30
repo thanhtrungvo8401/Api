@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fusikun.com.api.dao.MenuRepository;
-import fusikun.com.api.model.Menu;
+import fusikun.com.api.model.app.Menu;
 import fusikun.com.api.specificationSearch.Specification_Menu;
 import fusikun.com.api.specificationSearch._SearchCriteria;
 import fusikun.com.api.specificationSearch._SearchOperator;

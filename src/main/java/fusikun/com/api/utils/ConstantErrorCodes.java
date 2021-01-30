@@ -7,6 +7,7 @@ public class ConstantErrorCodes {
 	public static final String NOT_NULL = "NOT_NULL";
 	public static final String NOT_EMPTY = "NOT_EMPTY";
 	public static final String NOT_OVER_50_LETTER = "NOT_OVER_50_LETTER";
+	public static final String NOT_OVER_255_LETTER = "NOT_OVER_255_LETTER";
 	public static final String NOT_BELOW_8_LETTER = "NOT_BELOW_8_LETTER";
 	public static final String UNIQUE_VALUE = "UNIQUE_VALUE";
 	public static final String NOT_BLANK = "NOT_BLANK";
@@ -20,4 +21,5 @@ public class ConstantErrorCodes {
 	public static final String ACCESS_DENIED = "ACCESS_DENIED";
 	public static final String NOT_CONTAIN_SPACE = "NOT_CONTAIN_SPACE";
 	public static final String NOT_DELETE_YOURSELF = "NOT_DELETE_YOURSELF";
+	public static final String OVER_RANGE_EXCEPTION = "OVER_RANGE_EXCEPTION";
 }

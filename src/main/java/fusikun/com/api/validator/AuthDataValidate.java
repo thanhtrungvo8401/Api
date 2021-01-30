@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fusikun.com.api.model.Auth;
+import fusikun.com.api.model.app.Auth;
 import fusikun.com.api.service.AuthService;
 import javassist.NotFoundException;
 
