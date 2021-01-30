@@ -35,7 +35,9 @@ public class ApiApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins(env.getProperty("configure.api.address")).allowedMethods("*");
+				String domainStrConfig = env.getProperty("configure.api.address");
+				String[] domains = domainStrConfig.split(",");
+				registry.addMapping("/**").allowedOrigins(domains).allowedMethods("*");
 			}
 
 			@Override
