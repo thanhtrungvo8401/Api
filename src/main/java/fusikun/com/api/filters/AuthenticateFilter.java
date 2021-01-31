@@ -36,7 +36,10 @@ public class AuthenticateFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		// Ignore some URL:
 		String reqUrl = request.getRequestURI();
-		if (IgnoreUrl.listUrl.contains(reqUrl)) {
+		String methodUrl = request.getMethod();
+		String checkValidUrl = reqUrl + Constant.FILTER_DIVICE + methodUrl;
+		System.out.println(IgnoreUrl.listUrl);
+		if (IgnoreUrl.listUrl(true).contains(checkValidUrl)) {
 			chain.doFilter(request, response);
 			return;
 		}
