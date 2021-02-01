@@ -23,8 +23,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// Ignore some URL:
-		String reqUrl = request.getRequestURI();
-		if (IgnoreUrl.listUrl.contains(reqUrl)) {
+		String ignoreAuthorUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
+		List<String> listIgnoreUrl = IgnoreUrl.listUrl(true);
+		if (listIgnoreUrl.contains(ignoreAuthorUrl)) {
 			return true;
 		}
 		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -34,6 +35,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		if (roleName.equals(Constant.ADMIN_ROLE)) {
 			return true;
 		}
+		
+		
+		String reqUrl = request.getRequestURI();
+		
+		
 		List<String> menuRegexs = jwtUserDetails.getMenus().stream().map(menu -> menu.getRegex())
 				.collect(Collectors.toList());
 		for (String regex : menuRegexs) {

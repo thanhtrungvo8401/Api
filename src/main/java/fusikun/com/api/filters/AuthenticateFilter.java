@@ -1,6 +1,7 @@
 package fusikun.com.api.filters;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -35,11 +36,9 @@ public class AuthenticateFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 		// Ignore some URL:
-		String reqUrl = request.getRequestURI();
-		String methodUrl = request.getMethod();
-		String checkValidUrl = reqUrl + Constant.FILTER_DIVICE + methodUrl;
-		System.out.println(IgnoreUrl.listUrl);
-		if (IgnoreUrl.listUrl(true).contains(checkValidUrl)) {
+		String ignoreAuthenUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
+		List<String> listIgnoreUrl = IgnoreUrl.listUrl(true);
+		if (listIgnoreUrl.contains(ignoreAuthenUrl)) {
 			chain.doFilter(request, response);
 			return;
 		}
