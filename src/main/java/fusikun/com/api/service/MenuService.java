@@ -78,10 +78,6 @@ public class MenuService {
 		return menuRepository.countByName(name);
 	}
 
-	public Integer countByUrl(String url) {
-		return menuRepository.countByUrl(url);
-	}
-
 	public void deleteById(UUID id) {
 		menuRepository.deleteById(id);
 	}
