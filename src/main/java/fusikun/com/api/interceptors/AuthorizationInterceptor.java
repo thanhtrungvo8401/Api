@@ -3,7 +3,6 @@ package fusikun.com.api.interceptors;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import fusikun.com.api.model.app.JwtUserDetails;
+import fusikun.com.api.model.app.Menu;
 import fusikun.com.api.utils.Constant;
 import fusikun.com.api.utils.IgnoreUrl;
 
@@ -23,8 +23,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// Ignore some URL:
-		String ignoreAuthorUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
+		String reqUrl = request.getRequestURI();
+		String method = request.getMethod();
+		String ignoreAuthorUrl = reqUrl + Constant.FILTER_DIVICE + method;
 		List<String> listIgnoreUrl = IgnoreUrl.listUrl(true);
+
 		if (listIgnoreUrl.contains(ignoreAuthorUrl)) {
 			return true;
 		}
@@ -35,20 +38,15 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		if (roleName.equals(Constant.ADMIN_ROLE)) {
 			return true;
 		}
-		
-		
-		String reqUrl = request.getRequestURI();
-		
-		
-		List<String> menuRegexs = jwtUserDetails.getMenus().stream().map(menu -> menu.getRegex())
-				.collect(Collectors.toList());
-		for (String regex : menuRegexs) {
-			Pattern p = Pattern.compile(regex);
+
+		List<Menu> menus = jwtUserDetails.getMenus();
+		for (Menu menu : menus) {
+			Pattern p = Pattern.compile(menu.getRegex());
 			Matcher m = p.matcher(reqUrl);
-			if (m.find()) {
+			if (m.find() && menu.getMethod().equals(method)) {
 				return true;
 			}
 		}
-		throw new AccessDeniedException("Your access to '" + reqUrl + "' is forbidden");
+		throw new AccessDeniedException("Your access to '" + reqUrl + " & method=" + method + "' is forbidden");
 	}
 }
