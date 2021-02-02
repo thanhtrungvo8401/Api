@@ -22,9 +22,9 @@ public class RoleService {
 	public void deleteById(UUID id) {
 		roleRepository.deleteById(id);
 	}
-	
+
 	public void delete(Role role) {
-		roleRepository.delete(role);	
+		roleRepository.delete(role);
 	}
 
 	public Role findRoleById(UUID id) {
@@ -46,6 +46,10 @@ public class RoleService {
 		return roleRepository.save(entity);
 	}
 
+	public Role findByRoleName(String roleName) {
+		return roleRepository.findByRoleName(roleName);
+	}
+
 	public List<Role> findAll() {
 		return roleRepository.findAll();
 	}
@@ -53,11 +57,11 @@ public class RoleService {
 	public Integer coutByRoleName(String roleName) {
 		return roleRepository.countByRoleName(roleName);
 	}
-	
+
 	public Long count() {
 		return roleRepository.count();
 	}
-	
+
 	public Boolean existByRoleName(String roleName) {
 		return roleRepository.countByRoleName(roleName) > 0;
 	}

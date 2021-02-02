@@ -104,4 +104,12 @@ public class Role {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
+
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", roleName=" + roleName + ", description=" + description + ", isActive=" + isActive
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", users=" + users + ", auths="
+				+ auths + "]";
+	}
+
 }
