@@ -34,6 +34,8 @@ public class Menu {
 
 	private String name;
 
+	private String method;
+
 	private Date createdDate;
 
 	private Date updatedDate;
@@ -51,11 +53,20 @@ public class Menu {
 	public Menu() {
 	}
 
-	public Menu(String url, String name, String regex) {
+	public Menu(String url, String name, String regex, String method) {
 		super();
 		this.url = url;
 		this.name = name;
 		this.regex = regex;
+		this.method = method;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
 	public List<Menu> getMenus() {
@@ -140,8 +151,8 @@ public class Menu {
 
 	@Override
 	public String toString() {
-		return "Menu [id=" + id + ", isActive=" + isActive + ", url=" + url + ", name=" + name + ", createdDate="
-				+ createdDate + ", updatedDate=" + updatedDate + ", auths=" + auths + ", menus=" + menus
-				+ ", parentMenu=" + parentMenu + "]";
+		return "Menu [id=" + id + ", isActive=" + isActive + ", url=" + url + ", regex=" + regex + ", name=" + name
+				+ ", method=" + method + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", auths="
+				+ auths + ", menus=" + menus + ", parentMenu=" + parentMenu + "]";
 	}
 }

@@ -59,10 +59,12 @@ public class MenuController {
 		String enpointName = enpoint.toString();
 		String enpointUrl = enpoint.getUrl();
 		String enpointRegex = enpoint.getRegex();
+		String enpointMethod = enpoint.getMethod();
 		MenuRequest menuRequest = new MenuRequest();
 		menuRequest.setName(enpointName);
 		menuRequest.setUrl(enpointUrl);
 		menuRequest.setRegex(enpointRegex);
+		menuRequest.setMethod(enpointMethod);
 		if (!menuService.existsByName(enpointName)) {
 			if (enpointName.indexOf(Constant.MENU_ADDRESS_DEVIDE) >= 0) {
 				String parentName = enpointName.split(Constant.MENU_ADDRESS_DEVIDE)[0];

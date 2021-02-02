@@ -1,46 +1,38 @@
 package fusikun.com.api.enums;
 
 public enum UrlEnpointEnums {
+	SETVOCAS("/set-vocas", "^\\/set-vocas$", ""),
+	SETVOCAS_create("/set-vocas", "^\\/set-vocas$", "POST"),
+	SETVOCAS_GetByAuthorId("/users/{authorId}/set-vocas", "^\\/users\\/[1-9a-z-]{1,}\\/set-vocas$", "GET"),
+	
+	VOCABULARIES("/vocabularies", "^\\/vocabularies$", "GET"),
+	VOCABULARIES_create("/vocabularies", "^\\/vocabularies", "POST"),
+	VOCABULARIES_getBySetVocasId("/set-vocas/{id}/vocas", "^\\/set-vocas\\/[1-9a-z-]{1,}\\/vocas$", "GET"),
 
-	MENU_ACTIONS("/menu-actions", "^\\/menu-actions$"),
-	MENU_ACTIONS__GET_DEFINED_URL("/menu-actions/defined-url", "^\\/menu-actions\\/defined-url$"),
-	MENU_ACTIONS__GENERATE("/menu-actions/generate", "^\\/menu-actions\\/generate$"),
-	MENU_ACTIONS__COUNT("/menu-actions/count", "^\\/menu-actions\\/count$"),
-	
-	ROLES("/roles", "^\\/roles$"),
-	ROLES__CREATE("/roles/create", "^\\/roles\\/create$"),
-	ROLES__DETAIL("/roles/{id}", "^\\/roles\\/\\d{1,}$"),
-	ROLES__UPDATE("/roles/{id}/update", "^\\/roles\\/\\d{1,}\\/update$"),
-	ROLES__DELETE("/roles/{id}/delete", "^\\/roles\\/\\d{1,}\\/delete$"),
-	
-	MANAGERS("/managers", "^\\/managers$"),
-	MANAGERS__CREATE("/managers/create", "^\\/managers\\/create$"),
-	
-	STUDENT("/students", "^\\/students$"),
-	STUDENT__CREATE("/students/create", "^\\/students\\/create$"),
-	
-	VOCABULARIES("/vocabularies", "^\\/vocabularies$"),
-	
-	AUTHENTICATE("/authenticate", "^\\/authenticate$"),
-	
-	AUTHENTICATE__LOGIN("/authenticate/login", "^\\/authenticate\\/login$"),
-	
-	AUTHENTICATE__LOGOUT("/authenticate/logout", "^\\/authenticate\\/logout$")
+	AUTHENTICATE("/authenticate", "^\\/authenticate$", ""),
+	AUTHENTICATE_login("/authenticate/login", "^\\/authenticate\\/login$", "POST"),
+	AUTHENTICATE_logout("/authenticate/logout", "^\\/authenticate\\/logout$", "POST")
 	;
 
 	private final String url;
 	private final String regex;
+	private final String method;
 
-	UrlEnpointEnums(String url, String regex) {
+	UrlEnpointEnums(String url, String regex, String method) {
 		this.url = url;
 		this.regex = regex;
+		this.method = method;
 	}
 
 	public String getUrl() {
 		return url;
 	}
-	
+
 	public String getRegex() {
 		return regex;
+	}
+
+	public String getMethod() {
+		return method;
 	}
 }

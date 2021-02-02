@@ -9,6 +9,7 @@ public class MenuResponse {
 	private String url;
 	private String name;
 	private String regex;
+	private String method;
 	private UUID parentId;
 
 	public MenuResponse() {
@@ -19,6 +20,7 @@ public class MenuResponse {
 		url = menu.getUrl();
 		name = menu.getName();
 		regex = menu.getRegex();
+		method = menu.getMethod();
 		if (menu.getParentMenu() != null) {
 			parentId = menu.getParentMenu().getId();
 		}
@@ -63,4 +65,13 @@ public class MenuResponse {
 	public void setParentId(UUID parentId) {
 		this.parentId = parentId;
 	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
 }

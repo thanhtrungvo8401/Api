@@ -27,6 +27,10 @@ public class MenuRequest {
 	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
 	private String regex;
 
+	@NotNull(message = ConstantErrorCodes.NOT_NULL)
+	@Size(max = 8, message = ConstantErrorCodes.NOT_OVER_8_LETTER)
+	private String method;
+
 	private UUID parentId;
 
 	public Menu getMenu() {
@@ -35,12 +39,21 @@ public class MenuRequest {
 		menu.setUrl(this.url);
 		menu.setName(this.name);
 		menu.setRegex(this.regex);
+		menu.setMethod(this.method);
 		if (this.parentId != null) {
 			Menu parentMenu = new Menu();
 			parentMenu.setId(this.parentId);
 			menu.setParentMenu(parentMenu);
 		}
 		return menu;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
 	public UUID getId() {
