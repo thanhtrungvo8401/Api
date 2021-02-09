@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class IgnoreUrl {
-	private static final String[] list = { "/authenticate/login<!>POST", "/students<!>POST", "/error<!>POST" };
+	private static final String[] list = { "/authenticate/login<!>POST", "/students<!>POST" };
 
 	public static final List<String> listUrl(Boolean hasMethod) {
 		List<String> listUrlWithMethod = Arrays.asList(list);
