@@ -41,6 +41,10 @@ public class UserService {
 		return userRepository.count(specification);
 	}
 
+	public Long count() {
+		return userRepository.count();
+	}
+
 	public List<User> findAll(Specification_User specification, Pageable pageable) {
 		Page<User> page = userRepository.findAll(specification, pageable);
 		if (page.hasContent()) {
