@@ -69,7 +69,7 @@ public class JwtTokenUtil implements Serializable {
 	// compaction of the JWT to a URL-safe string
 	private String doGenerateToken(Map<String, Object> claims, JwtUserDetails userDetails) {
 		return Jwts.builder().setClaims(claims)
-				.setSubject(userDetails.getUsername())
+				.setSubject(userDetails.getId().toString())
 				.setId(userDetails.getAccessToken())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + Math.round(JWT_TOKEN_HOURS * 60 * 60 * 1000)))
@@ -77,9 +77,9 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	public Boolean validateToken(String token, JwtUserDetails userDetails) {
-		final String email = getUserInfoFromToken(token);
+		final String userId = getUserInfoFromToken(token);
 		final String accessToken = getAccessTokenFromToken(token);
-		return (email.equals(userDetails.getUsername()) && accessToken.equals(userDetails.getAccessToken())
+		return (userId.equals(userDetails.getId().toString()) && accessToken.equals(userDetails.getAccessToken())
 				&& !isTokenExpired(token));
 	}
 }
