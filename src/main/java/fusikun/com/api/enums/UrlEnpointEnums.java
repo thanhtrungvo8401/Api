@@ -1,6 +1,8 @@
 package fusikun.com.api.enums;
 
 public enum UrlEnpointEnums {
+	MYPROFILE("/my-profile", "^\\/my-profile", "GET"),
+	
 	SETVOCAS("/set-vocas", "^\\/set-vocas$", ""),
 	SETVOCAS_create("/set-vocas", "^\\/set-vocas$", "POST"),
 	SETVOCAS_GetByAuthorId("/users/{authorId}/set-vocas", "^\\/users\\/[1-9a-z-]{1,}\\/set-vocas$", "GET"),

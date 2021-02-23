@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +33,7 @@ public class AuthenticateController {
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
 		User user = userService.findByEmail(authenticationRequest.getEmail());
-		user.setAccessToken(RandomTokenUtil.generateToken(4) + "_" + user.getId());
+		user.setAccessToken(RandomTokenUtil.generateToken(11));
 		userService.save(user);
 
 		final JwtUserDetails userDetails = new JwtUserDetails(user);
@@ -44,9 +43,9 @@ public class AuthenticateController {
 
 	@PostMapping("/authenticate/logout")
 	public String handleLogout() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userService.findByEmail(userDetails.getUsername()); // "username" = "email" in UserDetails
-																		// interface.
+		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		User user = userService.findById(jwtUserDetails.getId());
 		user.setAccessToken(null);
 		userService.save(user);
 		return ConstantMessages.SUCCESS;
