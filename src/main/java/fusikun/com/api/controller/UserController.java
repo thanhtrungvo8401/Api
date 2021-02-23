@@ -99,6 +99,11 @@ public class UserController {
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
+	@GetMapping("/my-profile")
+	public ResponseEntity<Object> handleGetUserDetail() {
+		return null;
+	}
+
 	private class UsersManagement {
 		List<UserResponse> list;
 		Long total;
