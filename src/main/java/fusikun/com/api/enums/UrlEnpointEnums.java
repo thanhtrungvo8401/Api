@@ -3,11 +3,11 @@ package fusikun.com.api.enums;
 public enum UrlEnpointEnums {
 	SETVOCAS("/set-vocas", "^\\/set-vocas$", ""),
 	SETVOCAS_create("/set-vocas", "^\\/set-vocas$", "POST"),
-	SETVOCAS_GetByAuthorId("/users/{authorId}/set-vocas", "^\\/users\\/[1-9a-z-]{1,}\\/set-vocas$", "GET"),
+	SETVOCAS_GetByAuthorId("/users/{authorId}/set-vocas", "^\\/users\\/[0-9a-z-]{1,}\\/set-vocas$", "GET"),
 	
 	VOCABULARIES("/vocabularies", "^\\/vocabularies$", "GET"),
 	VOCABULARIES_create("/vocabularies", "^\\/vocabularies", "POST"),
-	VOCABULARIES_getBySetVocasId("/set-vocas/{id}/vocas", "^\\/set-vocas\\/[1-9a-z-]{1,}\\/vocas$", "GET"),
+	VOCABULARIES_getBySetVocasId("/set-vocas/{id}/vocas", "^\\/set-vocas\\/[0-9a-z-]{1,}\\/vocas$", "GET"),
 
 	AUTHENTICATE("/authenticate", "^\\/authenticate$", ""),
 	AUTHENTICATE_login("/authenticate/login", "^\\/authenticate\\/login$", "POST"),
