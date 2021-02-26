@@ -1,5 +1,7 @@
 package fusikun.com.api.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +27,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Override
 	public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userService.findByEmail(username);
+		return new JwtUserDetails(user);
+	}
+
+	public JwtUserDetails loadUserByUserId(UUID uuid) {
+		User user = userService.findById(uuid);
 		return new JwtUserDetails(user);
 	}
 

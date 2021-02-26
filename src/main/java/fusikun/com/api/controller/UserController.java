@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fusikun.com.api.dto.UserRequest;
 import fusikun.com.api.dto.UserResponse;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
+import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.model.app.User;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.specificationSearch.SearchHelpers_Users;
@@ -96,6 +98,14 @@ public class UserController {
 		userDataValidate.validateNotDeleteYourself(id);
 		User user = userService.findById(id);
 		userService.delete(user);
+		return ResponseEntity.ok(new UserResponse(user));
+	}
+
+	@GetMapping("/my-profile")
+	public ResponseEntity<Object> handleGetUserDetail() {
+		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		User user = userService.findById(jwtUserDetails.getId());
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 

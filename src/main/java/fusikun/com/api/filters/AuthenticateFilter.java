@@ -2,6 +2,7 @@ package fusikun.com.api.filters;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -44,18 +45,18 @@ public class AuthenticateFilter extends OncePerRequestFilter {
 		}
 		// URL not in Ignore list => validate
 		final String authorizationHeader = request.getHeader(Constant.AUTH_AUTHORIZATION);
-		String email = null;
+		String userId = null;
 		String jwt = null;
 		if (authorizationHeader != null && authorizationHeader.startsWith(Constant.AUTH_BEARER)) {
 			jwt = authorizationHeader.substring(Constant.AUTH_BEARER_INDEX);
-			email = jwtTokenUtil.getUserInfoFromToken(jwt);
+			userId = jwtTokenUtil.getUserInfoFromToken(jwt);
 		} else {
 			System.out.println("======= JWT does not start with 'bearer' OR NULL =======");
 			throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
 
-		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			JwtUserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email);
+		if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			JwtUserDetails userDetails = jwtUserDetailsService.loadUserByUserId(UUID.fromString(userId));
 			if (jwtTokenUtil.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());

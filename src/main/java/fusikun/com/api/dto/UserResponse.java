@@ -11,6 +11,8 @@ public class UserResponse {
 	private Date createdDate;
 	private Date updatedDate;
 	private RoleResponse role;
+	private Integer maxSetVocas;
+	private Boolean isActive;
 
 	public UserResponse() {
 	}
@@ -20,6 +22,8 @@ public class UserResponse {
 		this.email = user.getEmail();
 		this.createdDate = user.getCreatedDate();
 		this.updatedDate = user.getUpdatedDate();
+		this.maxSetVocas = user.getMaxSetVocas();
+		this.isActive = user.getIsActive();
 		this.role = new RoleResponse(user.getRole());
 	}
 
@@ -29,6 +33,22 @@ public class UserResponse {
 
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public Integer getMaxSetVocas() {
+		return maxSetVocas;
+	}
+
+	public void setMaxSetVocas(Integer maxSetVocas) {
+		this.maxSetVocas = maxSetVocas;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public String getEmail() {
