@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +43,7 @@ public class SetVocaController {
 	@Autowired
 	UserService userService;
 
+	// Create setVocas:
 	@PostMapping("/set-vocas")
 	public ResponseEntity<Object> handleCreateSetVocas(@Valid @RequestBody SetVocaRequest setVocaRequest)
 			throws NotFoundException {
@@ -55,6 +57,25 @@ public class SetVocaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(setVocaResponse);
 	}
 
+	// Update SetVocas by Id:
+	@PutMapping("/set-vocas/{setVocaId}")
+	public ResponseEntity<Object> handleUpdateSetVocasById(@PathVariable UUID setVocaId,
+			@Valid @RequestBody SetVocaRequest setVocaRequest) throws NotFoundException {
+		// Custom Validate:
+		setVocaRequest.setId(setVocaId);
+		setVocaDataValidate.validateSetVocaIdNotExist(setVocaRequest.getId());
+		setVocaDataValidate.validate(setVocaRequest);
+		// Update SetVoca:
+		SetVoca oldSetVoca = setVocaService.findById(setVocaId);
+		SetVoca setVoca = setVocaRequest.getSetVoca();
+		oldSetVoca.setAuthor(setVoca.getAuthor());
+		oldSetVoca.setSetName(setVoca.getSetName());
+		// Save SetVoca:
+		SetVoca savedSetVoca = setVocaService.save(oldSetVoca);
+		return ResponseEntity.ok(new SetVocaResponse(savedSetVoca));
+	}
+
+	// Get SetVocas by AuthorId:
 	@GetMapping("/users/{authorId}/set-vocas")
 	public ResponseEntity<Object> handleGetSetVocasCreatedByAuthor(@PathVariable UUID authorId)
 			throws NotFoundException {
