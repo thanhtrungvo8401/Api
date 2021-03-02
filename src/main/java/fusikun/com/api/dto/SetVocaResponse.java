@@ -1,15 +1,13 @@
 package fusikun.com.api.dto;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import fusikun.com.api.model.study.SetVoca;
-import fusikun.com.api.model.study.Voca;
 
 public class SetVocaResponse {
 	private UUID id;
-	private Integer totalVocas;
+	private Integer totalVocas = 0;
 	private String setName;
 	private Integer maxVoca;
 	private Date createdDate;
@@ -26,8 +24,6 @@ public class SetVocaResponse {
 		this.updatedDate = setVoca.getUpdatedDate();
 		this.authorId = setVoca.getAuthor().getId();
 		this.setName = setVoca.getSetName();
-		List<Voca> vocas = setVoca.getVocas();
-		this.totalVocas = vocas == null ? 0 : vocas.size();
 	}
 
 	public UUID getId() {

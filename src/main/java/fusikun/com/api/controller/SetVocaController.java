@@ -25,6 +25,7 @@ import fusikun.com.api.model.app.User;
 import fusikun.com.api.model.study.SetVoca;
 import fusikun.com.api.service.SetVocaService;
 import fusikun.com.api.service.UserService;
+import fusikun.com.api.service.VocaService;
 import fusikun.com.api.specificationSearch.Specification_SetVoca;
 import fusikun.com.api.specificationSearch._SearchCriteria;
 import fusikun.com.api.specificationSearch._SearchOperator;
@@ -39,6 +40,9 @@ public class SetVocaController {
 
 	@Autowired
 	SetVocaService setVocaService;
+
+	@Autowired
+	VocaService vocaService;
 
 	@Autowired
 	UserService userService;
@@ -64,6 +68,9 @@ public class SetVocaController {
 		// Custom Validate:
 		setVocaRequest.setId(setVocaId);
 		setVocaDataValidate.validateSetVocaIdNotExist(setVocaRequest.getId());
+		setVocaDataValidate.validateAuthorNotExistById(setVocaRequest.getAuthorId());
+		setVocaDataValidate.validateSetVocasOverRange(setVocaRequest.getAuthorId(),
+				getSetVocaSpecification(setVocaRequest.getAuthorId()));
 		setVocaDataValidate.validate(setVocaRequest);
 		// Update SetVoca:
 		SetVoca oldSetVoca = setVocaService.findById(setVocaId);
@@ -72,7 +79,11 @@ public class SetVocaController {
 		oldSetVoca.setSetName(setVoca.getSetName());
 		// Save SetVoca:
 		SetVoca savedSetVoca = setVocaService.save(oldSetVoca);
-		return ResponseEntity.ok(new SetVocaResponse(savedSetVoca));
+
+		SetVocaResponse setVocaResponse = new SetVocaResponse(savedSetVoca);
+		setVocaResponse.setTotalVocas(vocaService.countVocaBySetVocaId(setVocaId).intValue());
+
+		return ResponseEntity.ok(setVocaResponse);
 	}
 
 	// Get SetVocas by AuthorId:
@@ -83,8 +94,11 @@ public class SetVocaController {
 		Specification_SetVoca specification = getSetVocaSpecification(authorId);
 		Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
 		List<SetVoca> setVocas = setVocaService.findAll(specification, pageable);
-		List<SetVocaResponse> setVocaResponses = setVocas.stream().map(setVoca -> new SetVocaResponse(setVoca))
-				.collect(Collectors.toList());
+		List<SetVocaResponse> setVocaResponses = setVocas.stream().map(setVoca -> {
+			SetVocaResponse setVocaResponse = new SetVocaResponse(setVoca);
+			setVocaResponse.setTotalVocas(vocaService.countVocaBySetVocaId(setVoca.getId()).intValue());
+			return setVocaResponse;
+		}).collect(Collectors.toList());
 		return ResponseEntity.ok(setVocaResponses);
 	}
 
@@ -94,5 +108,4 @@ public class SetVocaController {
 		specification.add(new _SearchCriteria("author", _SearchOperator.EQUAL, author));
 		return specification;
 	}
-
 }
