@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,6 @@ import javassist.NotFoundException;
 
 @RestController
 public class VocaController {
-
 	@Autowired
 	VocaDataValidate vocaDataValidate;
 
@@ -53,7 +53,7 @@ public class VocaController {
 		vocaDataValidate.validateOverMaxVoca(vocaRequest);
 		// Save:
 		Voca voca = vocaRequest.getVocaObject();
-		SetVoca setVoca = setVocaService.findById(vocaRequest.getId());
+		SetVoca setVoca = setVocaService.findById(vocaRequest.getSetId());
 		setVoca.setTotalVocas(setVoca.getTotalVocas() + 1);
 		vocaService.save(voca);
 		setVocaService.save(setVoca);
@@ -72,13 +72,13 @@ public class VocaController {
 		vocaDataValidate.validate(vocaRequest);
 		// Update
 		Voca oldVoca = vocaService.findById(vocaRequest.getId());
-		if (!vocaRequest.getId().equals(oldVoca.getId())) {
+		if (!vocaRequest.getSetId().equals(oldVoca.getSetVoca().getId())) {
 			// validate
 			vocaDataValidate.validateOverMaxVoca(vocaRequest);
 			// update
-			SetVoca setVocaRemove = setVocaService.findById(oldVoca.getSetVoca().getId());
+			SetVoca setVocaRemove = oldVoca.getSetVoca();
 			setVocaRemove.setTotalVocas(setVocaRemove.getTotalVocas() - 1);
-			SetVoca setVocaAdd = setVocaService.findById(vocaRequest.getId());
+			SetVoca setVocaAdd = setVocaService.findById(vocaRequest.getSetId());
 			setVocaAdd.setTotalVocas(setVocaAdd.getTotalVocas() + 1);
 			setVocaService.save(setVocaAdd);
 			setVocaService.save(setVocaRemove);
@@ -98,12 +98,13 @@ public class VocaController {
 	}
 
 	// DELETE
+	@DeleteMapping("/vocas/{id}")
 	public ResponseEntity<Object> handleDeleteVoca(@PathVariable UUID id) throws NotFoundException {
 		// validate
 		vocaDataValidate.validateExistVocaById(id);
 		Voca voca = vocaService.findById(id);
 		// delete
-		SetVoca setVoca = setVocaService.findById(voca.getSetVoca().getId());
+		SetVoca setVoca = voca.getSetVoca();
 		vocaService.delete(voca);
 		setVoca.setTotalVocas(setVoca.getTotalVocas() - 1);
 		setVocaService.save(setVoca);
