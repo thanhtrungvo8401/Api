@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,12 +53,51 @@ public class VocaController {
 		vocaDataValidate.validateOverMaxVoca(vocaRequest);
 		// Save:
 		Voca voca = vocaRequest.getVocaObject();
+		SetVoca setVoca = setVocaService.findById(vocaRequest.getId());
+		setVoca.setTotalVocas(setVoca.getTotalVocas() + 1);
 		vocaService.save(voca);
+		setVocaService.save(setVoca);
 		// Return
 		return ResponseEntity.status(HttpStatus.CREATED).body(new VocaResponse(voca));
 	}
 
-	// FETCH VOCAS:
+	// UPDATE
+	@PutMapping("/vocas/{id}")
+	public ResponseEntity<Object> handleUpdateVoca(@Valid @RequestBody VocaRequest vocaRequest, @PathVariable UUID id)
+			throws NotFoundException {
+		// Validate:
+		vocaRequest.setId(id);
+		vocaDataValidate.validateExistVocaById(vocaRequest.getId());
+		vocaDataValidate.validateExistSetVocaById(vocaRequest.getSetId());
+		vocaDataValidate.validate(vocaRequest);
+		// Update
+		Voca oldVoca = vocaService.findById(vocaRequest.getId());
+		if (!vocaRequest.getId().equals(oldVoca.getId())) {
+			// validate
+			vocaDataValidate.validateOverMaxVoca(vocaRequest);
+			// update
+			SetVoca setVocaRemove = setVocaService.findById(oldVoca.getSetVoca().getId());
+			setVocaRemove.setTotalVocas(setVocaRemove.getTotalVocas() - 1);
+			SetVoca setVocaAdd = setVocaService.findById(vocaRequest.getId());
+			setVocaAdd.setTotalVocas(setVocaAdd.getTotalVocas() + 1);
+			setVocaService.save(setVocaAdd);
+			setVocaService.save(setVocaRemove);
+		}
+
+		oldVoca.setKanji(vocaRequest.getKanji());
+		oldVoca.setMeaning(vocaRequest.getMeaning());
+		oldVoca.setSentence(vocaRequest.getSentence());
+		oldVoca.setVoca(vocaRequest.getVoca());
+
+		SetVoca setVoca = new SetVoca();
+		setVoca.setId(vocaRequest.getSetId());
+
+		oldVoca.setSetVoca(setVoca);
+		vocaService.save(oldVoca);
+		return ResponseEntity.ok(new VocaResponse(oldVoca));
+	}
+
+	// FETCH VOCAS
 	@GetMapping("/set-vocas/{id}/vocas")
 	public ResponseEntity<Object> handleGetVocasInSetVoca(@PathVariable UUID id) throws NotFoundException {
 		// Validate:
@@ -66,7 +106,7 @@ public class VocaController {
 		Specification_Voca specification = getVocaSpecificationFromSetVocasId(id);
 		Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
 		List<Voca> vocas = vocaService.findAll(specification, pageable);
-		// Return:
+		// Return
 		List<VocaResponse> vocaResponses = vocas.stream().map(voca -> new VocaResponse(voca))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(vocaResponses);
