@@ -97,6 +97,19 @@ public class VocaController {
 		return ResponseEntity.ok(new VocaResponse(oldVoca));
 	}
 
+	// DELETE
+	public ResponseEntity<Object> handleDeleteVoca(@PathVariable UUID id) throws NotFoundException {
+		// validate
+		vocaDataValidate.validateExistVocaById(id);
+		Voca voca = vocaService.findById(id);
+		// delete
+		SetVoca setVoca = setVocaService.findById(voca.getSetVoca().getId());
+		vocaService.delete(voca);
+		setVoca.setTotalVocas(setVoca.getTotalVocas() - 1);
+		setVocaService.save(setVoca);
+		return ResponseEntity.ok(new VocaResponse(voca));
+	}
+
 	// FETCH VOCAS
 	@GetMapping("/set-vocas/{id}/vocas")
 	public ResponseEntity<Object> handleGetVocasInSetVoca(@PathVariable UUID id) throws NotFoundException {
