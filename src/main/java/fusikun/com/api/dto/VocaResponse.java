@@ -12,6 +12,7 @@ public class VocaResponse {
 	private String sentence;
 	private Date createdDate;
 	private Date updatedDate;
+	private UUID setId;
 
 	public VocaResponse() {
 	}
@@ -23,6 +24,15 @@ public class VocaResponse {
 		this.sentence = voca.getSentence();
 		this.createdDate = voca.getCreatedDate();
 		this.updatedDate = voca.getUpdatedDate();
+		this.setId = voca.getSetVoca().getId();
+	}
+
+	public UUID getSetId() {
+		return setId;
+	}
+
+	public void setSetId(UUID setId) {
+		this.setId = setId;
 	}
 
 	public UUID getId() {
