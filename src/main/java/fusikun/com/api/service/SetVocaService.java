@@ -54,4 +54,12 @@ public class SetVocaService {
 	public Long count(Specification_SetVoca specification) {
 		return setVocaRepository.count(specification);
 	}
+
+	public void deleteById(UUID id) {
+		setVocaRepository.deleteById(id);
+	}
+
+	public void delete(SetVoca setVoca) {
+		setVocaRepository.delete(setVoca);
+	}
 }

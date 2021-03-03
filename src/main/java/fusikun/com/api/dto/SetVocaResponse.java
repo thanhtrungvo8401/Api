@@ -7,6 +7,8 @@ import fusikun.com.api.model.study.SetVoca;
 
 public class SetVocaResponse {
 	private UUID id;
+	private Integer totalVocas = 0;
+	private String setName;
 	private Integer maxVoca;
 	private Date createdDate;
 	private Date updatedDate;
@@ -21,6 +23,8 @@ public class SetVocaResponse {
 		this.createdDate = setVoca.getCreatedDate();
 		this.updatedDate = setVoca.getUpdatedDate();
 		this.authorId = setVoca.getAuthor().getId();
+		this.setName = setVoca.getSetName();
+		this.totalVocas = setVoca.getTotalVocas();
 	}
 
 	public UUID getId() {
@@ -61,6 +65,22 @@ public class SetVocaResponse {
 
 	public void setAuthorId(UUID authorId) {
 		this.authorId = authorId;
+	}
+
+	public String getSetName() {
+		return setName;
+	}
+
+	public void setSetName(String setName) {
+		this.setName = setName;
+	}
+
+	public Integer getTotalVocas() {
+		return totalVocas;
+	}
+
+	public void setTotalVocas(Integer totalVocas) {
+		this.totalVocas = totalVocas;
 	}
 
 }

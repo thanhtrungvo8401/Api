@@ -31,7 +31,13 @@ public class SetVocaDataValidate {
 
 	public final void validateAuthorNotExistById(UUID id) throws NotFoundException {
 		if (userService.findById(id) == null) {
-			throw new NotFoundException("Author with id=" + id + "is not existed");
+			throw new NotFoundException("Author with id=" + id + " is not existed");
+		}
+	}
+
+	public final void validateSetVocaIdNotExist(UUID id) throws NotFoundException {
+		if (setVocaService.findById(id) == null) {
+			throw new NotFoundException("SetVoca with id =" + id + " is not existed");
 		}
 	}
 

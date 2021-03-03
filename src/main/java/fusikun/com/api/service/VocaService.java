@@ -12,8 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fusikun.com.api.dao.VocaRepository;
+import fusikun.com.api.model.study.SetVoca;
 import fusikun.com.api.model.study.Voca;
 import fusikun.com.api.specificationSearch.Specification_Voca;
+import fusikun.com.api.specificationSearch._SearchCriteria;
+import fusikun.com.api.specificationSearch._SearchOperator;
 
 @Service
 public class VocaService {
@@ -49,5 +52,26 @@ public class VocaService {
 
 	public Long count(Specification_Voca specification) {
 		return vocaRepository.count(specification);
+	}
+
+	public Long countVocaBySetVocaId(UUID setVocaId) {
+		Specification_Voca specification = getVocaSpecification(setVocaId);
+		return count(specification);
+	}
+
+	public void deleteById(UUID id) {
+		vocaRepository.deleteById(id);
+	}
+
+	public void delete(Voca voca) {
+		vocaRepository.delete(voca);
+	}
+
+	private Specification_Voca getVocaSpecification(UUID setVocaId) {
+		Specification_Voca specification = new Specification_Voca();
+		SetVoca setVoca = new SetVoca();
+		setVoca.setId(setVocaId);
+		specification.add(new _SearchCriteria("setVoca", _SearchOperator.EQUAL, setVoca));
+		return specification;
 	}
 }

@@ -31,6 +31,7 @@ public class SetVoca {
 
 	private String setName;
 	private Integer maxVoca;
+	private Integer totalVocas;
 	private Boolean isActive;
 	private Date createdDate;
 	private Date updatedDate;
@@ -44,6 +45,14 @@ public class SetVoca {
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "setVocas")
 	private List<Room> rooms;
+
+	public void decreaseVoca() {
+		this.totalVocas--;
+	}
+
+	public void increaseVoca() {
+		this.totalVocas++;
+	}
 
 	public String getSetName() {
 		return setName;
@@ -59,6 +68,14 @@ public class SetVoca {
 
 	public void setMaxVoca(Integer maxVoca) {
 		this.maxVoca = maxVoca;
+	}
+
+	public Integer getTotalVocas() {
+		return totalVocas;
+	}
+
+	public void setTotalVocas(Integer totalVocas) {
+		this.totalVocas = totalVocas;
 	}
 
 	public UUID getId() {

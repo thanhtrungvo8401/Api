@@ -14,6 +14,7 @@ public class SetVocaRequest {
 	private UUID id;
 
 	private final Integer maxVoca = 10;
+	private Integer totalVocas = 0;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
@@ -28,6 +29,7 @@ public class SetVocaRequest {
 		setVoca.setId(id);
 		setVoca.setMaxVoca(maxVoca);
 		setVoca.setSetName(setName);
+		setVoca.setTotalVocas(totalVocas);
 
 		User author = new User();
 		author.setId(authorId);
@@ -61,6 +63,14 @@ public class SetVocaRequest {
 
 	public Integer getMaxVoca() {
 		return maxVoca;
+	}
+
+	public Integer getTotalVocas() {
+		return totalVocas;
+	}
+
+	public void setTotalVocas(Integer totalVocas) {
+		this.totalVocas = totalVocas;
 	}
 
 }

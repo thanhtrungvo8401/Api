@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import fusikun.com.api.dto.VocaRequest;
 import fusikun.com.api.exceptionHandlers.Ex_OverRangeException;
 import fusikun.com.api.model.study.SetVoca;
+import fusikun.com.api.model.study.Voca;
 import fusikun.com.api.service.SetVocaService;
 import fusikun.com.api.service.VocaService;
-import fusikun.com.api.specificationSearch.Specification_Voca;
 import fusikun.com.api.utils.SpaceUtils;
 import javassist.NotFoundException;
 
@@ -33,15 +33,22 @@ public class VocaDataValidate {
 	public final void validateExistSetVocaById(UUID setVocaId) throws NotFoundException {
 		SetVoca setVoca = setVocaService.findById(setVocaId);
 		if (setVoca == null) {
-			throw new NotFoundException("Role with id=" + setVocaId + " is not existed!!");
+			throw new NotFoundException("SetVoca with id=" + setVocaId + " is not existed!!");
 		}
 	}
 
-	public final void validateOverMaxVoca(UUID setVocaId, Specification_Voca specification) {
-		SetVoca setVoca = setVocaService.findById(setVocaId);
+	public final void validateExistVocaById(UUID vocaId) throws NotFoundException {
+		Voca voca = vocaService.findById(vocaId);
+		if (voca == null) {
+			throw new NotFoundException("Voca with id=" + vocaId + " is not existed!!");
+		}
+	}
+
+	public final void validateOverMaxVoca(VocaRequest vocaRequest) {
+		SetVoca setVoca = setVocaService.findById(vocaRequest.getSetId());
 		if (setVoca != null) {
 			Integer maxVoca = setVoca.getMaxVoca();
-			Long currentVoca = vocaService.count(specification);
+			Integer currentVoca = setVoca.getTotalVocas();
 			if (currentVoca >= maxVoca) {
 				throw new Ex_OverRangeException("Can not create more than " + maxVoca + " in one set-voca");
 			}
