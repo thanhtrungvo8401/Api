@@ -59,6 +59,14 @@ public class VocaService {
 		return count(specification);
 	}
 
+	public void deleteById(UUID id) {
+		vocaRepository.deleteById(id);
+	}
+
+	public void delete(Voca voca) {
+		vocaRepository.delete(voca);
+	}
+
 	private Specification_Voca getVocaSpecification(UUID setVocaId) {
 		Specification_Voca specification = new Specification_Voca();
 		SetVoca setVoca = new SetVoca();

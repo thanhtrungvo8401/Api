@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,7 @@ public class SetVocaController {
 	@Autowired
 	UserService userService;
 
-	// Create setVocas:
+	// CREATE
 	@PostMapping("/set-vocas")
 	public ResponseEntity<Object> handleCreateSetVocas(@Valid @RequestBody SetVocaRequest setVocaRequest)
 			throws NotFoundException {
@@ -59,7 +60,7 @@ public class SetVocaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new SetVocaResponse(setVoca));
 	}
 
-	// Update SetVocas by Id:
+	// UPDATE:
 	@PutMapping("/set-vocas/{setVocaId}")
 	public ResponseEntity<Object> handleUpdateSetVocasById(@PathVariable UUID setVocaId,
 			@Valid @RequestBody SetVocaRequest setVocaRequest) throws NotFoundException {
@@ -79,7 +80,7 @@ public class SetVocaController {
 		return ResponseEntity.ok(new SetVocaResponse(savedSetVoca));
 	}
 
-	// Get SetVocas by AuthorId:
+	// FETCH VOCAS:
 	@GetMapping("/users/{authorId}/set-vocas")
 	public ResponseEntity<Object> handleGetSetVocasCreatedByAuthor(@PathVariable UUID authorId)
 			throws NotFoundException {
@@ -93,6 +94,18 @@ public class SetVocaController {
 				.collect(Collectors.toList());
 		// return
 		return ResponseEntity.ok(setVocaResponses);
+	}
+
+	// DELETE
+	@DeleteMapping("/set-vocas/{id}")
+	public ResponseEntity<Object> handleDeleteSetVoca(@PathVariable UUID id) throws NotFoundException {
+		// validate:
+		setVocaDataValidate.validateSetVocaIdNotExist(id);
+		// delete:
+		SetVoca setVoca = setVocaService.findById(id);
+		setVocaService.delete(setVoca);
+		// return
+		return ResponseEntity.ok(new SetVocaResponse(setVoca));
 	}
 
 	private Specification_SetVoca getSetVocaSpecification(UUID authorId) {
