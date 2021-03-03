@@ -54,7 +54,7 @@ public class VocaController {
 		// Save:
 		Voca voca = vocaRequest.getVocaObject();
 		SetVoca setVoca = setVocaService.findById(vocaRequest.getSetId());
-		setVoca.setTotalVocas(setVoca.getTotalVocas() + 1);
+		setVoca.increaseVoca();
 		vocaService.save(voca);
 		setVocaService.save(setVoca);
 		// Return
@@ -77,9 +77,9 @@ public class VocaController {
 			vocaDataValidate.validateOverMaxVoca(vocaRequest);
 			// update
 			SetVoca setVocaRemove = oldVoca.getSetVoca();
-			setVocaRemove.setTotalVocas(setVocaRemove.getTotalVocas() - 1);
+			setVocaRemove.decreaseVoca();
 			SetVoca setVocaAdd = setVocaService.findById(vocaRequest.getSetId());
-			setVocaAdd.setTotalVocas(setVocaAdd.getTotalVocas() + 1);
+			setVocaAdd.increaseVoca();
 			setVocaService.save(setVocaAdd);
 			setVocaService.save(setVocaRemove);
 		}
@@ -106,7 +106,7 @@ public class VocaController {
 		// delete
 		SetVoca setVoca = voca.getSetVoca();
 		vocaService.delete(voca);
-		setVoca.setTotalVocas(setVoca.getTotalVocas() - 1);
+		setVoca.decreaseVoca();
 		setVocaService.save(setVoca);
 		return ResponseEntity.ok(new VocaResponse(voca));
 	}

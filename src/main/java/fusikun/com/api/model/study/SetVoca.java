@@ -46,6 +46,14 @@ public class SetVoca {
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "setVocas")
 	private List<Room> rooms;
 
+	public void decreaseVoca() {
+		this.totalVocas--;
+	}
+
+	public void increaseVoca() {
+		this.totalVocas++;
+	}
+
 	public String getSetName() {
 		return setName;
 	}
