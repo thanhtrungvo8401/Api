@@ -14,6 +14,7 @@ public class SetVocaRequest {
 	private UUID id;
 
 	private final Integer maxVoca = 10;
+	private Integer totalVocas = 0;
 
 	@NotNull(message = ConstantErrorCodes.NOT_NULL)
 	@NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
@@ -61,6 +62,14 @@ public class SetVocaRequest {
 
 	public Integer getMaxVoca() {
 		return maxVoca;
+	}
+
+	public Integer getTotalVocas() {
+		return totalVocas;
+	}
+
+	public void setTotalVocas(Integer totalVocas) {
+		this.totalVocas = totalVocas;
 	}
 
 }

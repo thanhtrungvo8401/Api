@@ -25,7 +25,6 @@ import fusikun.com.api.model.app.User;
 import fusikun.com.api.model.study.SetVoca;
 import fusikun.com.api.service.SetVocaService;
 import fusikun.com.api.service.UserService;
-import fusikun.com.api.service.VocaService;
 import fusikun.com.api.specificationSearch.Specification_SetVoca;
 import fusikun.com.api.specificationSearch._SearchCriteria;
 import fusikun.com.api.specificationSearch._SearchOperator;
@@ -42,63 +41,57 @@ public class SetVocaController {
 	SetVocaService setVocaService;
 
 	@Autowired
-	VocaService vocaService;
-
-	@Autowired
 	UserService userService;
 
 	// Create setVocas:
 	@PostMapping("/set-vocas")
 	public ResponseEntity<Object> handleCreateSetVocas(@Valid @RequestBody SetVocaRequest setVocaRequest)
 			throws NotFoundException {
+		// Validate:
 		setVocaDataValidate.validate(setVocaRequest);
 		setVocaDataValidate.validateAuthorNotExistById(setVocaRequest.getAuthorId());
 		setVocaDataValidate.validateSetVocasOverRange(setVocaRequest.getAuthorId(),
 				getSetVocaSpecification(setVocaRequest.getAuthorId()));
+		// Save data:
 		SetVoca setVoca = setVocaRequest.getSetVoca();
 		setVocaService.save(setVoca);
-		SetVocaResponse setVocaResponse = new SetVocaResponse(setVoca);
-		return ResponseEntity.status(HttpStatus.CREATED).body(setVocaResponse);
+		// return:
+		return ResponseEntity.status(HttpStatus.CREATED).body(new SetVocaResponse(setVoca));
 	}
 
 	// Update SetVocas by Id:
 	@PutMapping("/set-vocas/{setVocaId}")
 	public ResponseEntity<Object> handleUpdateSetVocasById(@PathVariable UUID setVocaId,
 			@Valid @RequestBody SetVocaRequest setVocaRequest) throws NotFoundException {
-		// Custom Validate:
+		// Validate:
 		setVocaRequest.setId(setVocaId);
 		setVocaDataValidate.validateSetVocaIdNotExist(setVocaRequest.getId());
 		setVocaDataValidate.validateAuthorNotExistById(setVocaRequest.getAuthorId());
-		setVocaDataValidate.validateSetVocasOverRange(setVocaRequest.getAuthorId(),
-				getSetVocaSpecification(setVocaRequest.getAuthorId()));
 		setVocaDataValidate.validate(setVocaRequest);
-		// Update SetVoca:
+		// Update:
 		SetVoca oldSetVoca = setVocaService.findById(setVocaId);
 		SetVoca setVoca = setVocaRequest.getSetVoca();
+		// ----validate over-range here ----
 		oldSetVoca.setAuthor(setVoca.getAuthor());
 		oldSetVoca.setSetName(setVoca.getSetName());
-		// Save SetVoca:
 		SetVoca savedSetVoca = setVocaService.save(oldSetVoca);
-
-		SetVocaResponse setVocaResponse = new SetVocaResponse(savedSetVoca);
-		setVocaResponse.setTotalVocas(vocaService.countVocaBySetVocaId(setVocaId).intValue());
-
-		return ResponseEntity.ok(setVocaResponse);
+		// return:
+		return ResponseEntity.ok(new SetVocaResponse(savedSetVoca));
 	}
 
 	// Get SetVocas by AuthorId:
 	@GetMapping("/users/{authorId}/set-vocas")
 	public ResponseEntity<Object> handleGetSetVocasCreatedByAuthor(@PathVariable UUID authorId)
 			throws NotFoundException {
+		// validate:
 		setVocaDataValidate.validateAuthorNotExistById(authorId);
+		// fetch data:
 		Specification_SetVoca specification = getSetVocaSpecification(authorId);
 		Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
 		List<SetVoca> setVocas = setVocaService.findAll(specification, pageable);
-		List<SetVocaResponse> setVocaResponses = setVocas.stream().map(setVoca -> {
-			SetVocaResponse setVocaResponse = new SetVocaResponse(setVoca);
-			setVocaResponse.setTotalVocas(vocaService.countVocaBySetVocaId(setVoca.getId()).intValue());
-			return setVocaResponse;
-		}).collect(Collectors.toList());
+		List<SetVocaResponse> setVocaResponses = setVocas.stream().map(setVoca -> new SetVocaResponse(setVoca))
+				.collect(Collectors.toList());
+		// return
 		return ResponseEntity.ok(setVocaResponses);
 	}
 

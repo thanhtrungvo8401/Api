@@ -24,6 +24,7 @@ public class SetVocaResponse {
 		this.updatedDate = setVoca.getUpdatedDate();
 		this.authorId = setVoca.getAuthor().getId();
 		this.setName = setVoca.getSetName();
+		this.totalVocas = setVoca.getTotalVocas();
 	}
 
 	public UUID getId() {
