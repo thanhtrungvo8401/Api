@@ -29,6 +29,7 @@ public class SetVocaRequest {
 		setVoca.setId(id);
 		setVoca.setMaxVoca(maxVoca);
 		setVoca.setSetName(setName);
+		setVoca.setTotalVocas(totalVocas);
 
 		User author = new User();
 		author.setId(authorId);
