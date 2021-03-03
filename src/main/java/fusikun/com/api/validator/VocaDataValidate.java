@@ -10,7 +10,6 @@ import fusikun.com.api.exceptionHandlers.Ex_OverRangeException;
 import fusikun.com.api.model.study.SetVoca;
 import fusikun.com.api.service.SetVocaService;
 import fusikun.com.api.service.VocaService;
-import fusikun.com.api.specificationSearch.Specification_Voca;
 import fusikun.com.api.utils.SpaceUtils;
 import javassist.NotFoundException;
 
@@ -37,11 +36,11 @@ public class VocaDataValidate {
 		}
 	}
 
-	public final void validateOverMaxVoca(UUID setVocaId, Specification_Voca specification) {
-		SetVoca setVoca = setVocaService.findById(setVocaId);
+	public final void validateOverMaxVoca(VocaRequest vocaRequest) {
+		SetVoca setVoca = setVocaService.findById(vocaRequest.getSetId());
 		if (setVoca != null) {
 			Integer maxVoca = setVoca.getMaxVoca();
-			Long currentVoca = vocaService.count(specification);
+			Integer currentVoca = setVoca.getTotalVocas();
 			if (currentVoca >= maxVoca) {
 				throw new Ex_OverRangeException("Can not create more than " + maxVoca + " in one set-voca");
 			}

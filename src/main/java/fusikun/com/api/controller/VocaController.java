@@ -42,29 +42,33 @@ public class VocaController {
 	@Autowired
 	SetVocaService setVocaService;
 
+	// CREATE
 	@PostMapping("/vocas")
 	public ResponseEntity<Object> handleCreateVoca(@Valid @RequestBody VocaRequest vocaRequest)
 			throws NotFoundException {
+		// Validate:
 		vocaDataValidate.validate(vocaRequest);
 		vocaDataValidate.validateExistSetVocaById(vocaRequest.getSetId());
-		vocaDataValidate.validateOverMaxVoca(vocaRequest.getSetId(),
-				getVocaSpecificationFromSetVocasId(vocaRequest.getSetId()));
-		
+		vocaDataValidate.validateOverMaxVoca(vocaRequest);
+		// Save:
 		Voca voca = vocaRequest.getVocaObject();
 		vocaService.save(voca);
-
+		// Return
 		return ResponseEntity.status(HttpStatus.CREATED).body(new VocaResponse(voca));
 	}
 
+	// FETCH VOCAS:
 	@GetMapping("/set-vocas/{id}/vocas")
 	public ResponseEntity<Object> handleGetVocasInSetVoca(@PathVariable UUID id) throws NotFoundException {
+		// Validate:
 		vocaDataValidate.validateExistSetVocaById(id);
+		// Fetch
 		Specification_Voca specification = getVocaSpecificationFromSetVocasId(id);
 		Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
 		List<Voca> vocas = vocaService.findAll(specification, pageable);
+		// Return:
 		List<VocaResponse> vocaResponses = vocas.stream().map(voca -> new VocaResponse(voca))
 				.collect(Collectors.toList());
-
 		return ResponseEntity.ok(vocaResponses);
 	}
 
