@@ -80,7 +80,7 @@ public class SetVocaController {
 		return ResponseEntity.ok(new SetVocaResponse(savedSetVoca));
 	}
 
-	// FETCH VOCAS:
+	// FETCH SET-VOCAS:
 	@GetMapping("/users/{authorId}/set-vocas")
 	public ResponseEntity<Object> handleGetSetVocasCreatedByAuthor(@PathVariable UUID authorId)
 			throws NotFoundException {
@@ -94,6 +94,16 @@ public class SetVocaController {
 				.collect(Collectors.toList());
 		// return
 		return ResponseEntity.ok(setVocaResponses);
+	}
+
+	@GetMapping("/set-vocas/{id}")
+	public ResponseEntity<Object> handleGetSetVocasById(@PathVariable UUID id) throws NotFoundException {
+		// Validate
+		setVocaDataValidate.validateSetVocaIdNotExist(id);
+		// get data
+		SetVoca setVoca = setVocaService.findById(id);
+		// return
+		return ResponseEntity.ok(new SetVocaResponse(setVoca));
 	}
 
 	// DELETE
