@@ -25,7 +25,7 @@ public class Voca {
 
 	private String voca;
 	private String meaning;
-	private String kanji;
+	private String note;
 	private String sentence;
 	private Boolean isActive;
 	private Date createdDate;
@@ -51,12 +51,12 @@ public class Voca {
 		this.meaning = meaning;
 	}
 
-	public String getKanji() {
-		return kanji;
+	public String getNote() {
+		return note;
 	}
 
-	public void setKanji(String kanji) {
-		this.kanji = kanji;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public String getSentence() {

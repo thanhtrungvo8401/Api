@@ -8,7 +8,7 @@ import fusikun.com.api.model.study.Voca;
 public class VocaResponse {
 	private UUID id;
 	private String voca;
-	private String kanji;
+	private String note;
 	private String sentence;
 	private Date createdDate;
 	private Date updatedDate;
@@ -20,7 +20,7 @@ public class VocaResponse {
 	public VocaResponse(Voca voca) {
 		this.id = voca.getId();
 		this.voca = voca.getVoca();
-		this.kanji = voca.getKanji();
+		this.note = voca.getNote();
 		this.sentence = voca.getSentence();
 		this.createdDate = voca.getCreatedDate();
 		this.updatedDate = voca.getUpdatedDate();
@@ -51,12 +51,12 @@ public class VocaResponse {
 		this.voca = voca;
 	}
 
-	public String getKanji() {
-		return kanji;
+	public String getNote() {
+		return note;
 	}
 
-	public void setKanji(String kanji) {
-		this.kanji = kanji;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public String getSentence() {
