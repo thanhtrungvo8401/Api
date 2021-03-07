@@ -27,7 +27,7 @@ public class VocaRequest {
 	private String meaning;
 
 	@Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
-	private String kanji;
+	private String note;
 
 	@Size(max = 255, message = ConstantErrorCodes.NOT_OVER_255_LETTER)
 	private String sentence;
@@ -40,7 +40,7 @@ public class VocaRequest {
 		vocaObject.setId(id);
 		vocaObject.setVoca(this.voca);
 		vocaObject.setMeaning(meaning);
-		vocaObject.setKanji(kanji);
+		vocaObject.setNote(note);
 		vocaObject.setSentence(sentence);
 
 		SetVoca setVoca = new SetVoca();
@@ -73,12 +73,12 @@ public class VocaRequest {
 		this.meaning = meaning;
 	}
 
-	public String getKanji() {
-		return kanji;
+	public String getNote() {
+		return note;
 	}
 
-	public void setKanji(String kanji) {
-		this.kanji = kanji;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public String getSentence() {

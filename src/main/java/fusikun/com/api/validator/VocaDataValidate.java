@@ -26,7 +26,7 @@ public class VocaDataValidate {
 		// TRYM WHITE SPACE:
 		vocaRequest.setVoca(SpaceUtils.trymWhiteSpace(vocaRequest.getVoca()));
 		vocaRequest.setMeaning(SpaceUtils.trymWhiteSpace(vocaRequest.getMeaning()));
-		vocaRequest.setKanji(SpaceUtils.trymWhiteSpace(vocaRequest.getKanji()));
+		vocaRequest.setNote(SpaceUtils.trymWhiteSpace(vocaRequest.getNote()));
 		vocaRequest.setSentence(SpaceUtils.trymWhiteSpace(vocaRequest.getSentence()));
 	}
 

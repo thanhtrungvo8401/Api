@@ -84,7 +84,7 @@ public class VocaController {
 			setVocaService.save(setVocaRemove);
 		}
 
-		oldVoca.setKanji(vocaRequest.getKanji());
+		oldVoca.setNote(vocaRequest.getNote());
 		oldVoca.setMeaning(vocaRequest.getMeaning());
 		oldVoca.setSentence(vocaRequest.getSentence());
 		oldVoca.setVoca(vocaRequest.getVoca());
