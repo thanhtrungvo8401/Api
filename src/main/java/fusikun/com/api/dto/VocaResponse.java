@@ -9,6 +9,7 @@ public class VocaResponse {
 	private UUID id;
 	private String voca;
 	private String note;
+	private String meaning;
 	private String sentence;
 	private Date createdDate;
 	private Date updatedDate;
@@ -21,6 +22,7 @@ public class VocaResponse {
 		this.id = voca.getId();
 		this.voca = voca.getVoca();
 		this.note = voca.getNote();
+		this.meaning = voca.getMeaning();
 		this.sentence = voca.getSentence();
 		this.createdDate = voca.getCreatedDate();
 		this.updatedDate = voca.getUpdatedDate();
@@ -57,6 +59,14 @@ public class VocaResponse {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public String getMeaning() {
+		return meaning;
+	}
+
+	public void setMeaning(String meaning) {
+		this.meaning = meaning;
 	}
 
 	public String getSentence() {
