@@ -22,15 +22,12 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		// Ignore some URL:
 		String reqUrl = request.getRequestURI();
 		String method = request.getMethod();
-		String ignoreAuthorUrl = reqUrl + Constant.FILTER_DIVICE + method;
-		List<String> listIgnoreUrl = IgnoreUrl.listUrl(true);
-
-		if (listIgnoreUrl.contains(ignoreAuthorUrl)) {
+		if (IgnoreUrl.isPublicUrl(request)) {
 			return true;
 		}
+		// Check permissions
 		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		// Check ADMIN role:

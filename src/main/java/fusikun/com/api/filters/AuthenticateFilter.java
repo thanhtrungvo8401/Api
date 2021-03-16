@@ -1,7 +1,6 @@
 package fusikun.com.api.filters;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.FilterChain;
@@ -36,14 +35,11 @@ public class AuthenticateFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		// Ignore some URL:
-		String ignoreAuthenUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
-		List<String> listIgnoreUrl = IgnoreUrl.listUrl(true);
-		if (listIgnoreUrl.contains(ignoreAuthenUrl)) {
+		if (IgnoreUrl.isPublicUrl(request)) {
 			chain.doFilter(request, response);
 			return;
 		}
-		// URL not in Ignore list => validate
+		// check JWT
 		final String authorizationHeader = request.getHeader(Constant.AUTH_AUTHORIZATION);
 		String userId = null;
 		String jwt = null;

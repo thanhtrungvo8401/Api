@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class IgnoreUrl {
 	private static final String[] list = { "/authenticate/login<!>POST", "/students<!>POST", "/initial-project<!>GET" };
 
@@ -20,4 +22,12 @@ public class IgnoreUrl {
 	}
 
 	public static final List<String> listUrl = listUrl(false);
+
+	public static final Boolean isPublicUrl(HttpServletRequest request) {
+		String ignoreAuthenUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
+		if (listUrl(true).contains(ignoreAuthenUrl)) {
+			return true;
+		}
+		return false;
+	}
 }
