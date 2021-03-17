@@ -60,6 +60,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		for (String reqUrl : IgnoreUrl.listUrl) {
 			http.authorizeRequests().antMatchers(reqUrl).permitAll();
 		}
+		for (String reqUrl : IgnoreUrl.AUTH_WHITELIST) {
+			http.authorizeRequests().antMatchers(reqUrl).permitAll();
+		}
 		http.cors();
 		http.authorizeRequests().anyRequest().authenticated();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
