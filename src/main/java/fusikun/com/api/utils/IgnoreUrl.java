@@ -7,18 +7,16 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 public class IgnoreUrl {
-	private static final String[] list = { "/authenticate/login<!>POST", "/students<!>POST", "/initial-project<!>GET" };
+	private static final String[] LIST_PUPLIC_URL = { "/authenticate/login<!>POST", "/students<!>POST",
+			"/initial-project<!>GET" };
 
 	public static final List<String> listUrl(Boolean hasMethod) {
-		List<String> listUrlWithMethod = Arrays.asList(list);
 		if (hasMethod)
-			return listUrlWithMethod;
-		else {
-			return listUrlWithMethod.stream().map(el -> {
-				String url = el.split(Constant.FILTER_DIVICE)[0];
-				return url;
-			}).collect(Collectors.toList());
-		}
+			return Arrays.asList(LIST_PUPLIC_URL);
+		else
+			return Arrays.asList(LIST_PUPLIC_URL).stream().map(el -> el.split(Constant.FILTER_DIVICE)[0])
+					.collect(Collectors.toList());
+
 	}
 
 	public static final List<String> listUrl = listUrl(false);
@@ -29,14 +27,12 @@ public class IgnoreUrl {
 
 	public static final Boolean isPublicUrl(HttpServletRequest request) {
 		String ignoreAuthenUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
-		String reqUrl = request.getRequestURI();
 		if (listUrl(true).contains(ignoreAuthenUrl)) {
 			return true;
 		}
-		for (int i = 0; i < AUTH_WHITELIST.length; i++) {
-			String url = AUTH_WHITELIST[i];
-			System.out.println(url + "_" + request.getRequestURI());
-			if (url.contains(reqUrl) || reqUrl.contains(url) || url.equals(reqUrl) || reqUrl.contains("/swagger-ui")) {
+		String reqUrl = request.getRequestURI();
+		for (String url : AUTH_WHITELIST) {
+			if (reqUrl.contains("/swagger-ui") || url.contains(reqUrl) || reqUrl.contains(url)) {
 				return true;
 			}
 		}
