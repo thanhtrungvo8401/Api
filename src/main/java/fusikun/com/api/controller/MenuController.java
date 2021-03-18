@@ -26,7 +26,7 @@ public class MenuController {
 	@Autowired
 	MenuService menuService;
 
-	@GetMapping("/menu-actions")
+	@GetMapping("/api/v1/menu-actions")
 	public ResponseEntity<Object> getMenuActions() {
 		List<Menu> listMenus = menuService.findAll();
 		Long total = menuService.countActionMenus();
@@ -46,7 +46,7 @@ public class MenuController {
 		return ResponseEntity.ok(total);
 	}
 
-	@GetMapping("/menu-actions/generate")
+	@GetMapping("/api/v1/menu-actions/generate")
 	public ResponseEntity<Object> generateActionsMenu() throws Ex_MethodArgumentNotValidException {
 		deleteMenuActionsNotInList();
 		for (UrlEnpointEnums enpoint : UrlEnpointEnums.values()) {

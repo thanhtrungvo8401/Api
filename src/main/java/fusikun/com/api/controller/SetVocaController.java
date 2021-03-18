@@ -45,7 +45,7 @@ public class SetVocaController {
 	UserService userService;
 
 	// CREATE
-	@PostMapping("/set-vocas")
+	@PostMapping("/api/common/v1/set-vocas")
 	public ResponseEntity<Object> handleCreateSetVocas(@Valid @RequestBody SetVocaRequest setVocaRequest)
 			throws NotFoundException {
 		// Validate:
@@ -61,7 +61,7 @@ public class SetVocaController {
 	}
 
 	// UPDATE:
-	@PutMapping("/set-vocas/{setVocaId}")
+	@PutMapping("/api/common/v1/set-vocas/{setVocaId}")
 	public ResponseEntity<Object> handleUpdateSetVocasById(@PathVariable UUID setVocaId,
 			@Valid @RequestBody SetVocaRequest setVocaRequest) throws NotFoundException {
 		// Validate:
@@ -81,7 +81,7 @@ public class SetVocaController {
 	}
 
 	// FETCH SET-VOCAS:
-	@GetMapping("/users/{authorId}/set-vocas")
+	@GetMapping("/api/common/v1/users/{authorId}/set-vocas")
 	public ResponseEntity<Object> handleGetSetVocasCreatedByAuthor(@PathVariable UUID authorId)
 			throws NotFoundException {
 		// validate:
@@ -96,7 +96,7 @@ public class SetVocaController {
 		return ResponseEntity.ok(setVocaResponses);
 	}
 
-	@GetMapping("/set-vocas/{id}")
+	@GetMapping("/api/common/v1/set-vocas/{id}")
 	public ResponseEntity<Object> handleGetSetVocasById(@PathVariable UUID id) throws NotFoundException {
 		// Validate
 		setVocaDataValidate.validateSetVocaIdNotExist(id);
@@ -107,7 +107,7 @@ public class SetVocaController {
 	}
 
 	// DELETE
-	@DeleteMapping("/set-vocas/{id}")
+	@DeleteMapping("/api/common/v1/set-vocas/{id}")
 	public ResponseEntity<Object> handleDeleteSetVoca(@PathVariable UUID id) throws NotFoundException {
 		// validate:
 		setVocaDataValidate.validateSetVocaIdNotExist(id);

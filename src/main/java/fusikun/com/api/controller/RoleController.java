@@ -47,7 +47,7 @@ public class RoleController {
 	@Autowired
 	AuthService authService;
 
-	@GetMapping("/roles")
+	@GetMapping("/api/v1/roles")
 	public ResponseEntity<Object> getAllRoles() {
 		List<Role> roles = roleService.findAll();
 		List<RoleResponse> rolesRes = roles.stream().map(role -> new RoleResponse(role)).collect(Collectors.toList());
@@ -55,7 +55,7 @@ public class RoleController {
 		return ResponseEntity.ok(new RoleManagement(rolesRes, total));
 	}
 
-	@PostMapping("/roles")
+	@PostMapping("/api/v1/roles")
 	public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
 			throws Ex_MethodArgumentNotValidException {
 		// CUSTOM VALIDATE:
@@ -68,7 +68,7 @@ public class RoleController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
 	}
 
-	@GetMapping("/roles/{id}")
+	@GetMapping("/api/v1/roles/{id}")
 	public ResponseEntity<Object> getRoleById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);
@@ -102,7 +102,7 @@ public class RoleController {
 		return ResponseEntity.ok(roleRes);
 	}
 
-	@PutMapping("/roles/{id}")
+	@PutMapping("/api/v1/roles/{id}")
 	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
 			@PathVariable UUID id) throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
@@ -118,7 +118,7 @@ public class RoleController {
 		return ResponseEntity.ok(new RoleResponse(saveRole));
 	}
 
-	@DeleteMapping("/roles/{id}")
+	@DeleteMapping("/api/v1/roles/{id}")
 	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);
@@ -161,7 +161,7 @@ public class RoleController {
 		public void setList(List<RoleResponse> list) {
 			this.list = list;
 		}
-
+		
 		@SuppressWarnings("unused")
 		public Long getTotal() {
 			return total;

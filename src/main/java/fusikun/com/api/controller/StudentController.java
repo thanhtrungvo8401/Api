@@ -40,7 +40,7 @@ public class StudentController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	@PostMapping("/students")
+	@PostMapping("/api/common/v1/students")
 	public ResponseEntity<Object> handleCreateStudent(@Valid @RequestBody User_StudentRequest studentRequest)
 			throws Ex_MethodArgumentNotValidException {
 		Role roleStudent = roleService.findByRoleName(Constant.STUDENT_ROLE);

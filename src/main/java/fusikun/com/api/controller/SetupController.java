@@ -33,7 +33,7 @@ public class SetupController {
 	@Autowired
 	Environment env;
 
-	@GetMapping("/initial-project")
+	@GetMapping("/api/v1/initial-project")
 	public ResponseEntity<Object> handleSetupProject(@RequestParam("code") String code) throws Exception {
 		String validCode = env.getProperty("configure.code");
 		if (!code.equals(validCode)) {

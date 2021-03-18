@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 public class IgnoreUrl {
-	private static final String[] LIST_PUPLIC_URL = { "/authenticate/login<!>POST", "/students<!>POST",
-			"/initial-project<!>GET" };
+	private static final String[] LIST_PUPLIC_URL = { 
+		"/api/common/v1/authenticate/login<!>POST", 
+		"/api/common/v1/students<!>POST",
+		"/api/v1/initial-project<!>GET" 
+	};
 
 	public static final List<String> listUrl(Boolean hasMethod) {
 		if (hasMethod)
