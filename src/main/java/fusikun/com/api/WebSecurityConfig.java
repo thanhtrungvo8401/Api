@@ -57,7 +57,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
-		for (String reqUrl : IgnoreUrl.listUrl) {
+		for (String reqUrl : IgnoreUrl.LIST_PUPLIC_URL) {
+			http.authorizeRequests().antMatchers(reqUrl).permitAll();
+		}
+		for (String reqUrl : IgnoreUrl.SWAGGER_WHITELIST) {
 			http.authorizeRequests().antMatchers(reqUrl).permitAll();
 		}
 		http.cors();

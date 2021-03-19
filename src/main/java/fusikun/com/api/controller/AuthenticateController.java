@@ -27,7 +27,7 @@ public class AuthenticateController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("/authenticate/login")
+	@PostMapping("/api/common/v1/authenticate/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		// authenticate userDate here => Error occurs => throw Exception and Stop
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
@@ -41,7 +41,7 @@ public class AuthenticateController {
 		return ResponseEntity.ok(new JwtResponse(jwt));
 	}
 
-	@PostMapping("/authenticate/logout")
+	@PostMapping("/api/common/v1/authenticate/logout")
 	public String handleLogout() {
 		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();

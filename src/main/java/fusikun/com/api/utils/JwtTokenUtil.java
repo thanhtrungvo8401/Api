@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+
+import fusikun.com.api.dto.UserInfoObject;
 import fusikun.com.api.model.app.JwtUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,8 +29,10 @@ public class JwtTokenUtil implements Serializable {
 	private String SECRET_KEY;
 
 	// retrieve user from jwt-token:
-	public String getUserInfoFromToken(String token) {
-		return getClaimsFromToken(token, Claims::getSubject);
+	public UserInfoObject getUserInfoFromToken(String token) {
+		String userInfo = getClaimsFromToken(token, Claims::getSubject);
+		UserInfoObject jwtObject = new Gson().fromJson(userInfo, UserInfoObject.class);
+		return jwtObject;
 	}
 
 	// retrieve accessToken from jwt-token:
@@ -68,18 +73,22 @@ public class JwtTokenUtil implements Serializable {
 	// 3) According to JWS Compact Serialization
 	// compaction of the JWT to a URL-safe string
 	private String doGenerateToken(Map<String, Object> claims, JwtUserDetails userDetails) {
-		return Jwts.builder().setClaims(claims)
-				.setSubject(userDetails.getId().toString())
-				.setId(userDetails.getAccessToken())
+		UserInfoObject userInfo = new UserInfoObject(userDetails);
+		String jwt = new Gson().toJson(userInfo);
+		return Jwts.builder().setClaims(claims).setSubject(jwt).setId(userDetails.getAccessToken())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + Math.round(JWT_TOKEN_HOURS * 60 * 60 * 1000)))
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
 
 	public Boolean validateToken(String token, JwtUserDetails userDetails) {
-		final String userId = getUserInfoFromToken(token);
+		UserInfoObject userInfo = getUserInfoFromToken(token);
+		final String userId = userInfo.getId().toString();
+		final String roleName = userInfo.getRoleName();
 		final String accessToken = getAccessTokenFromToken(token);
-		return (userId.equals(userDetails.getId().toString()) && accessToken.equals(userDetails.getAccessToken())
-				&& !isTokenExpired(token));
+		return userId.equals(userDetails.getId().toString())
+				&& accessToken.equals(userDetails.getAccessToken())
+				&& !isTokenExpired(token)
+				&& roleName.equals(userDetails.getRole().getRoleName());
 	}
 }

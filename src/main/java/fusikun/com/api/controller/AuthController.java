@@ -26,7 +26,9 @@ public class AuthController {
 	@Autowired
 	AuthDataValidate authDataValidate;
 
-	@PutMapping("/auths/{id}")
+	// JWT with ROLE, ROLE = ADMIN or STUDENT => not get ROLE and Authorization 
+	// ROLE with STUDENT => /api/common/** => can access without checkout permission */
+	@PutMapping("/api/v1/auths/{id}")
 	public ResponseEntity<Object> handleUpdateAuthById(@Valid @RequestBody AuthRequest authRequest,
 			@PathVariable UUID id) throws NotFoundException {
 		// CUSTOM VALIDATE:

@@ -1,8 +1,6 @@
 package fusikun.com.api.filters;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import fusikun.com.api.dto.UserInfoObject;
 import fusikun.com.api.exceptionHandlers.Ex_InvalidTokenException;
 import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.service.JwtUserDetailsService;
@@ -36,41 +35,36 @@ public class AuthenticateFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		// Ignore some URL:
-		String ignoreAuthenUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
-		List<String> listIgnoreUrl = IgnoreUrl.listUrl(true);
-		if (listIgnoreUrl.contains(ignoreAuthenUrl)) {
+		if (IgnoreUrl.isPublicUrl(request)) {
 			chain.doFilter(request, response);
 			return;
 		}
-		// URL not in Ignore list => validate
+		
 		final String authorizationHeader = request.getHeader(Constant.AUTH_AUTHORIZATION);
-		String userId = null;
-		String jwt = null;
-		if (authorizationHeader != null && authorizationHeader.startsWith(Constant.AUTH_BEARER)) {
-			jwt = authorizationHeader.substring(Constant.AUTH_BEARER_INDEX);
-			userId = jwtTokenUtil.getUserInfoFromToken(jwt);
-		} else {
+		// check exist and valid token format:
+		if (authorizationHeader == null || !authorizationHeader.startsWith(Constant.AUTH_BEARER)) {
 			System.out.println("======= JWT does not start with 'bearer' OR NULL =======");
 			throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
+		String jwt = authorizationHeader.substring(Constant.AUTH_BEARER_INDEX);
+		UserInfoObject userInfo = jwtTokenUtil.getUserInfoFromToken(jwt);
 
-		if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			JwtUserDetails userDetails = jwtUserDetailsService.loadUserByUserId(UUID.fromString(userId));
-			if (jwtTokenUtil.validateToken(jwt, userDetails)) {
-				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails, null, userDetails.getAuthorities());
-
-				usernamePasswordAuthenticationToken
-						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-			} else {
-				System.out.println("======= invalid TOKEN =======");
-				throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
-			}
-		} else {
+		// check valid token
+		if (userInfo == null || userInfo.getId() == null
+				|| SecurityContextHolder.getContext().getAuthentication() != null) {
 			throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
 		}
+		JwtUserDetails userDetails = jwtUserDetailsService.loadUserByUserInfo(userInfo);
+
+		// check valid token
+		if (!jwtTokenUtil.validateToken(jwt, userDetails)) {
+			System.out.println("======= invalid TOKEN =======");
+			throw new Ex_InvalidTokenException(ConstantMessages.INVALID_TOKEN);
+		}
+		UsernamePasswordAuthenticationToken object = new UsernamePasswordAuthenticationToken(userDetails, null,
+				userDetails.getAuthorities());
+		object.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		SecurityContextHolder.getContext().setAuthentication(object);
 		chain.doFilter(request, response);
 	}
 }

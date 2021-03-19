@@ -45,7 +45,7 @@ public class UserController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	@GetMapping("/users")
+	@GetMapping("/api/v1/users")
 	public ResponseEntity<Object> handleGetUsers(@RequestParam(required = false) Map<String, String> filters) {
 		Specification_User userSpecification = new SearchHelpers_Users(filters).getUserSpecification();
 		Pageable pageable = SortHelper.getSort(filters);
@@ -56,7 +56,7 @@ public class UserController {
 		return ResponseEntity.ok(new UsersManagement(userResponses, total));
 	}
 
-	@PostMapping("/users")
+	@PostMapping("/api/v1/users")
 	public ResponseEntity<Object> handleCreateUser(@Valid @RequestBody UserRequest userRequest)
 			throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
@@ -67,7 +67,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(user));
 	}
 
-	@GetMapping("/users/{id}")
+	@GetMapping("/api/v1/users/{id}")
 	public ResponseEntity<Object> getUserById(@PathVariable UUID id) throws NotFoundException {
 		// Validate data exist or not:
 		userDataValidate.validateExistById(id);
@@ -75,7 +75,7 @@ public class UserController {
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
-	@PutMapping("/users/{id}")
+	@PutMapping("/api/v1/users/{id}")
 	public ResponseEntity<Object> handleUpdateUserById(@Valid @RequestBody UserRequest userRequest,
 			@PathVariable UUID id) throws NotFoundException, Ex_MethodArgumentNotValidException {
 		// Validate data: (validate email, if password was posted => also validate)
@@ -91,7 +91,7 @@ public class UserController {
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/api/v1/users/{id}")
 	public ResponseEntity<Object> handleDeleteUserById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA:
 		userDataValidate.validateExistById(id);
@@ -101,7 +101,7 @@ public class UserController {
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
-	@GetMapping("/my-profile")
+	@GetMapping("/api/common/v1/my-profile")
 	public ResponseEntity<Object> handleGetUserDetail() {
 		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();

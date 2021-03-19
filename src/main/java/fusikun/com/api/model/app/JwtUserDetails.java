@@ -31,11 +31,20 @@ public class JwtUserDetails implements UserDetails {
 			this.accessToken = user.getAccessToken();
 			this.role = user.getRole();
 			List<Auth> auths = role.getAuths();
-			this.menus = auths.stream()
-					.filter(auth -> auth.getIsActive())
-					.map(auth -> auth.getMenu())
-					.filter(menu -> menu.getMethod() != null)
-					.collect(Collectors.toList());
+			this.menus = auths.stream().filter(auth -> auth.getIsActive()).map(auth -> auth.getMenu())
+					.filter(menu -> menu.getMethod() != null).collect(Collectors.toList());
+		}
+	}
+
+	public JwtUserDetails(User user, Boolean isWithoutMenus) {
+		if (user != null) {
+			this.id = user.getId();
+			this.email = user.getEmail();
+			this.password = user.getPassword();
+			this.isActive = user.getIsActive();
+			this.accessToken = user.getAccessToken();
+			this.role = user.getRole();
+			this.role.getRoleName(); // to load Role role value;
 		}
 	}
 

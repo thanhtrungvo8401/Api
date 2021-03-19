@@ -22,21 +22,21 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		// Ignore some URL:
 		String reqUrl = request.getRequestURI();
 		String method = request.getMethod();
-		String ignoreAuthorUrl = reqUrl + Constant.FILTER_DIVICE + method;
-		List<String> listIgnoreUrl = IgnoreUrl.listUrl(true);
-
-		if (listIgnoreUrl.contains(ignoreAuthorUrl)) {
+		if (IgnoreUrl.isNotForbiddenUrl(request)) {
 			return true;
 		}
+		// Check permissions
 		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		// Check ADMIN role:
 		String roleName = jwtUserDetails.getRole().getRoleName();
 		if (roleName.equals(Constant.ADMIN_ROLE)) {
 			return true;
+		}
+		if (roleName.equals(Constant.STUDENT_ROLE)) {
+			throw new AccessDeniedException("Your access to '" + reqUrl + " & method=" + method + "' is forbidden");
 		}
 
 		List<Menu> menus = jwtUserDetails.getMenus();
