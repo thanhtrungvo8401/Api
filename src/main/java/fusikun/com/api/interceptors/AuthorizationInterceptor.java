@@ -35,6 +35,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		if (roleName.equals(Constant.ADMIN_ROLE)) {
 			return true;
 		}
+		if (roleName.equals(Constant.STUDENT_ROLE)) {
+			throw new AccessDeniedException("Your access to '" + reqUrl + " & method=" + method + "' is forbidden");
+		}
 
 		List<Menu> menus = jwtUserDetails.getMenus();
 		for (Menu menu : menus) {

@@ -1,6 +1,6 @@
 package fusikun.com.api.service;
 
-import java.util.UUID;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fusikun.com.api.dto.UserInfoObject;
 import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.model.app.User;
+import fusikun.com.api.utils.Constant;
 
 /**
  * 
@@ -30,9 +32,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 		return new JwtUserDetails(user);
 	}
 
-	public JwtUserDetails loadUserByUserId(UUID uuid) {
-		User user = userService.findById(uuid);
-		return new JwtUserDetails(user);
+	public JwtUserDetails loadUserByUserInfo(UserInfoObject userInfo) {
+		String[] basicRoleArr = { Constant.ADMIN_ROLE, Constant.STUDENT_ROLE };
+		boolean isWithoutMenus = Arrays.asList(basicRoleArr).contains(userInfo.getRoleName());
+		User user = userService.findById(userInfo.getId());
+		return isWithoutMenus ? new JwtUserDetails(user, true) : new JwtUserDetails(user);
 	}
-
 }
