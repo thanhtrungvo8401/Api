@@ -23,7 +23,7 @@ public class IgnoreUrl {
 
 	public static final String[] SWAGGER_WHITELIST = { "/favicon.ico", "/v2/api-docs", "/swagger-resources",
 			"/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**",
-			"/v3/api-docs/**", "/swagger-ui/**", "/error", "/swagger-ui/index.html" };
+			"/v3/api-docs/**", "/swagger-ui/**" };
 
 	public static final Boolean isPublicUrl(HttpServletRequest request) {
 		String ignoreAuthenUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
@@ -31,8 +31,11 @@ public class IgnoreUrl {
 			return true;
 		}
 		String reqUrl = request.getRequestURI();
+		if (reqUrl.contains("/swagger")) {
+			return true;
+		}
 		for (String url : SWAGGER_WHITELIST) {
-			if (reqUrl.contains("/swagger-ui") || url.contains(reqUrl) || reqUrl.contains(url)) {
+			if (url.contains(reqUrl) || reqUrl.contains(url)) {
 				return true;
 			}
 		}
