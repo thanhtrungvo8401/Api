@@ -39,8 +39,8 @@ public class AuthenticateFilter extends OncePerRequestFilter {
 			chain.doFilter(request, response);
 			return;
 		}
+		
 		final String authorizationHeader = request.getHeader(Constant.AUTH_AUTHORIZATION);
-
 		// check exist and valid token format:
 		if (authorizationHeader == null || !authorizationHeader.startsWith(Constant.AUTH_BEARER)) {
 			System.out.println("======= JWT does not start with 'bearer' OR NULL =======");

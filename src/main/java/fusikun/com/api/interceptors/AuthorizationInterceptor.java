@@ -24,7 +24,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 			throws Exception {
 		String reqUrl = request.getRequestURI();
 		String method = request.getMethod();
-		if (IgnoreUrl.isPublicUrl(request)) {
+		if (IgnoreUrl.isNotForbiddenUrl(request)) {
 			return true;
 		}
 		// Check permissions
