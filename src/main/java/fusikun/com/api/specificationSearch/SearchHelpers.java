@@ -12,7 +12,7 @@ public class SearchHelpers {
 
 	/**
 	 * field=filter <=> field=operatorKey objectValue .........................
-	 * Example: email=like 8402, id=in 1,2,3,4
+	 * Example: email=like<!>8402, id=in<!>1,2,3,4
 	 */
 	String field;
 	String filter;
