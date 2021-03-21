@@ -13,7 +13,7 @@ import fusikun.com.api.dao.MenuRepository;
 import fusikun.com.api.model.app.Menu;
 import fusikun.com.api.specificationSearch.Specification_Menu;
 import fusikun.com.api.specificationSearch._SearchCriteria;
-import fusikun.com.api.specificationSearch._SearchOperator;
+import fusikun.com.api.enums.SearchOperator;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -54,7 +54,7 @@ public class MenuService {
 
 	public List<Menu> findNotMappedMenus(List<String> listName) {
 		Specification_Menu menuSpecification = new Specification_Menu();
-		menuSpecification.add(new _SearchCriteria("name", _SearchOperator.NOT_IN, listName));
+		menuSpecification.add(new _SearchCriteria("name", SearchOperator.NOT_IN, listName));
 		return menuRepository.findAll(menuSpecification);
 	}
 
@@ -84,7 +84,7 @@ public class MenuService {
 
 	public void deleteMenuHasNameNotInList(List<String> listName) {
 		Specification_Menu menuSpecification = new Specification_Menu();
-		menuSpecification.add(new _SearchCriteria("name", _SearchOperator.NOT_IN, listName));
+		menuSpecification.add(new _SearchCriteria("name", SearchOperator.NOT_IN, listName));
 		List<Menu> menusNotInList = menuRepository.findAll(menuSpecification);
 		menuRepository.deleteAll(menusNotInList);
 	}

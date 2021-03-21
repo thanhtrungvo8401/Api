@@ -16,7 +16,7 @@ import fusikun.com.api.model.study.SetVoca;
 import fusikun.com.api.model.study.Voca;
 import fusikun.com.api.specificationSearch.Specification_Voca;
 import fusikun.com.api.specificationSearch._SearchCriteria;
-import fusikun.com.api.specificationSearch._SearchOperator;
+import fusikun.com.api.enums.SearchOperator;
 
 @Service
 public class VocaService {
@@ -71,7 +71,7 @@ public class VocaService {
 		Specification_Voca specification = new Specification_Voca();
 		SetVoca setVoca = new SetVoca();
 		setVoca.setId(setVocaId);
-		specification.add(new _SearchCriteria("setVoca", _SearchOperator.EQUAL, setVoca));
+		specification.add(new _SearchCriteria("setVoca", SearchOperator.EQUAL, setVoca));
 		return specification;
 	}
 }
