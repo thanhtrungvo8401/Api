@@ -3,6 +3,7 @@ package fusikun.com.api.specificationSearch;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import fusikun.com.api.enums.ApiDataType;
+import fusikun.com.api.enums.SearchOperator;
 import fusikun.com.api.exceptionHandlers.Ex_InvalidSearch;
 import fusikun.com.api.utils.Constant;
 import org.springframework.util.StringUtils;
@@ -63,7 +64,7 @@ public abstract class _SearchHelpers<T extends _Specification> {
             String[] arr = extractStringToArray(filter);
             String operatorKey = arr[0];
             String objectValue = arr[1];
-            _SearchOperator operator = getSearchOperator(operatorKey);
+            SearchOperator operator = getSearchOperator(operatorKey);
             Object value = getValue(operatorKey, objectValue);
             if (this.field.contains(Constant.DOT)) {
                 String key = field.split(Constant.DOT_REGEX)[0];
@@ -74,41 +75,41 @@ public abstract class _SearchHelpers<T extends _Specification> {
             }
         }
 
-        private _SearchOperator getSearchOperator(String operatorkey) {
-            _SearchOperator operator = null;
+        private SearchOperator getSearchOperator(String operatorkey) {
+            SearchOperator operator = null;
             switch (operatorkey) {
                 case "greater-than":
-                    operator = _SearchOperator.GREATER_THAN;
+                    operator = SearchOperator.GREATER_THAN;
                     break;
                 case "less-than":
-                    operator = _SearchOperator.LESS_THAN;
+                    operator = SearchOperator.LESS_THAN;
                     break;
                 case "greater-than-equal":
-                    operator = _SearchOperator.GREATER_THAN_EQUAL;
+                    operator = SearchOperator.GREATER_THAN_EQUAL;
                     break;
                 case "less-than-equal":
-                    operator = _SearchOperator.LESS_THAN_EQUAL;
+                    operator = SearchOperator.LESS_THAN_EQUAL;
                     break;
                 case "not-equal":
-                    operator = _SearchOperator.NOT_EQUAL;
+                    operator = SearchOperator.NOT_EQUAL;
                     break;
                 case "equal":
-                    operator = _SearchOperator.EQUAL;
+                    operator = SearchOperator.EQUAL;
                     break;
                 case "like":
-                    operator = _SearchOperator.MATCH;
+                    operator = SearchOperator.MATCH;
                     break;
                 case "like-start":
-                    operator = _SearchOperator.MATCH_START;
+                    operator = SearchOperator.MATCH_START;
                     break;
                 case "like-end":
-                    operator = _SearchOperator.MATCH_END;
+                    operator = SearchOperator.MATCH_END;
                     break;
                 case "in":
-                    operator = _SearchOperator.IN;
+                    operator = SearchOperator.IN;
                     break;
                 case "not-in":
-                    operator = _SearchOperator.NOT_IN;
+                    operator = SearchOperator.NOT_IN;
                     break;
                 default:
                     break;

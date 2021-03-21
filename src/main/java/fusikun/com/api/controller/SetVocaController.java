@@ -28,7 +28,7 @@ import fusikun.com.api.service.SetVocaService;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.specificationSearch.Specification_SetVoca;
 import fusikun.com.api.specificationSearch._SearchCriteria;
-import fusikun.com.api.specificationSearch._SearchOperator;
+import fusikun.com.api.enums.SearchOperator;
 import fusikun.com.api.validator.SetVocaDataValidate;
 import javassist.NotFoundException;
 
@@ -151,7 +151,7 @@ public class SetVocaController {
     private Specification_SetVoca getSetVocaSpecification(UUID authorId) {
         Specification_SetVoca specification = new Specification_SetVoca();
         User author = userService.findById(authorId);
-        specification.add(new _SearchCriteria("author", _SearchOperator.EQUAL, author));
+        specification.add(new _SearchCriteria("author", SearchOperator.EQUAL, author));
         return specification;
     }
 

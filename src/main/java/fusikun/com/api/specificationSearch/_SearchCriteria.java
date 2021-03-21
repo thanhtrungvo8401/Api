@@ -1,6 +1,7 @@
 package fusikun.com.api.specificationSearch;
 
 import fusikun.com.api.enums.ApiDataType;
+import fusikun.com.api.enums.SearchOperator;
 import org.joda.time.Instant;
 
 import java.util.Date;
@@ -10,23 +11,23 @@ public class _SearchCriteria {
     private final String key;
     private String subKey;
     private final Object value;
-    private final _SearchOperator operator;
+    private final SearchOperator operator;
     private ApiDataType type;
 
-    public _SearchCriteria(String key, _SearchOperator operator, Object value) {
+    public _SearchCriteria(String key, SearchOperator operator, Object value) {
         this.key = key;
         this.value = value;
         this.operator = operator;
     }
 
-    public _SearchCriteria(String key, _SearchOperator operator, Object value, ApiDataType type) {
+    public _SearchCriteria(String key, SearchOperator operator, Object value, ApiDataType type) {
         this.key = key;
         this.value = value;
         this.operator = operator;
         this.type = type;
     }
 
-    public _SearchCriteria(String key, _SearchOperator operator, Object value, String subKey, ApiDataType type) {
+    public _SearchCriteria(String key, SearchOperator operator, Object value, String subKey, ApiDataType type) {
         this.key = key;
         this.value = value;
         this.operator = operator;
@@ -65,7 +66,7 @@ public class _SearchCriteria {
         }
     }
 
-    public _SearchOperator getOperator() {
+    public SearchOperator getOperator() {
         return operator;
     }
 }
