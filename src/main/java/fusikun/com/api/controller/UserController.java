@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import fusikun.com.api.dto.ObjectsManagementList;
+import fusikun.com.api.enums.ApiDataType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -53,7 +55,12 @@ public class UserController {
     ) {
         Specification_User userSpecification =
                 new SearchHelpers_Users(new Specification_User(), filters)
-                        .getSpecification(Arrays.asList("email", "role.id", "role.roleName"));
+                        .getSpecification(Arrays.asList(
+                                "id," + ApiDataType.UUID_TYPE,
+                                "role.id," + ApiDataType.UUID_TYPE,
+                                "role.roleName," + ApiDataType.STRING_TYPE
+                        ));
+//        "email", "role.id", "role.roleName"
         Pageable pageable = SortHelper.getSort(limit, page, sortBy, order);
         List<User> users = userService.findAll(userSpecification, pageable);
         Long total = userService.count(userSpecification);
@@ -117,37 +124,9 @@ public class UserController {
         return ResponseEntity.ok(new UserResponse(user));
     }
 
-    private class UsersManagement {
-        List<UserResponse> list;
-        Long total;
-
-        @SuppressWarnings("unused")
-        public UsersManagement() {
-        }
-
-        public UsersManagement(List<UserResponse> list, Long total) {
-            this.list = list;
-            this.total = total;
-        }
-
-        @SuppressWarnings("unused")
-        public List<UserResponse> getList() {
-            return list;
-        }
-
-        @SuppressWarnings("unused")
-        public void setList(List<UserResponse> list) {
-            this.list = list;
-        }
-
-        @SuppressWarnings("unused")
-        public Long getTotal() {
-            return total;
-        }
-
-        @SuppressWarnings("unused")
-        public void setTotal(Long total) {
-            this.total = total;
+    private class UsersManagement extends ObjectsManagementList<UserResponse> {
+        UsersManagement(List<UserResponse> list, Long total) {
+            super(list, total);
         }
     }
 }
