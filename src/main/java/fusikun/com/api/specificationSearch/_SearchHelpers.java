@@ -130,10 +130,11 @@ public abstract class _SearchHelpers<T extends _Specification> {
         }
 
         private Object getValue(String operatorKey, String objectValue) {
-            if (operatorKey == "in" || operatorKey == "not-in") {
+//            operatorKey == "in" || operatorKey == "not-in"
+            if (Arrays.asList("in", "not-in").contains(operatorKey)) {
                 try {
                     List<Object> listValue = Arrays.asList(
-                            objectValue.toString().split(Constant.COMMA)
+                            objectValue.split(Constant.COMMA)
                     );
                     return listValue;
                 } catch (Exception e) {

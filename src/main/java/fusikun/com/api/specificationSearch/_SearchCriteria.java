@@ -5,7 +5,9 @@ import fusikun.com.api.enums.SearchOperator;
 import org.joda.time.Instant;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class _SearchCriteria {
     private final String key;
@@ -48,7 +50,34 @@ public class _SearchCriteria {
     }
 
     public Object getValue() {
-        return value;
+        if (type == null) return value;
+        switch (type) {
+            case INTEGER_TYPE:
+                return !(value instanceof List)
+                        ? Integer.parseInt(value.toString())
+                        : ((List<?>) value)
+                        .stream()
+                        .map(el -> Integer.parseInt(el.toString()))
+                        .collect(Collectors.toList());
+            case UUID_TYPE:
+                return !(value instanceof List)
+                        ? UUID.fromString(value.toString())
+                        : ((List<?>) value).stream()
+                        .map(el -> UUID.fromString(el.toString()))
+                        .collect(Collectors.toList());
+            case DATE_TYPE:
+                return !(value instanceof List)
+                        ? new Date(Instant.parse(value.toString()).getMillis())
+                        : ((List<?>) value).stream()
+                        .map(el -> new Date(Instant.parse(el.toString()).getMillis()))
+                        .collect(Collectors.toList());
+            default:
+                return !(value instanceof List)
+                        ? value.toString()
+                        : ((List<?>) value).stream()
+                        .map(el -> el.toString())
+                        .collect(Collectors.toList());
+        }
     }
 
     public Comparable getComparableValue() {
