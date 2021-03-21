@@ -10,11 +10,11 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
-public class Specification_Customize<T> implements Specification<T> {
+public abstract class _Specification<T> implements Specification<T> {
     private static final long serialVersionUID = -5036585350713413952L;
     private List<_SearchCriteria> list;
 
-    public Specification_Customize() {
+    public _Specification() {
         this.list = new ArrayList<>();
     }
 

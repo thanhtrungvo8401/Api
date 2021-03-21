@@ -11,11 +11,11 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SearchHelpers_Customize<T extends Specification_Customize> {
+public abstract class _SearchHelpers<T extends _Specification> {
     Map<String, String> filters;
     T specification;
 
-    public SearchHelpers_Customize(T specification, String _filters) {
+    public _SearchHelpers(T specification, String _filters) {
         Map<String, String> filterMap;
         try {
             filterMap = new Gson().fromJson(
