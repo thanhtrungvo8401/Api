@@ -50,6 +50,7 @@ public class VocaController {
         vocaDataValidate.validateOverMaxVoca(vocaRequest);
         // Save:
         Voca voca = vocaRequest.getVocaObject();
+        // we are not checking unique for CODE
         SetVoca setVoca = setVocaService.findById(vocaRequest.getSetId());
         setVoca.increaseVoca();
         vocaService.save(voca);
@@ -69,6 +70,7 @@ public class VocaController {
         vocaDataValidate.validate(vocaRequest);
         // Update
         Voca oldVoca = vocaService.findById(vocaRequest.getId());
+        // we are not checking unique for CODE
         if (!vocaRequest.getSetId().equals(oldVoca.getSetVoca().getId())) {
             // validate
             vocaDataValidate.validateOverMaxVoca(vocaRequest);
@@ -118,7 +120,7 @@ public class VocaController {
         Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
         List<Voca> vocas = vocaService.findAll(specification, pageable);
         // Return
-        List<VocaResponse> vocaResponses = vocas.stream().map(voca -> new VocaResponse(voca))
+        List<VocaResponse> vocaResponses = vocas.stream().map(VocaResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(vocaResponses);
     }
@@ -148,7 +150,7 @@ public class VocaController {
         List<Voca> vocas = vocaService.findAll(vocaSpecification, pageable);
         Long total = vocaService.count(vocaSpecification);
         List<VocaResponse> vocaResponses = vocas.stream()
-                .map(voca -> new VocaResponse(voca))
+                .map(VocaResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new VocasManagement(vocaResponses, total));
     }
