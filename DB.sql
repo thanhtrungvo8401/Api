@@ -112,7 +112,7 @@ CREATE TABLE `voca` (
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-| remember_group | CREATE TABLE `remember_group` (
+CREATE TABLE `remember_group` (
   `id` binary(16) NOT NULL,
   `createdDate` datetime NOT NULL,
   `isActive` bit(1) NOT NULL,
@@ -124,6 +124,18 @@ CREATE TABLE `voca` (
   KEY `FK_remember_group__owner` (`ownerId`),
   CONSTRAINT `FK_remember_group__owner` FOREIGN KEY (`ownerId`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
+
+CREATE TABLE `test_group` (
+  `id` binary(16) NOT NULL,
+  `createdDate` datetime NOT NULL,
+  `isActive` bit(1) NOT NULL,
+  `updatedDate` datetime NOT NULL,
+  `vocaCodes` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `corrects` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `ownerId` binary(16) NOT NULL,
+  KEY `FK_test_group__owner` (`ownerId`),
+  CONSTRAINT `FK_test_group__owner` FOREIGN KEY (`ownerId`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
 
 ALTER TABLE `auth`
   ADD KEY `FK3qw51q11lsis16ne16jbfmhh4` (`menuId`),
