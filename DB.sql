@@ -119,6 +119,7 @@ CREATE TABLE `remember_group` (
   `updatedDate` datetime NOT NULL,
   `vocaCodes` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `activeCodes` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `ownerId` binary(16) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_remember_group__owner` (`ownerId`),
@@ -132,6 +133,7 @@ CREATE TABLE `test_group` (
   `updatedDate` datetime NOT NULL,
   `vocaCodes` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `corrects` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+   `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `ownerId` binary(16) NOT NULL,
   KEY `FK_test_group__owner` (`ownerId`),
   CONSTRAINT `FK_test_group__owner` FOREIGN KEY (`ownerId`) REFERENCES `user` (`id`)

@@ -72,8 +72,7 @@ public class SetVocaController {
         // Update:
         SetVoca oldSetVoca = setVocaService.findById(setVocaId);
         SetVoca setVoca = setVocaRequest.getSetVoca();
-        // ----validate over-range here ----
-        oldSetVoca.setAuthor(setVoca.getAuthor());
+//        oldSetVoca.setAuthor(setVoca.getAuthor()); // ----validate over-range here ----
         oldSetVoca.setSetName(setVoca.getSetName());
         SetVoca savedSetVoca = setVocaService.save(oldSetVoca);
         // return:
@@ -90,7 +89,7 @@ public class SetVocaController {
         Specification_SetVoca specification = getSetVocaSpecification(authorId);
         Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
         List<SetVoca> setVocas = setVocaService.findAll(specification, pageable);
-        List<SetVocaResponse> setVocaResponses = setVocas.stream().map(setVoca -> new SetVocaResponse(setVoca))
+        List<SetVocaResponse> setVocaResponses = setVocas.stream().map(SetVocaResponse::new)
                 .collect(Collectors.toList());
         // return
         return ResponseEntity.ok(setVocaResponses);
@@ -131,7 +130,7 @@ public class SetVocaController {
         List<SetVoca> setVocas = setVocaService.findAll(specification_setVoca, pageable);
         Long total = setVocaService.count(specification_setVoca);
         List<SetVocaResponse> setVocasResponses = setVocas.stream()
-                .map(setVoca -> new SetVocaResponse(setVoca))
+                .map(SetVocaResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new SetVocasManagement(setVocasResponses, total));
     }

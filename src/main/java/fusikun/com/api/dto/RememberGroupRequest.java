@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.util.UUID;
 
@@ -30,6 +31,12 @@ public class RememberGroupRequest {
     private String activeCodes;
 
     @NotNull(message = ConstantErrorCodes.NOT_NULL)
+    @Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
+    @NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
+    @NotBlank(message = ConstantErrorCodes.NOT_BLANK)
+    private String name;
+
+    @NotNull(message = ConstantErrorCodes.NOT_NULL)
     private UUID ownerId;
 
     private Boolean isActive;
@@ -39,6 +46,7 @@ public class RememberGroupRequest {
         rememberGroup.setId(this.id);
         rememberGroup.setVocaCodes(vocaCodes);
         rememberGroup.setActiveCodes(activeCodes);
+        rememberGroup.setName(name);
         rememberGroup.setOwner(new User(ownerId));
         rememberGroup.setIsActive(this.isActive);
         return rememberGroup;

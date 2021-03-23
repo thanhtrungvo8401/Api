@@ -11,6 +11,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
+@Entity
+@Table(name = "remember_group")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,6 +27,7 @@ public class RememberGroup {
 
     private String vocaCodes;
     private String activeCodes;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ownerId", nullable = false)

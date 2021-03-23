@@ -16,6 +16,7 @@ import java.util.UUID;
 public class RememberGroupResponse {
     private UUID id;
     private String vocaCodes;
+    private String name;
     private String activeCodes;
     private Date createdDate;
     private Date updatedDate;
@@ -25,6 +26,7 @@ public class RememberGroupResponse {
         this.id = rememberGroup.getId();
         this.vocaCodes = rememberGroup.getVocaCodes();
         this.activeCodes = rememberGroup.getActiveCodes();
+        this.name = rememberGroup.getName();
         this.createdDate = rememberGroup.getCreatedDate();
         this.updatedDate = rememberGroup.getUpdatedDate();
         this.ownerId = rememberGroup.getOwner().getId();
