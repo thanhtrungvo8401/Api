@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Getter
@@ -31,12 +32,15 @@ public class TestGroupRequest {
     @NotNull(message = ConstantErrorCodes.NOT_NULL)
     private UUID ownerId;
 
+    @Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
+    private String name;
+
     private Boolean isActive;
 
     public TestGroup getTestGroup() {
         TestGroup testGroup = new TestGroup();
         testGroup.setId(this.id);
-        testGroup.setVocaCodes (vocaCodes);
+        testGroup.setVocaCodes(vocaCodes);
         testGroup.setCorrects(this.corrects);
         testGroup.setOwner(new User(ownerId));
         testGroup.setIsActive(this.isActive);

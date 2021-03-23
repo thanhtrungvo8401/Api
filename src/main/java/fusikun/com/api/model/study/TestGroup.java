@@ -24,6 +24,7 @@ public class TestGroup {
 
     private String vocaCodes;
     private String corrects;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ownerId", nullable = false)

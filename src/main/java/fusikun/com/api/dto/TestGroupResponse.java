@@ -17,6 +17,7 @@ public class TestGroupResponse {
     private UUID id;
     private String vocaCodes;
     private String corrects;
+    private String name;
     private UUID ownerId;
     private Date createdDate;
     private Date updatedDate;
@@ -28,5 +29,6 @@ public class TestGroupResponse {
         this.createdDate = testGroup.getCreatedDate();
         this.updatedDate = testGroup.getUpdatedDate();
         this.ownerId = testGroup.getOwner().getId();
+        this.name = testGroup.getName();
     }
 }
