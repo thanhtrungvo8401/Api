@@ -111,7 +111,6 @@ public class RememberGroupController {
         // Validate
         req.setId(id);
         remGroupDataValidate.validateRemGroupNotExistById(req.getId());
-        remGroupDataValidate.validateOwnerNotExistByOwnerId(req.getOwnerId());
         remGroupDataValidate.validate(req);
         // Update
         RememberGroup oldRemGroup = remService.findById(req.getId());
