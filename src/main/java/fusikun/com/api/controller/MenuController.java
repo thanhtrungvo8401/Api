@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import fusikun.com.api.dto.ObjectsManagementList;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -97,7 +96,6 @@ public class MenuController {
     @Getter
     @Setter
     @NoArgsConstructor
-    @AllArgsConstructor
     private class ListMenuActionsResponse extends ObjectsManagementList<MenuResponse> {
         ListMenuActionsResponse(List<MenuResponse> list, Long total) {
             super(list, total);
