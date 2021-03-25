@@ -2,13 +2,13 @@ package fusikun.com.api.controller;
 
 import javax.validation.Valid;
 
+import fusikun.com.api.model.app.JwtUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import fusikun.com.api.dto.UserRequest;
 import fusikun.com.api.dto.UserResponse;
@@ -27,6 +27,7 @@ import fusikun.com.api.validator.UserDataValidate;
  *         not required, Its always Role-Student.
  */
 @RestController
+@RequestMapping("/api/common/v1")
 public class StudentController {
 	@Autowired
 	UserService userService;
@@ -40,7 +41,7 @@ public class StudentController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	@PostMapping("/api/common/v1/students")
+	@PostMapping("/students")
 	public ResponseEntity<Object> handleCreateStudent(@Valid @RequestBody User_StudentRequest studentRequest)
 			throws Ex_MethodArgumentNotValidException {
 		Role roleStudent = roleService.findByRoleName(Constant.STUDENT_ROLE);
@@ -54,5 +55,13 @@ public class StudentController {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userService.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(user));
+	}
+
+	@GetMapping("/my-profile")
+	public ResponseEntity<Object> handleGetUserDetail() {
+		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		User user = userService.findById(jwtUserDetails.getId());
+		return ResponseEntity.ok(new UserResponse(user));
 	}
 }

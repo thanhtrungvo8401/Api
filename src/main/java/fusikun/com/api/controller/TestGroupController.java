@@ -30,6 +30,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/common/v1")
 public class TestGroupController {
 
     @Autowired
@@ -42,7 +43,7 @@ public class TestGroupController {
     UserService userService;
 
     // Create
-    @PostMapping("/api/common/v1/test-groups")
+    @PostMapping("/test-groups")
     public ResponseEntity<Object> handleCreateTestGroup(
             @Valid
             @RequestBody TestGroupRequest req)
@@ -56,7 +57,7 @@ public class TestGroupController {
     }
 
     // FETCH TEST_GROUP:
-    @GetMapping("/api/common/v1/owners/{ownerId}/test-group")
+    @GetMapping("/owners/{ownerId}/test-group")
     public ResponseEntity<Object>
     handleGetAllTestGroupByOwnerid(@PathVariable UUID ownerId) throws NotFoundException {
         // validate:
@@ -71,7 +72,7 @@ public class TestGroupController {
         return ResponseEntity.ok(testGroupResponses);
     }
 
-    @GetMapping("/api/common/v1/test-group")
+    @GetMapping("/test-group")
     public ResponseEntity<Object>
     handleFetchTestGroupsByFilter(
             @RequestParam(name = "filters", required = false) String filters,
@@ -101,7 +102,7 @@ public class TestGroupController {
     }
 
     // UPDATE
-    @PutMapping("/api/common/v1/test-group/{id}")
+    @PutMapping("/test-group/{id}")
     public ResponseEntity<Object> handleUpdateTestGroupById(
             @PathVariable UUID id,
             @Valid @RequestBody TestGroupRequest req
@@ -122,7 +123,7 @@ public class TestGroupController {
     }
 
     // DELETE
-    @DeleteMapping("/api/common/v1/test-group/{id}")
+    @DeleteMapping("/test-group/{id}")
     public ResponseEntity<Object> handleDeleteTestGroupById(
             @PathVariable UUID id
     ) throws NotFoundException {

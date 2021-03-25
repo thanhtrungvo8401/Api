@@ -11,21 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import fusikun.com.api.dto.UserRequest;
 import fusikun.com.api.dto.UserResponse;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
-import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.model.app.User;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.specificationSearch.SearchHelpers_Users;
@@ -35,6 +26,7 @@ import fusikun.com.api.validator.UserDataValidate;
 import javassist.NotFoundException;
 
 @RestController
+@RequestMapping("/api/v1")
 public class UserController {
     @Autowired
     UserService userService;
@@ -45,7 +37,7 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @GetMapping("/api/v1/users")
+    @GetMapping("/users")
     public ResponseEntity<Object> handleGetUsers(
             @RequestParam(name = "filters", required = false) String filters,
             @RequestParam(name = "limit", required = false) String limit,
@@ -65,15 +57,15 @@ public class UserController {
         List<User> users = userService.findAll(userSpecification, pageable);
         Long total = userService.count(userSpecification);
         List<UserResponse> userResponses = users.stream()
-                .map(user -> new UserResponse(user))
+                .map(UserResponse::new)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new UsersManagement(userResponses, total));
     }
 
-    @PostMapping("/api/v1/users")
+    @PostMapping("/users")
     public ResponseEntity<Object> handleCreateUser(@Valid @RequestBody UserRequest userRequest)
-            throws Ex_MethodArgumentNotValidException, NotFoundException {
+            throws Ex_MethodArgumentNotValidException {
         // CUSTOM VALIDATE:
         userDataValidate.validate(userRequest);
         User user = userRequest.getUser();
@@ -82,7 +74,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(user));
     }
 
-    @GetMapping("/api/v1/users/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable UUID id) throws NotFoundException {
         // Validate data exist or not:
         userDataValidate.validateExistById(id);
@@ -90,7 +82,7 @@ public class UserController {
         return ResponseEntity.ok(new UserResponse(user));
     }
 
-    @PutMapping("/api/v1/users/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<Object> handleUpdateUserById(@Valid @RequestBody UserRequest userRequest,
                                                        @PathVariable UUID id) throws NotFoundException, Ex_MethodArgumentNotValidException {
         // Validate data: (validate email, if password was posted => also validate)
@@ -106,21 +98,13 @@ public class UserController {
         return ResponseEntity.ok(new UserResponse(user));
     }
 
-    @DeleteMapping("/api/v1/users/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Object> handleDeleteUserById(@PathVariable UUID id) throws NotFoundException {
         // VALIDATE DATA:
         userDataValidate.validateExistById(id);
         userDataValidate.validateNotDeleteYourself(id);
         User user = userService.findById(id);
         userService.delete(user);
-        return ResponseEntity.ok(new UserResponse(user));
-    }
-
-    @GetMapping("/api/common/v1/my-profile")
-    public ResponseEntity<Object> handleGetUserDetail() {
-        JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        User user = userService.findById(jwtUserDetails.getId());
         return ResponseEntity.ok(new UserResponse(user));
     }
 

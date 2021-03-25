@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fusikun.com.api.dto.JwtRequest;
@@ -19,6 +20,7 @@ import fusikun.com.api.utils.JwtTokenUtil;
 import fusikun.com.api.utils.RandomTokenUtil;
 
 @RestController
+@RequestMapping("/api/common/v1")
 public class AuthenticateController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -27,8 +29,8 @@ public class AuthenticateController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("/api/common/v1/authenticate/login")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+	@PostMapping("/authenticate/login")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
 		// authenticate userDate here => Error occurs => throw Exception and Stop
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
@@ -41,7 +43,7 @@ public class AuthenticateController {
 		return ResponseEntity.ok(new JwtResponse(jwt));
 	}
 
-	@PostMapping("/api/common/v1/authenticate/logout")
+	@PostMapping("/authenticate/logout")
 	public String handleLogout() {
 		JwtUserDetails jwtUserDetails = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
@@ -51,7 +53,7 @@ public class AuthenticateController {
 		return ConstantMessages.SUCCESS;
 	}
 
-	private void authenticate(String email, String password) throws Exception {
+	private void authenticate(String email, String password) {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 	}
 }

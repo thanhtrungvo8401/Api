@@ -29,6 +29,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/common/v1")
 public class RememberGroupController {
 
     @Autowired
@@ -42,7 +43,7 @@ public class RememberGroupController {
 
 
     // CREATE
-    @PostMapping("/api/common/v1/remember-groups")
+    @PostMapping("/remember-groups")
     public ResponseEntity<Object> handleCreateRememberGroup(
             @Valid
             @RequestBody RememberGroupRequest req)
@@ -56,7 +57,7 @@ public class RememberGroupController {
     }
 
     // FETCH REMEMBER_GROUP:
-    @GetMapping("/api/common/v1/owners/{ownerId}/remember-groups")
+    @GetMapping("/owners/{ownerId}/remember-groups")
     public ResponseEntity<Object>
     handleGetAllRememberGroupByOwnerId(@PathVariable UUID ownerId)
             throws NotFoundException {
@@ -73,7 +74,7 @@ public class RememberGroupController {
         return ResponseEntity.ok(rememberGroupResponses);
     }
 
-    @GetMapping("/api/common/v1/remember-groups")
+    @GetMapping("/remember-groups")
     public ResponseEntity<Object>
     handleFetchRememberGroupsByFilter(
             @RequestParam(name = "filters", required = false) String filters,
@@ -103,7 +104,7 @@ public class RememberGroupController {
     }
 
     // UPDATE
-    @PutMapping("/api/common/v1/remember-groups/{id}")
+    @PutMapping("/remember-groups/{id}")
     public ResponseEntity<Object> handleUpdateRemGroupById(
             @PathVariable UUID id,
             @Valid @RequestBody RememberGroupRequest req
@@ -127,7 +128,7 @@ public class RememberGroupController {
     }
 
     // DELETE
-    @DeleteMapping("/api/common/v1/remember-groups/{id}")
+    @DeleteMapping("/remember-groups/{id}")
     public ResponseEntity<Object> handleDeleteRemGroupById(@PathVariable UUID id)
             throws NotFoundException {
         // validate

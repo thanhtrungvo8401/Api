@@ -5,6 +5,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,7 @@ import fusikun.com.api.service.UserService;
 import fusikun.com.api.utils.Constant;
 
 @RestController
+@RequestMapping("/api/v1")
 @PropertySource("classpath:configure.properties")
 public class SetupController {
 	@Autowired
@@ -33,7 +35,7 @@ public class SetupController {
 	@Autowired
 	Environment env;
 
-	@GetMapping("/api/v1/initial-project")
+	@GetMapping("/initial-project")
 	public ResponseEntity<Object> handleSetupProject(@RequestParam("code") String code) throws Exception {
 		String validCode = env.getProperty("configure.code");
 		if (!code.equals(validCode)) {

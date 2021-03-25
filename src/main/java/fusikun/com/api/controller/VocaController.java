@@ -30,6 +30,7 @@ import fusikun.com.api.validator.VocaDataValidate;
 import javassist.NotFoundException;
 
 @RestController
+@RequestMapping("/api/common/v1")
 public class VocaController {
     @Autowired
     VocaDataValidate vocaDataValidate;
@@ -41,7 +42,7 @@ public class VocaController {
     SetVocaService setVocaService;
 
     // CREATE
-    @PostMapping("/api/common/v1/vocas")
+    @PostMapping("/vocas")
     public ResponseEntity<Object> handleCreateVoca(@Valid @RequestBody VocaRequest vocaRequest)
             throws NotFoundException {
         // Validate:
@@ -60,7 +61,7 @@ public class VocaController {
     }
 
     // UPDATE
-    @PutMapping("/api/common/v1/vocas/{id}")
+    @PutMapping("/vocas/{id}")
     public ResponseEntity<Object> handleUpdateVoca(@Valid @RequestBody VocaRequest vocaRequest, @PathVariable UUID id)
             throws NotFoundException {
         // Validate:
@@ -97,7 +98,7 @@ public class VocaController {
     }
 
     // DELETE
-    @DeleteMapping("/api/common/v1/vocas/{id}")
+    @DeleteMapping("/vocas/{id}")
     public ResponseEntity<Object> handleDeleteVoca(@PathVariable UUID id) throws NotFoundException {
         // validate
         vocaDataValidate.validateExistVocaById(id);
@@ -111,7 +112,7 @@ public class VocaController {
     }
 
     // FETCH VOCAS
-    @GetMapping("/api/common/v1/set-vocas/{id}/vocas")
+    @GetMapping("/set-vocas/{id}/vocas")
     public ResponseEntity<Object> handleGetVocasInSetVoca(@PathVariable UUID id) throws NotFoundException {
         // Validate:
         vocaDataValidate.validateExistSetVocaById(id);
@@ -125,7 +126,7 @@ public class VocaController {
         return ResponseEntity.ok(vocaResponses);
     }
 
-    @GetMapping("/api/common/v1/vocas")
+    @GetMapping("/vocas")
     public ResponseEntity<Object> handleGetVocasByFilter(
             @RequestParam(name = "filters", required = false) String filters,
             @RequestParam(name = "limit", required = false) String limit,

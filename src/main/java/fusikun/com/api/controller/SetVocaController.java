@@ -33,6 +33,7 @@ import fusikun.com.api.validator.SetVocaDataValidate;
 import javassist.NotFoundException;
 
 @RestController
+@RequestMapping("/api/common/v1")
 public class SetVocaController {
 
     @Autowired
@@ -45,7 +46,7 @@ public class SetVocaController {
     UserService userService;
 
     // CREATE
-    @PostMapping("/api/common/v1/set-vocas")
+    @PostMapping("/set-vocas")
     public ResponseEntity<Object> handleCreateSetVocas(@Valid @RequestBody SetVocaRequest setVocaRequest)
             throws NotFoundException {
         // Validate:
@@ -61,7 +62,7 @@ public class SetVocaController {
     }
 
     // UPDATE:
-    @PutMapping("/api/common/v1/set-vocas/{setVocaId}")
+    @PutMapping("/set-vocas/{setVocaId}")
     public ResponseEntity<Object> handleUpdateSetVocasById(@PathVariable UUID setVocaId,
                                                            @Valid @RequestBody SetVocaRequest setVocaRequest) throws NotFoundException {
         // Validate:
@@ -80,7 +81,7 @@ public class SetVocaController {
     }
 
     // FETCH SET-VOCAS:
-    @GetMapping("/api/common/v1/users/{authorId}/set-vocas")
+    @GetMapping("/users/{authorId}/set-vocas")
     public ResponseEntity<Object> handleGetSetVocasCreatedByAuthor(@PathVariable UUID authorId)
             throws NotFoundException {
         // validate:
@@ -95,7 +96,7 @@ public class SetVocaController {
         return ResponseEntity.ok(setVocaResponses);
     }
 
-    @GetMapping("/api/common/v1/set-vocas/{id}")
+    @GetMapping("/set-vocas/{id}")
     public ResponseEntity<Object> handleGetSetVocasById(@PathVariable UUID id) throws NotFoundException {
         // Validate
         setVocaDataValidate.validateSetVocaIdNotExist(id);
@@ -106,7 +107,7 @@ public class SetVocaController {
     }
 
     @ApiOperation(value = "Fetch SET-VOCAS, FILTER: 'author.id' ")
-    @GetMapping("/api/common/v1/set-vocas")
+    @GetMapping("/set-vocas")
     public ResponseEntity<Object> handleGetSetVocasByFilter(
             @RequestParam(name = "filters", required = false) String filters,
             @RequestParam(name = "limit", required = false) String limit,
@@ -136,7 +137,7 @@ public class SetVocaController {
     }
 
     // DELETE
-    @DeleteMapping("/api/common/v1/set-vocas/{id}")
+    @DeleteMapping("/set-vocas/{id}")
     public ResponseEntity<Object> handleDeleteSetVoca(@PathVariable UUID id) throws NotFoundException {
         // validate:
         setVocaDataValidate.validateSetVocaIdNotExist(id);
