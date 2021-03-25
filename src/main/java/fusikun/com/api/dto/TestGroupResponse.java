@@ -22,7 +22,7 @@ public class TestGroupResponse {
     private Date createdDate;
     private Date updatedDate;
 
-    TestGroupResponse(TestGroup testGroup) {
+    public TestGroupResponse(TestGroup testGroup) {
         this.id = testGroup.getId();
         this.vocaCodes = testGroup.getVocaCodes();
         this.corrects = testGroup.getCorrects();

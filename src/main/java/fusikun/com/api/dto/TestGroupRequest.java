@@ -33,6 +33,9 @@ public class TestGroupRequest {
     private UUID ownerId;
 
     @Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
+    @NotNull(message = ConstantErrorCodes.NOT_NULL)
+    @NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
+    @NotBlank(message = ConstantErrorCodes.NOT_BLANK)
     private String name;
 
     private Boolean isActive;
@@ -42,6 +45,7 @@ public class TestGroupRequest {
         testGroup.setId(this.id);
         testGroup.setVocaCodes(vocaCodes);
         testGroup.setCorrects(this.corrects);
+        testGroup.setName(this.name);
         testGroup.setOwner(new User(ownerId));
         testGroup.setIsActive(this.isActive);
         return testGroup;

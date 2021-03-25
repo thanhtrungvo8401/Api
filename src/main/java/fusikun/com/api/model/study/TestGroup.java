@@ -11,6 +11,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
+@Entity
+@Table(name = "test_group")
 @Getter
 @Setter
 @NoArgsConstructor
