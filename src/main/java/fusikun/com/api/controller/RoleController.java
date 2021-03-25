@@ -7,16 +7,14 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import fusikun.com.api.dto.AuthResponse;
 import fusikun.com.api.dto.MenuResponse;
@@ -33,6 +31,7 @@ import fusikun.com.api.validator.RoleDataValidate;
 import javassist.NotFoundException;
 
 @RestController
+@RequestMapping("/api/v1")
 public class RoleController {
 
 	@Autowired
@@ -47,15 +46,15 @@ public class RoleController {
 	@Autowired
 	AuthService authService;
 
-	@GetMapping("/api/v1/roles")
+	@GetMapping("/roles")
 	public ResponseEntity<Object> getAllRoles() {
 		List<Role> roles = roleService.findAll();
-		List<RoleResponse> rolesRes = roles.stream().map(role -> new RoleResponse(role)).collect(Collectors.toList());
+		List<RoleResponse> rolesRes = roles.stream().map(RoleResponse::new).collect(Collectors.toList());
 		Long total = roleService.count();
 		return ResponseEntity.ok(new RoleManagement(rolesRes, total));
 	}
 
-	@PostMapping("/api/v1/roles")
+	@PostMapping("/roles")
 	public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
 			throws Ex_MethodArgumentNotValidException {
 		// CUSTOM VALIDATE:
@@ -68,7 +67,7 @@ public class RoleController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
 	}
 
-	@GetMapping("/api/v1/roles/{id}")
+	@GetMapping("/roles/{id}")
 	public ResponseEntity<Object> getRoleById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);
@@ -85,16 +84,14 @@ public class RoleController {
 			menusNotMapped = menuService.findAll();
 		}
 
-		List<Auth> updatedAuths = auths; // get old auths list:
 		if (!menusNotMapped.isEmpty()) {
 			List<Auth> authAdds = handleGenerateAuthsFromRoleAndMenus(role, menusNotMapped);
-			updatedAuths.addAll(authAdds);
+			auths.addAll(authAdds);
 		}
 		// generate Valid RETURN-DATA:
-		List<AuthResponse> updatedAuthResponses = updatedAuths.stream().map((auth) -> {
+		List<AuthResponse> updatedAuthResponses = auths.stream().map((auth) -> {
 			MenuResponse menuResponse = new MenuResponse(auth.getMenu());
-			AuthResponse authResponse = new AuthResponse(auth, menuResponse);
-			return authResponse;
+			return new AuthResponse(auth, menuResponse);
 		}).collect(Collectors.toList());
 		RoleResponse roleRes = new RoleResponse(role);
 		roleRes.setAuths(updatedAuthResponses);
@@ -102,7 +99,7 @@ public class RoleController {
 		return ResponseEntity.ok(roleRes);
 	}
 
-	@PutMapping("/api/v1/roles/{id}")
+	@PutMapping("/roles/{id}")
 	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
 			@PathVariable UUID id) throws Ex_MethodArgumentNotValidException, NotFoundException {
 		// CUSTOM VALIDATE:
@@ -118,7 +115,7 @@ public class RoleController {
 		return ResponseEntity.ok(new RoleResponse(saveRole));
 	}
 
-	@DeleteMapping("/api/v1/roles/{id}")
+	@DeleteMapping("/roles/{id}")
 	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable UUID id) throws NotFoundException {
 		// VALIDATE DATA IS EXIST OR NOT:
 		roleDataValidate.validateExistById(id);
@@ -137,39 +134,12 @@ public class RoleController {
 		return authService.saveAll(auths);
 	}
 
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	@AllArgsConstructor
 	private class RoleManagement {
-		@SuppressWarnings("unused")
-		public RoleManagement() {
-
-		}
-
-		public RoleManagement(List<RoleResponse> list, Long total) {
-			super();
-			this.list = list;
-			this.total = total;
-		}
-
 		List<RoleResponse> list;
 		Long total;
-
-		@SuppressWarnings("unused")
-		public List<RoleResponse> getList() {
-			return list;
-		}
-
-		@SuppressWarnings("unused")
-		public void setList(List<RoleResponse> list) {
-			this.list = list;
-		}
-		
-		@SuppressWarnings("unused")
-		public Long getTotal() {
-			return total;
-		}
-
-		@SuppressWarnings("unused")
-		public void setTotal(Long total) {
-			this.total = total;
-		}
 	}
 }

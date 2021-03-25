@@ -6,10 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import fusikun.com.api.dto.AuthRequest;
 import fusikun.com.api.dto.AuthResponse;
@@ -19,6 +16,7 @@ import fusikun.com.api.validator.AuthDataValidate;
 import javassist.NotFoundException;
 
 @RestController
+@RequestMapping("/api/v1")
 public class AuthController {
 	@Autowired
 	AuthService authService;
@@ -28,7 +26,7 @@ public class AuthController {
 
 	// JWT with ROLE, ROLE = ADMIN or STUDENT => not get ROLE and Authorization 
 	// ROLE with STUDENT => /api/common/** => can access without checkout permission */
-	@PutMapping("/api/v1/auths/{id}")
+	@PutMapping("/auths/{id}")
 	public ResponseEntity<Object> handleUpdateAuthById(@Valid @RequestBody AuthRequest authRequest,
 			@PathVariable UUID id) throws NotFoundException {
 		// CUSTOM VALIDATE:

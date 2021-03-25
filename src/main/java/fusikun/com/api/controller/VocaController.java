@@ -30,6 +30,7 @@ import fusikun.com.api.validator.VocaDataValidate;
 import javassist.NotFoundException;
 
 @RestController
+@RequestMapping("/api/common/v1")
 public class VocaController {
     @Autowired
     VocaDataValidate vocaDataValidate;
@@ -41,7 +42,7 @@ public class VocaController {
     SetVocaService setVocaService;
 
     // CREATE
-    @PostMapping("/api/common/v1/vocas")
+    @PostMapping("/vocas")
     public ResponseEntity<Object> handleCreateVoca(@Valid @RequestBody VocaRequest vocaRequest)
             throws NotFoundException {
         // Validate:
@@ -50,6 +51,7 @@ public class VocaController {
         vocaDataValidate.validateOverMaxVoca(vocaRequest);
         // Save:
         Voca voca = vocaRequest.getVocaObject();
+        // we are not checking unique for CODE
         SetVoca setVoca = setVocaService.findById(vocaRequest.getSetId());
         setVoca.increaseVoca();
         vocaService.save(voca);
@@ -59,7 +61,7 @@ public class VocaController {
     }
 
     // UPDATE
-    @PutMapping("/api/common/v1/vocas/{id}")
+    @PutMapping("/vocas/{id}")
     public ResponseEntity<Object> handleUpdateVoca(@Valid @RequestBody VocaRequest vocaRequest, @PathVariable UUID id)
             throws NotFoundException {
         // Validate:
@@ -69,6 +71,7 @@ public class VocaController {
         vocaDataValidate.validate(vocaRequest);
         // Update
         Voca oldVoca = vocaService.findById(vocaRequest.getId());
+        // we are not checking unique for CODE
         if (!vocaRequest.getSetId().equals(oldVoca.getSetVoca().getId())) {
             // validate
             vocaDataValidate.validateOverMaxVoca(vocaRequest);
@@ -95,7 +98,7 @@ public class VocaController {
     }
 
     // DELETE
-    @DeleteMapping("/api/common/v1/vocas/{id}")
+    @DeleteMapping("/vocas/{id}")
     public ResponseEntity<Object> handleDeleteVoca(@PathVariable UUID id) throws NotFoundException {
         // validate
         vocaDataValidate.validateExistVocaById(id);
@@ -109,7 +112,7 @@ public class VocaController {
     }
 
     // FETCH VOCAS
-    @GetMapping("/api/common/v1/set-vocas/{id}/vocas")
+    @GetMapping("/set-vocas/{id}/vocas")
     public ResponseEntity<Object> handleGetVocasInSetVoca(@PathVariable UUID id) throws NotFoundException {
         // Validate:
         vocaDataValidate.validateExistSetVocaById(id);
@@ -118,12 +121,12 @@ public class VocaController {
         Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
         List<Voca> vocas = vocaService.findAll(specification, pageable);
         // Return
-        List<VocaResponse> vocaResponses = vocas.stream().map(voca -> new VocaResponse(voca))
+        List<VocaResponse> vocaResponses = vocas.stream().map(VocaResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(vocaResponses);
     }
 
-    @GetMapping("/api/common/v1/vocas")
+    @GetMapping("/vocas")
     public ResponseEntity<Object> handleGetVocasByFilter(
             @RequestParam(name = "filters", required = false) String filters,
             @RequestParam(name = "limit", required = false) String limit,
@@ -148,7 +151,7 @@ public class VocaController {
         List<Voca> vocas = vocaService.findAll(vocaSpecification, pageable);
         Long total = vocaService.count(vocaSpecification);
         List<VocaResponse> vocaResponses = vocas.stream()
-                .map(voca -> new VocaResponse(voca))
+                .map(VocaResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new VocasManagement(vocaResponses, total));
     }

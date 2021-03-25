@@ -19,6 +19,7 @@ public class VocaResponse {
     private String note;
     private String meaning;
     private String sentence;
+    private Long code;
     private Date createdDate;
     private Date updatedDate;
     private UUID setId;
@@ -33,6 +34,7 @@ public class VocaResponse {
         this.createdDate = voca.getCreatedDate();
         this.updatedDate = voca.getUpdatedDate();
         this.setId = voca.getSetVoca().getId();
+        this.code = voca.getCode();
     }
 
 }

@@ -43,6 +43,8 @@ public class VocaRequest {
     @NotNull(message = ConstantErrorCodes.NOT_NULL)
     private UUID setId;
 
+    private Long code;
+
     public Voca getVocaObject() {
         Voca vocaObject = new Voca();
         vocaObject.setId(id);
@@ -50,6 +52,7 @@ public class VocaRequest {
         vocaObject.setMeaning(meaning);
         vocaObject.setNote(note);
         vocaObject.setSentence(sentence);
+        vocaObject.setCode(code);
 
         SetVoca setVoca = new SetVoca();
         setVoca.setId(setId);

@@ -4,6 +4,7 @@ public class ConstantErrorCodes {
 	public static final String ANNOUNCE = "announceField";
 	public static final String BAD_CREDENTIALS = "BAD_CREDENTIALS";
 	public static final String INVALID_TOKEN = "INVALID_TOKEN";
+	public static final String INVALID_VALUE = "INVALID_VALUE";
 	public static final String NOT_NULL = "NOT_NULL";
 	public static final String NOT_EMPTY = "NOT_EMPTY";
 	public static final String NOT_OVER_8_LETTER = "NOT_OVER_8_LETTER";

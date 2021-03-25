@@ -60,4 +60,8 @@ public class User {
 
     @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
     private List<Room> rooms;
+
+    public User(UUID id) {
+        this.id = id;
+    }
 }
