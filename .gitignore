@@ -29,6 +29,6 @@ hs_err_pid*
 SQL
 .metadata
 note.txt
-src/main/resources/*.properties
+src/main/resources/application.properties
 .idea
 api.iml
