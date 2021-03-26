@@ -17,34 +17,39 @@ import fusikun.com.api.interceptors.AuthorizationInterceptor;
 @SpringBootApplication
 @ComponentScan("fusikun.com.api")
 @EnableAutoConfiguration
-@PropertySource("classpath:configure.properties")
 public class ApiApplication {
 
-	@Autowired
-	Environment env;
+    @Autowired
+    Environment env;
 
-	@Autowired
-	AuthorizationInterceptor authorizationInterceptor;
+    @Autowired
+    AuthorizationInterceptor authorizationInterceptor;
 
-	public static void main(String[] args) {
-		SpringApplication.run(ApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ApiApplication.class, args);
+    }
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				String domainStrConfig = env.getProperty("configure.api.address");
-				String[] domains = domainStrConfig.split(",");
-				registry.addMapping("/**").allowedOrigins(domains).allowedMethods("*");
-			}
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                String domainStrConfig = env.getProperty("configure.api.address");
+                try {
+                    String[] domains = domainStrConfig.split(",");
+                    registry.addMapping("/**").allowedOrigins(domains).allowedMethods("*");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("Check check configure.api.address");
+                }
 
-			@Override
-			public void addInterceptors(InterceptorRegistry registry) {
-				registry.addInterceptor(authorizationInterceptor);
-			}
-		};
-	}
+            }
+
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(authorizationInterceptor);
+            }
+        };
+    }
 
 }

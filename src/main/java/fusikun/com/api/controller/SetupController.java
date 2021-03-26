@@ -18,7 +18,6 @@ import fusikun.com.api.utils.Constant;
 
 @RestController
 @RequestMapping("/api/v1")
-@PropertySource("classpath:configure.properties")
 public class SetupController {
 	@Autowired
 	UserService userService;
