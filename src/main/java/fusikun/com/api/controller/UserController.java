@@ -50,7 +50,8 @@ public class UserController {
                         .getSpecification(Arrays.asList(
                                 "id," + ApiDataType.UUID_TYPE,
                                 "role.id," + ApiDataType.UUID_TYPE,
-                                "role.roleName," + ApiDataType.STRING_TYPE
+                                "role.roleName," + ApiDataType.STRING_TYPE,
+                                "email," + ApiDataType.STRING_TYPE
                         ));
 //        "email", "role.id", "role.roleName"
         Pageable pageable = SortHelper.getSort(limit, page, sortBy, order);
