@@ -95,6 +95,7 @@ public class UserController {
         User userFromRequest = userRequest.getUser();
         user.setEmail(userFromRequest.getEmail());
         user.setRole(userFromRequest.getRole());
+        user.setMaxSetVocas(userFromRequest.getMaxSetVocas());
         userService.save(user);
         return ResponseEntity.ok(new UserResponse(user));
     }
