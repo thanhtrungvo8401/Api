@@ -31,6 +31,8 @@ public class UserRequest {
     @NotNull(message = ConstantErrorCodes.NOT_NULL)
     private UUID roleId;
 
+    private int maxSetVocas;
+
     private Boolean isActive;
 
     public User getUser() {
@@ -39,6 +41,7 @@ public class UserRequest {
         user.setEmail(this.email);
         user.setIsActive(this.isActive);
         user.setPassword(this.password);
+        user.setMaxSetVocas(this.maxSetVocas);
         Role role = new Role();
         role.setId(this.roleId);
         user.setRole(role);
