@@ -27,6 +27,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "role")
 public class Role {
 
+    public Role(UUID id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")

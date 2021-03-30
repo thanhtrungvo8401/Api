@@ -1,5 +1,6 @@
 package fusikun.com.api.validator;
 
+import fusikun.com.api.service.CenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,6 +21,9 @@ public class UserValidator implements Validator {
 
 	@Autowired
 	RoleService roleService;
+
+	@Autowired
+	CenterService centerService;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -57,6 +61,12 @@ public class UserValidator implements Validator {
 				if (userService.countByEmail(userRequest.getEmail()) > 0) {
 					errors.rejectValue("email", ConstantErrorCodes.UNIQUE_VALUE);
 				}
+			}
+		}
+		// check centerId:
+		if (userRequest.getCenterId() != null) {
+			if(centerService.findById(userRequest.getCenterId()) == null) {
+				errors.rejectValue("centerId", ConstantErrorCodes.NOT_FOUND);
 			}
 		}
 	}
