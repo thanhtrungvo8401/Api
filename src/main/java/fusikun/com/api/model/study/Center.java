@@ -30,6 +30,10 @@ import fusikun.com.api.model.app.User;
 @AllArgsConstructor
 public class Center {
 
+    public Center(UUID id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -38,10 +42,6 @@ public class Center {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "center")
     private List<User> members;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adminId", nullable = false)
-    private User admin;
 
     private String centerName;
 

@@ -50,12 +50,9 @@ public class VocaController {
         vocaDataValidate.validateExistSetVocaById(vocaRequest.getSetId());
         vocaDataValidate.validateOverMaxVoca(vocaRequest);
         // Save:
-        Voca voca = vocaRequest.getVocaObject();
         // we are not checking unique for CODE
-        SetVoca setVoca = setVocaService.findById(vocaRequest.getSetId());
-        setVoca.increaseVoca();
-        vocaService.save(voca);
-        setVocaService.save(setVoca);
+        Voca voca = vocaRequest.getVocaObject();
+        vocaService.create(voca);
         // Return
         return ResponseEntity.status(HttpStatus.CREATED).body(new VocaResponse(voca));
     }
@@ -67,32 +64,14 @@ public class VocaController {
         // Validate:
         vocaRequest.setId(id);
         vocaDataValidate.validateExistVocaById(vocaRequest.getId());
-        vocaDataValidate.validateExistSetVocaById(vocaRequest.getSetId());
         vocaDataValidate.validate(vocaRequest);
         // Update
         Voca oldVoca = vocaService.findById(vocaRequest.getId());
-        // we are not checking unique for CODE
-        if (!vocaRequest.getSetId().equals(oldVoca.getSetVoca().getId())) {
-            // validate
-            vocaDataValidate.validateOverMaxVoca(vocaRequest);
-            // update
-            SetVoca setVocaRemove = oldVoca.getSetVoca();
-            setVocaRemove.decreaseVoca();
-            SetVoca setVocaAdd = setVocaService.findById(vocaRequest.getSetId());
-            setVocaAdd.increaseVoca();
-            setVocaService.save(setVocaAdd);
-            setVocaService.save(setVocaRemove);
-        }
-
         oldVoca.setNote(vocaRequest.getNote());
         oldVoca.setMeaning(vocaRequest.getMeaning());
         oldVoca.setSentence(vocaRequest.getSentence());
         oldVoca.setVoca(vocaRequest.getVoca());
 
-        SetVoca setVoca = new SetVoca();
-        setVoca.setId(vocaRequest.getSetId());
-
-        oldVoca.setSetVoca(setVoca);
         vocaService.save(oldVoca);
         return ResponseEntity.ok(new VocaResponse(oldVoca));
     }

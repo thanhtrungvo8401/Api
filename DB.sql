@@ -16,8 +16,8 @@ CREATE TABLE `center` (
   `createdDate` datetime NOT NULL,
   `isActive` bit(1) NOT NULL,
   `updatedDate` datetime NOT NULL,
-  `adminId` binary(16) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `centerName_UNIQUE` (`centerName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `menu` (
@@ -40,35 +40,34 @@ CREATE TABLE `role` (
   `isActive` bit(1) NOT NULL,
   `roleName` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `updatedDate` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `roleName_UNIQUE` (`roleName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `room` (
-  `id` binary(16) NOT NULL,
-  `createdDate` datetime NOT NULL,
-  `isActive` bit(1) NOT NULL,
-  `roomName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `updatedDate` datetime NOT NULL,
-  `centerId` binary(16) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+--CREATE TABLE `room` (
+--  `id` binary(16) NOT NULL,
+--  `createdDate` datetime NOT NULL,
+--  `isActive` bit(1) NOT NULL,
+--  `roomName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+--  `updatedDate` datetime NOT NULL,
+--  `centerId` binary(16) DEFAULT NULL,
+--  PRIMARY KEY (`id`)
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+--
+--CREATE TABLE `room_members` (
+--  `roomId` binary(16) NOT NULL,
+--  `memberId` binary(16) NOT NULL
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+--
+--CREATE TABLE `room_setVocas` (
+--  `roomId` binary(16) NOT NULL,
+--  `setVocaId` binary(16) NOT NULL
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `room_members` (
-  `roomId` binary(16) NOT NULL,
-  `memberId` binary(16) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `room_setVocas` (
-  `roomId` binary(16) NOT NULL,
-  `setVocaId` binary(16) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-
-CREATE TABLE `room_teachers` (
-  `roomId` binary(16) NOT NULL,
-  `teacherId` binary(16) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+--CREATE TABLE `room_teachers` (
+--  `roomId` binary(16) NOT NULL,
+--  `teacherId` binary(16) NOT NULL
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `set_voca` (
   `id` binary(16) NOT NULL,
@@ -95,7 +94,7 @@ CREATE TABLE `user` (
   `maxSetVocas` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-	
+
 
 CREATE TABLE `voca` (
   `id` binary(16) NOT NULL,
@@ -124,7 +123,7 @@ CREATE TABLE `remember_group` (
   PRIMARY KEY (`id`),
   KEY `FK_remember_group__owner` (`ownerId`),
   CONSTRAINT `FK_remember_group__owner` FOREIGN KEY (`ownerId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `test_group` (
   `id` binary(16) NOT NULL,
@@ -137,38 +136,35 @@ CREATE TABLE `test_group` (
   `ownerId` binary(16) NOT NULL,
   KEY `FK_test_group__owner` (`ownerId`),
   CONSTRAINT `FK_test_group__owner` FOREIGN KEY (`ownerId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `auth`
   ADD KEY `FK3qw51q11lsis16ne16jbfmhh4` (`menuId`),
   ADD KEY `FKmj6lyn5c4yowu3jxgq4pa8cgg` (`roleId`),
   ADD CONSTRAINT `FK3qw51q11lsis16ne16jbfmhh4` FOREIGN KEY (`menuId`) REFERENCES `menu` (`id`),
   ADD CONSTRAINT `FKmj6lyn5c4yowu3jxgq4pa8cgg` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`);
-ALTER TABLE `center`
-  ADD KEY `FKpoiqv8grwot403tce86a9bxhu` (`adminId`),
-  ADD CONSTRAINT `FKpoiqv8grwot403tce86a9bxhu` FOREIGN KEY (`adminId`) REFERENCES `user` (`id`);
 ALTER TABLE `menu`
   ADD UNIQUE KEY `name_UNIQUE` (`name`),
   ADD KEY `FKbfc1llceenf99rg3fybss8u77` (`parentId`),
   ADD CONSTRAINT `FKbfc1llceenf99rg3fybss8u77` FOREIGN KEY (`parentId`) REFERENCES `menu` (`id`);
-ALTER TABLE `room`
-  ADD KEY `FK7p81crppa1ner7rsq445ji8kd` (`centerId`),
-  ADD CONSTRAINT `FK7p81crppa1ner7rsq445ji8kd` FOREIGN KEY (`centerId`) REFERENCES `center` (`id`);
-ALTER TABLE `room_members`
-  ADD KEY `FK6bf0bl04tpeq5i97b9w7l57kb` (`memberId`),
-  ADD KEY `FKsdu8981apo9pn8ttlpdnwvulo` (`roomId`),
-  ADD CONSTRAINT `FK6bf0bl04tpeq5i97b9w7l57kb` FOREIGN KEY (`memberId`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `FKsdu8981apo9pn8ttlpdnwvulo` FOREIGN KEY (`roomId`) REFERENCES `room` (`id`);
-ALTER TABLE `room_setVocas`
-  ADD KEY `FK37ksjwekep66xs34d4r164cq2` (`roomId`),
-  ADD KEY `FK67f17pord2gogx0tjfvnc5xfs` (`setVocaId`),
-  ADD CONSTRAINT `FK37ksjwekep66xs34d4r164cq2` FOREIGN KEY (`roomId`) REFERENCES `room` (`id`),
-  ADD CONSTRAINT `FK67f17pord2gogx0tjfvnc5xfs` FOREIGN KEY (`setVocaId`) REFERENCES `set_voca` (`id`);
-ALTER TABLE `room_teachers`
-  ADD KEY `FK6jfcv2sbvc68quwyixfhqh5ui` (`teacherId`),
-  ADD KEY `FKj09vp3p966n900awuoapwpbwg` (`roomId`),
-  ADD CONSTRAINT `FK6jfcv2sbvc68quwyixfhqh5ui` FOREIGN KEY (`teacherId`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `FKj09vp3p966n900awuoapwpbwg` FOREIGN KEY (`roomId`) REFERENCES `room` (`id`);
+--ALTER TABLE `room`
+--  ADD KEY `FK7p81crppa1ner7rsq445ji8kd` (`centerId`),
+--  ADD CONSTRAINT `FK7p81crppa1ner7rsq445ji8kd` FOREIGN KEY (`centerId`) REFERENCES `center` (`id`);
+--ALTER TABLE `room_members`
+--  ADD KEY `FK6bf0bl04tpeq5i97b9w7l57kb` (`memberId`),
+--  ADD KEY `FKsdu8981apo9pn8ttlpdnwvulo` (`roomId`),
+--  ADD CONSTRAINT `FK6bf0bl04tpeq5i97b9w7l57kb` FOREIGN KEY (`memberId`) REFERENCES `user` (`id`),
+--  ADD CONSTRAINT `FKsdu8981apo9pn8ttlpdnwvulo` FOREIGN KEY (`roomId`) REFERENCES `room` (`id`);
+--ALTER TABLE `room_setVocas`
+--  ADD KEY `FK37ksjwekep66xs34d4r164cq2` (`roomId`),
+--  ADD KEY `FK67f17pord2gogx0tjfvnc5xfs` (`setVocaId`),
+--  ADD CONSTRAINT `FK37ksjwekep66xs34d4r164cq2` FOREIGN KEY (`roomId`) REFERENCES `room` (`id`),
+--  ADD CONSTRAINT `FK67f17pord2gogx0tjfvnc5xfs` FOREIGN KEY (`setVocaId`) REFERENCES `set_voca` (`id`);
+--ALTER TABLE `room_teachers`
+--  ADD KEY `FK6jfcv2sbvc68quwyixfhqh5ui` (`teacherId`),
+--  ADD KEY `FKj09vp3p966n900awuoapwpbwg` (`roomId`),
+--  ADD CONSTRAINT `FK6jfcv2sbvc68quwyixfhqh5ui` FOREIGN KEY (`teacherId`) REFERENCES `user` (`id`),
+--  ADD CONSTRAINT `FKj09vp3p966n900awuoapwpbwg` FOREIGN KEY (`roomId`) REFERENCES `room` (`id`);
 ALTER TABLE `set_voca`
   ADD KEY `FK10scacxjgygoob9mmktt3ab8c` (`authorId`),
   ADD CONSTRAINT `FK10scacxjgygoob9mmktt3ab8c` FOREIGN KEY (`authorId`) REFERENCES `user` (`id`);

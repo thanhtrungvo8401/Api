@@ -7,6 +7,9 @@ import javax.validation.Valid;
 
 import fusikun.com.api.dto.ObjectsManagementList;
 import fusikun.com.api.enums.ApiDataType;
+import fusikun.com.api.model.study.Center;
+import fusikun.com.api.service.CenterService;
+import fusikun.com.api.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -36,6 +39,9 @@ public class UserController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    CenterService centerService;
 
     @GetMapping("/users")
     public ResponseEntity<Object> handleGetUsers(
@@ -70,6 +76,10 @@ public class UserController {
         // CUSTOM VALIDATE:
         userDataValidate.validate(userRequest);
         User user = userRequest.getUser();
+        if (userRequest.getCenterId() == null) {
+            Center center = centerService.findByCenterName(Constant.CENTER_DEFAULT);
+            user.setCenter(center);
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(user));

@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 
 import fusikun.com.api.model.app.Role;
 import fusikun.com.api.model.app.User;
+import fusikun.com.api.model.study.Center;
 import fusikun.com.api.utils.ConstantErrorCodes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +34,8 @@ public class UserRequest {
 
     private int maxSetVocas;
 
+    private UUID centerId;
+
     private Boolean isActive;
 
     public User getUser() {
@@ -42,9 +45,10 @@ public class UserRequest {
         user.setIsActive(this.isActive);
         user.setPassword(this.password);
         user.setMaxSetVocas(this.maxSetVocas);
-        Role role = new Role();
-        role.setId(this.roleId);
-        user.setRole(role);
+        user.setRole(new Role(this.roleId));
+        if (this.centerId != null) {
+            user.setCenter(new Center(this.centerId));
+        }
         return user;
     }
 }

@@ -23,12 +23,11 @@ public class VocaService {
 	@Autowired
 	VocaRepository vocaRepository;
 
+	@Autowired SetVocaService setVocaService;
+
 	public Voca findById(UUID id) {
 		Optional<Voca> optVoca = vocaRepository.findById(id);
-		if (optVoca.isPresent())
-			return optVoca.get();
-		else
-			return null;
+		return optVoca.orElse(null);
 	}
 
 	public Voca save(Voca entity) {
@@ -46,7 +45,7 @@ public class VocaService {
 		Page<Voca> page = vocaRepository.findAll(specification, pageable);
 		if (page.hasContent())
 			return page.getContent();
-		return new ArrayList<Voca>();
+		return new ArrayList<>();
 
 	}
 
@@ -61,6 +60,13 @@ public class VocaService {
 
 	public void deleteById(UUID id) {
 		vocaRepository.deleteById(id);
+	}
+
+	public Voca create(Voca entity) {
+		SetVoca setVoca = setVocaService.findById(entity.getSetVoca().getId());
+		setVoca.increaseVoca();
+		setVocaService.save(setVoca);
+		return save(entity);
 	}
 
 	public void delete(Voca voca) {
