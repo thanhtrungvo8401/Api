@@ -90,7 +90,7 @@ CREATE TABLE `user` (
   `password` binary(60) NOT NULL,
   `updatedDate` datetime NOT NULL,
   `roleId` binary(16) NOT NULL,
-  `centerId` binary(16) DEFAULT NULL,
+  `centerId` binary(16) DEFAULT NOT NULL,
   `maxSetVocas` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

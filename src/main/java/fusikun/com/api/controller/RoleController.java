@@ -34,112 +34,113 @@ import javassist.NotFoundException;
 @RequestMapping("/api/v1")
 public class RoleController {
 
-	@Autowired
-	RoleDataValidate roleDataValidate;
+    @Autowired
+    RoleDataValidate roleDataValidate;
 
-	@Autowired
-	RoleService roleService;
+    @Autowired
+    RoleService roleService;
 
-	@Autowired
-	MenuService menuService;
+    @Autowired
+    MenuService menuService;
 
-	@Autowired
-	AuthService authService;
+    @Autowired
+    AuthService authService;
 
-	@GetMapping("/roles")
-	public ResponseEntity<Object> getAllRoles() {
-		List<Role> roles = roleService.findAll();
-		List<RoleResponse> rolesRes = roles.stream().map(RoleResponse::new).collect(Collectors.toList());
-		Long total = roleService.count();
-		return ResponseEntity.ok(new RoleManagement(rolesRes, total));
-	}
+    @GetMapping("/roles")
+    public ResponseEntity<Object> getAllRoles() {
+        List<Role> roles = roleService.findAll();
+        List<RoleResponse> rolesRes = roles.stream().map(RoleResponse::new).collect(Collectors.toList());
+        Long total = roleService.count();
+        return ResponseEntity.ok(new RoleManagement(rolesRes, total));
+    }
 
-	@PostMapping("/roles")
-	public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
-			throws Ex_MethodArgumentNotValidException {
-		// CUSTOM VALIDATE:
-		roleDataValidate.validate(roleRequest);
-		// SAVE ROLE:
-		Role role = roleRequest.getRole();
-		Role savedRole = roleService.save(role);
-		List<Menu> menus = menuService.findAll();
-		handleGenerateAuthsFromRoleAndMenus(savedRole, menus);
-		return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
-	}
+    @PostMapping("/roles")
+    public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
+            throws Ex_MethodArgumentNotValidException {
+        // CUSTOM VALIDATE:
+        roleDataValidate.validate(roleRequest);
+        // SAVE ROLE:
+        Role role = roleRequest.getRole();
+        Role savedRole = roleService.save(role);
+        List<Menu> menus = menuService.findAll();
+        handleGenerateAuthsFromRoleAndMenus(savedRole, menus);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RoleResponse(savedRole));
+    }
 
-	@GetMapping("/roles/{id}")
-	public ResponseEntity<Object> getRoleById(@PathVariable UUID id) throws NotFoundException {
-		// VALIDATE DATA IS EXIST OR NOT:
-		roleDataValidate.validateExistById(id);
-		Role role = roleService.findRoleById(id);
-		// Check role has fully mapped with AUTHS:
-		List<Auth> auths = role.getAuths();
-		List<String> menusMappedNames = auths.stream().map(auth -> auth.getMenu().getName())
-				.collect(Collectors.toList());
+    @GetMapping("/roles/{id}")
+    public ResponseEntity<Object> getRoleById(@PathVariable UUID id) throws NotFoundException {
+        // VALIDATE DATA IS EXIST OR NOT:
+        roleDataValidate.validateExistById(id);
+        Role role = roleService.findRoleById(id);
+        // Check role has fully mapped with AUTHS:
+        List<Auth> auths = role.getAuths();
+        List<String> menusMappedNames = auths.stream().map(auth -> auth.getMenu().getName())
+                .collect(Collectors.toList());
 
-		List<Menu> menusNotMapped;
-		if (!menusMappedNames.isEmpty()) {
-			menusNotMapped = menuService.findNotMappedMenus(menusMappedNames);
-		} else {
-			menusNotMapped = menuService.findAll();
-		}
+        List<Menu> menusNotMapped;
+        if (!menusMappedNames.isEmpty()) {
+            menusNotMapped = menuService.findNotMappedMenus(menusMappedNames);
+        } else {
+            menusNotMapped = menuService.findAll();
+        }
 
-		if (!menusNotMapped.isEmpty()) {
-			List<Auth> authAdds = handleGenerateAuthsFromRoleAndMenus(role, menusNotMapped);
-			auths.addAll(authAdds);
-		}
-		// generate Valid RETURN-DATA:
-		List<AuthResponse> updatedAuthResponses = auths.stream().map((auth) -> {
-			MenuResponse menuResponse = new MenuResponse(auth.getMenu());
-			return new AuthResponse(auth, menuResponse);
-		}).collect(Collectors.toList());
-		RoleResponse roleRes = new RoleResponse(role);
-		roleRes.setAuths(updatedAuthResponses);
+        if (!menusNotMapped.isEmpty()) {
+            List<Auth> authAdds = handleGenerateAuthsFromRoleAndMenus(role, menusNotMapped);
+            auths.addAll(authAdds);
+        }
+        // generate Valid RETURN-DATA:
+        List<AuthResponse> updatedAuthResponses = auths.stream().map((auth) -> {
+            MenuResponse menuResponse = new MenuResponse(auth.getMenu());
+            return new AuthResponse(auth, menuResponse);
+        }).collect(Collectors.toList());
+        RoleResponse roleRes = new RoleResponse(role);
+        roleRes.setAuths(updatedAuthResponses);
 
-		return ResponseEntity.ok(roleRes);
-	}
+        return ResponseEntity.ok(roleRes);
+    }
 
-	@PutMapping("/roles/{id}")
-	public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
-			@PathVariable UUID id) throws Ex_MethodArgumentNotValidException, NotFoundException {
-		// CUSTOM VALIDATE:
-		roleRequest.setId(id);
-		roleDataValidate.validateExistById(roleRequest.getId());
-		roleDataValidate.validate(roleRequest);
-		// SAVE ROLE:
-		Role oldRole = roleService.findRoleById(id);
-		Role role = roleRequest.getRole();
-		oldRole.setRoleName(role.getRoleName());
-		oldRole.setDescription(role.getDescription());
-		Role saveRole = roleService.save(oldRole);
-		return ResponseEntity.ok(new RoleResponse(saveRole));
-	}
+    @PutMapping("/roles/{id}")
+    public ResponseEntity<Object> handleUpdateRoleById(@Valid @RequestBody RoleRequest roleRequest,
+                                                       @PathVariable UUID id) throws Ex_MethodArgumentNotValidException, NotFoundException {
+        // CUSTOM VALIDATE:
+        roleRequest.setId(id);
+        roleDataValidate.validateExistById(roleRequest.getId());
+        roleDataValidate.validate(roleRequest);
+        // SAVE ROLE:
+        Role oldRole = roleService.findRoleById(id);
+        Role role = roleRequest.getRole();
+        oldRole.setRoleName(role.getRoleName());
+        oldRole.setDescription(role.getDescription());
+        Role saveRole = roleService.save(oldRole);
+        return ResponseEntity.ok(new RoleResponse(saveRole));
+    }
 
-	@DeleteMapping("/roles/{id}")
-	public ResponseEntity<Object> handleDeleteRoleById(@PathVariable UUID id) throws NotFoundException {
-		// VALIDATE DATA IS EXIST OR NOT:
-		roleDataValidate.validateExistById(id);
-		roleDataValidate.validateRoleIsUsedByUser(id);
-		Role role = roleService.findRoleById(id);
-		roleService.delete(role);
-		return ResponseEntity.ok(new RoleResponse(role));
-	}
+    @DeleteMapping("/roles/{id}")
+    public ResponseEntity<Object> handleDeleteRoleById(@PathVariable UUID id) throws NotFoundException {
+        // VALIDATE DATA IS EXIST OR NOT:
+        roleDataValidate.validateExistById(id);
+        roleDataValidate.validateNeverDeleteRole(id);
+        roleDataValidate.validateRoleIsUsedByUser(id);
+        Role role = roleService.findRoleById(id);
+        roleService.delete(role);
+        return ResponseEntity.ok(new RoleResponse(role));
+    }
 
-	private List<Auth> handleGenerateAuthsFromRoleAndMenus(Role savedRole, List<Menu> menus) {
-		List<Auth> auths = new LinkedList<>();
-		menus.forEach(menu -> {
-			Auth auth = new Auth(savedRole, menu, false);
-			auths.add(auth);
-		});
-		return authService.saveAll(auths);
-	}
+    private List<Auth> handleGenerateAuthsFromRoleAndMenus(Role savedRole, List<Menu> menus) {
+        List<Auth> auths = new LinkedList<>();
+        menus.forEach(menu -> {
+            Auth auth = new Auth(savedRole, menu, false);
+            auths.add(auth);
+        });
+        return authService.saveAll(auths);
+    }
 
-	@Getter
-	@Setter
-	@NoArgsConstructor
-	@AllArgsConstructor
-	private class RoleManagement {
-		List<RoleResponse> list;
-		Long total;
-	}
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private class RoleManagement {
+        List<RoleResponse> list;
+        Long total;
+    }
 }

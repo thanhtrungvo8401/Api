@@ -43,8 +43,26 @@ public class UserController {
     @Autowired
     CenterService centerService;
 
+    @GetMapping("/users/ids")
+    public ResponseEntity<List<UUID>> handleGetUsersIdsList(
+            @RequestParam(name = "filters", required = false) String filters
+    ) {
+        Specification_User userSpecification =
+                new SearchHelpers_Users(new Specification_User(), filters)
+                        .getSpecification(Arrays.asList(
+                                "id," + ApiDataType.UUID_TYPE,
+                                "role.id," + ApiDataType.UUID_TYPE,
+                                "role.roleName," + ApiDataType.STRING_TYPE,
+                                "email," + ApiDataType.STRING_TYPE,
+                                "center.centerName," + ApiDataType.STRING_TYPE
+                        ));
+        List<User> users = userService.findAll(userSpecification);
+        List<UUID> ids = users.stream().map(User::getId).collect(Collectors.toList());
+        return ResponseEntity.ok(ids);
+    }
+
     @GetMapping("/users")
-    public ResponseEntity<Object> handleGetUsers(
+    public ResponseEntity<UsersManagement> handleGetUsers(
             @RequestParam(name = "filters", required = false) String filters,
             @RequestParam(name = "limit", required = false) String limit,
             @RequestParam(name = "page", required = false) String page,
@@ -57,7 +75,8 @@ public class UserController {
                                 "id," + ApiDataType.UUID_TYPE,
                                 "role.id," + ApiDataType.UUID_TYPE,
                                 "role.roleName," + ApiDataType.STRING_TYPE,
-                                "email," + ApiDataType.STRING_TYPE
+                                "email," + ApiDataType.STRING_TYPE,
+                                "center.centerName," + ApiDataType.STRING_TYPE
                         ));
 //        "email", "role.id", "role.roleName"
         Pageable pageable = SortHelper.getSort(limit, page, sortBy, order);
@@ -114,6 +133,7 @@ public class UserController {
     public ResponseEntity<Object> handleDeleteUserById(@PathVariable UUID id) throws NotFoundException {
         // VALIDATE DATA:
         userDataValidate.validateExistById(id);
+        userDataValidate.validateNeverDeleteUser(id);
         userDataValidate.validateNotDeleteYourself(id);
         User user = userService.findById(id);
         userService.delete(user);
