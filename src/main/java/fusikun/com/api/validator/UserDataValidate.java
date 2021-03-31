@@ -2,6 +2,8 @@ package fusikun.com.api.validator;
 
 import java.util.UUID;
 
+import fusikun.com.api.exceptionHandlers.Ex_MethodNotAllowedException;
+import fusikun.com.api.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -41,6 +43,13 @@ public class UserDataValidate {
 		User user = userService.findById(id);
 		if (user == null)
 			throw new NotFoundException("User with id=" + id + "is not existed");
+	}
+
+	public final void  validateNeverDeleteUser(UUID id) {
+		User user = userService.findById(id);
+		if (user.getEmail().equals(Constant.EMAIL)) {
+			throw new Ex_MethodNotAllowedException("This user can not be deleted!");
+		}
 	}
 
 	public final void validateNotDeleteYourself(UUID id) {

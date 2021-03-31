@@ -53,6 +53,10 @@ public class UserService {
         return new ArrayList<>();
     }
 
+    public List<User> findAll(Specification_User specification_user) {
+        return userRepository.findAll(specification_user);
+    }
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
