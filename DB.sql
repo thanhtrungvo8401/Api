@@ -72,6 +72,7 @@ CREATE TABLE `role` (
 CREATE TABLE `set_voca` (
   `id` binary(16) NOT NULL,
   `maxVoca` tinyint NOT NULL,
+  `totalVocas` tinyint NOT NULL,
   `createdDate` datetime NOT NULL,
   `isActive` bit(1) NOT NULL,
   `setName` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,

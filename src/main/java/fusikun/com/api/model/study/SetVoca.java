@@ -11,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -51,8 +50,8 @@ public class SetVoca {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "setVoca", cascade = CascadeType.REMOVE)
     private List<Voca> vocas;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "setVocas")
-    private List<Room> rooms;
+//    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "setVocas")
+//    private List<Room> rooms;
 
     public void decreaseVoca() {
         this.totalVocas--;

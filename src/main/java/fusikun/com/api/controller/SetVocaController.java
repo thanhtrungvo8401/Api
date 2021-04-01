@@ -13,9 +13,7 @@ import fusikun.com.api.specificationSearch.SearchHelpers_SetVocas;
 import fusikun.com.api.utils.SortHelper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -135,11 +133,19 @@ public class SetVocaController {
         return ResponseEntity.ok(new SetVocasManagement(setVocasResponses, total));
     }
 
-    @GetMapping("/set-vocas/{centerName}")
-    public ResponseEntity<List<SetVocaResponse>> handleGetSetVocasByCenterNameAndRole(
-//            @RequestParam(name = "centerName") String centerName
-    ) {
-        return null;
+    @GetMapping("center/{centerId}/set-vocas")
+    public ResponseEntity<List<SetVocaResponse>> handleGetSetVocasByCenterIdAndRole(
+            @PathVariable UUID centerId,
+            @RequestParam(name = "roleName") String roleName
+    ) throws NotFoundException {
+        setVocaDataValidate.validateCenterNotExist(centerId);
+        List<UUID> useIds = userService.getUserIdsBaseOnCenterIdAndRoleName(centerId, roleName);
+        Specification_SetVoca specification = new Specification_SetVoca();
+        specification.add(new _SearchCriteria("author", SearchOperator.IN, useIds, "id",
+                ApiDataType.UUID_TYPE));
+
+        List<SetVoca> setVocas = setVocaService.findAll(specification);
+        return ResponseEntity.ok(setVocas.stream().map(SetVocaResponse::new).collect(Collectors.toList()));
     }
 
     // DELETE
