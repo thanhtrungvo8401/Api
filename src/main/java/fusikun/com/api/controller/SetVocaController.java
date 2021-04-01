@@ -88,8 +88,7 @@ public class SetVocaController {
         setVocaDataValidate.validateAuthorNotExistById(authorId);
         // fetch data:
         Specification_SetVoca specification = getSetVocaSpecification(authorId);
-        Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
-        List<SetVoca> setVocas = setVocaService.findAll(specification, pageable);
+        List<SetVoca> setVocas = setVocaService.findAll(specification);
         List<SetVocaResponse> setVocaResponses = setVocas.stream().map(SetVocaResponse::new)
                 .collect(Collectors.toList());
         // return
@@ -134,6 +133,13 @@ public class SetVocaController {
                 .map(SetVocaResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new SetVocasManagement(setVocasResponses, total));
+    }
+
+    @GetMapping("/set-vocas/{centerName}")
+    public ResponseEntity<List<SetVocaResponse>> handleGetSetVocasByCenterNameAndRole(
+//            @RequestParam(name = "centerName") String centerName
+    ) {
+        return null;
     }
 
     // DELETE
