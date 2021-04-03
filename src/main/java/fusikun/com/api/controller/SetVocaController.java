@@ -133,7 +133,7 @@ public class SetVocaController {
         return ResponseEntity.ok(new SetVocasManagement(setVocasResponses, total));
     }
 
-    @GetMapping("center/{centerId}/set-vocas")
+    @GetMapping("centers/{centerId}/set-vocas")
     public ResponseEntity<List<SetVocaResponse>> handleGetSetVocasByCenterIdAndRole(
             @PathVariable UUID centerId,
             @RequestParam(name = "roleName") String roleName
