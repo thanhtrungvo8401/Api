@@ -97,8 +97,7 @@ public class VocaController {
         vocaDataValidate.validateExistSetVocaById(id);
         // Fetch
         Specification_Voca specification = getVocaSpecificationFromSetVocasId(id);
-        Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
-        List<Voca> vocas = vocaService.findAll(specification, pageable);
+        List<Voca> vocas = vocaService.findAll(specification);
         // Return
         List<VocaResponse> vocaResponses = vocas.stream().map(VocaResponse::new)
                 .collect(Collectors.toList());

@@ -1,7 +1,6 @@
 package fusikun.com.api.model.app;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -10,7 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -21,7 +19,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import fusikun.com.api.model.study.Center;
-import fusikun.com.api.model.study.Room;
+//import fusikun.com.api.model.study.Room;
 
 @Entity
 @Table(name = "user")
@@ -58,8 +56,8 @@ public class User {
     @JoinColumn(name = "centerId")
     private Center center;
 
-    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
-    private List<Room> rooms;
+//    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+//    private List<Room> rooms;
 
     public User(UUID id) {
         this.id = id;

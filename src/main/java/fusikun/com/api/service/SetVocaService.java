@@ -20,46 +20,47 @@ import fusikun.com.api.specificationSearch.Specification_SetVoca;
 @Transactional(rollbackFor = Exception.class)
 public class SetVocaService {
 
-	@Autowired
-	SetVocaRepository setVocaRepository;
+    @Autowired
+    SetVocaRepository setVocaRepository;
 
-	public SetVoca save(SetVoca entity) {
-		if (entity.getId() == null) {
-			entity.setCreatedDate(new Date());
-		}
-		entity.setUpdatedDate(new Date());
-		if (entity.getIsActive() == null) {
-			entity.setIsActive(true);
-		}
+    public SetVoca save(SetVoca entity) {
+        if (entity.getId() == null) {
+            entity.setCreatedDate(new Date());
+        }
+        entity.setUpdatedDate(new Date());
+        if (entity.getIsActive() == null) {
+            entity.setIsActive(true);
+        }
 
-		return setVocaRepository.save(entity);
-	}
+        return setVocaRepository.save(entity);
+    }
 
-	public List<SetVoca> findAll(Specification_SetVoca specification, Pageable pageable) {
-		Page<SetVoca> page = setVocaRepository.findAll(specification, pageable);
-		if (page.hasContent()) {
-			return page.getContent();
-		}
-		return new ArrayList<SetVoca>();
-	}
+    public List<SetVoca> findAll(Specification_SetVoca specification, Pageable pageable) {
+        Page<SetVoca> page = setVocaRepository.findAll(specification, pageable);
+        if (page.hasContent()) {
+            return page.getContent();
+        }
+        return new ArrayList<>();
+    }
 
-	public SetVoca findById(UUID id) {
-		Optional<SetVoca> setVocaOpt = setVocaRepository.findById(id);
-		if (setVocaOpt.isPresent())
-			return setVocaOpt.get();
-		else
-			return null;
-	}
+    public List<SetVoca> findAll(Specification_SetVoca specification) {
+        return setVocaRepository.findAll(specification);
+    }
 
-	public Long count(Specification_SetVoca specification) {
-		return setVocaRepository.count(specification);
-	}
+    public SetVoca findById(UUID id) {
+        Optional<SetVoca> setVocaOpt = setVocaRepository.findById(id);
+        return setVocaOpt.orElse(null);
+    }
 
-	public void deleteById(UUID id) {
-		setVocaRepository.deleteById(id);
-	}
+    public Long count(Specification_SetVoca specification) {
+        return setVocaRepository.count(specification);
+    }
 
-	public void delete(SetVoca setVoca) {
-		setVocaRepository.delete(setVoca);
-	}
+    public void deleteById(UUID id) {
+        setVocaRepository.deleteById(id);
+    }
+
+    public void delete(SetVoca setVoca) {
+        setVocaRepository.delete(setVoca);
+    }
 }

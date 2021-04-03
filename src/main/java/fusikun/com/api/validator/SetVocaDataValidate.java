@@ -2,6 +2,7 @@ package fusikun.com.api.validator;
 
 import java.util.UUID;
 
+import fusikun.com.api.service.CenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,9 @@ public class SetVocaDataValidate {
 	@Autowired
 	SetVocaService setVocaService;
 
+	@Autowired
+	CenterService centerService;
+
 	public final void validate(SetVocaRequest setVocaRequest) {
 		// TRYM WHITE SPACE:
 		setVocaRequest.setSetName(SpaceUtils.trymWhiteSpace(setVocaRequest.getSetName()));
@@ -38,6 +42,12 @@ public class SetVocaDataValidate {
 	public final void validateSetVocaIdNotExist(UUID id) throws NotFoundException {
 		if (setVocaService.findById(id) == null) {
 			throw new NotFoundException("SetVoca with id =" + id + " is not existed");
+		}
+	}
+
+	public final void validateCenterNotExist(UUID id) throws NotFoundException {
+		if (centerService.findById(id) == null) {
+			throw new NotFoundException("Center with id=" + id + " is not existed");
 		}
 	}
 

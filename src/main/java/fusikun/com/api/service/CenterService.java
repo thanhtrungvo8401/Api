@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,6 +31,10 @@ public class CenterService {
     public Center findByCenterName(String centerName) {
         Optional<Center> optCenter = centerRepository.findByCenterName(centerName);
         return optCenter.orElse(null);
+    }
+
+    public List<Center> findAll() {
+        return centerRepository.findAll();
     }
 
     public Center findById(UUID id) {

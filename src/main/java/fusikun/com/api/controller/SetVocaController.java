@@ -13,9 +13,7 @@ import fusikun.com.api.specificationSearch.SearchHelpers_SetVocas;
 import fusikun.com.api.utils.SortHelper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -88,8 +86,7 @@ public class SetVocaController {
         setVocaDataValidate.validateAuthorNotExistById(authorId);
         // fetch data:
         Specification_SetVoca specification = getSetVocaSpecification(authorId);
-        Pageable pageable = PageRequest.of(0, 100, Direction.DESC, "createdDate");
-        List<SetVoca> setVocas = setVocaService.findAll(specification, pageable);
+        List<SetVoca> setVocas = setVocaService.findAll(specification);
         List<SetVocaResponse> setVocaResponses = setVocas.stream().map(SetVocaResponse::new)
                 .collect(Collectors.toList());
         // return
@@ -134,6 +131,21 @@ public class SetVocaController {
                 .map(SetVocaResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new SetVocasManagement(setVocasResponses, total));
+    }
+
+    @GetMapping("center/{centerId}/set-vocas")
+    public ResponseEntity<List<SetVocaResponse>> handleGetSetVocasByCenterIdAndRole(
+            @PathVariable UUID centerId,
+            @RequestParam(name = "roleName") String roleName
+    ) throws NotFoundException {
+        setVocaDataValidate.validateCenterNotExist(centerId);
+        List<UUID> useIds = userService.getUserIdsBaseOnCenterIdAndRoleName(centerId, roleName);
+        Specification_SetVoca specification = new Specification_SetVoca();
+        specification.add(new _SearchCriteria("author", SearchOperator.IN, useIds, "id",
+                ApiDataType.UUID_TYPE));
+
+        List<SetVoca> setVocas = setVocaService.findAll(specification);
+        return ResponseEntity.ok(setVocas.stream().map(SetVocaResponse::new).collect(Collectors.toList()));
     }
 
     // DELETE
