@@ -74,7 +74,7 @@ public abstract class _SearchHelpers<T extends _Specification> {
                 return new _SearchCriteria(field, operator, value, type);
             }
         }
-
+        // helper:
         private SearchOperator getSearchOperator(String operatorkey) {
             SearchOperator operator = null;
             switch (operatorkey) {
@@ -125,18 +125,16 @@ public abstract class _SearchHelpers<T extends _Specification> {
             Matcher m = p.matcher(filter);
             if (!m.matches())
                 throw new Ex_InvalidSearch("Filter = [" + filter + "] is invalid filter!");
-            String[] arr = filter.split(Constant.FILTER_DIVICE);
-            return arr;
+            return filter.split(Constant.FILTER_DIVICE);
         }
 
         private Object getValue(String operatorKey, String objectValue) {
 //            operatorKey == "in" || operatorKey == "not-in"
             if (Arrays.asList("in", "not-in").contains(operatorKey)) {
                 try {
-                    List<Object> listValue = Arrays.asList(
+                    return Arrays.<Object>asList(
                             objectValue.split(Constant.COMMA)
                     );
-                    return listValue;
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new Ex_InvalidSearch(operatorKey + " " + objectValue + " is invalid filter!");
