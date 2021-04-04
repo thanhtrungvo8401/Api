@@ -103,49 +103,40 @@ public class SetVocaController {
         return ResponseEntity.ok(new SetVocaResponse(setVoca));
     }
 
-    @ApiOperation(value = "Fetch SET-VOCAS, FILTER: 'author.id' ")
-    @GetMapping("/set-vocas")
-    public ResponseEntity<Object> handleGetSetVocasByFilter(
+    @GetMapping("centers/roles/set-vocas")
+    public ResponseEntity<SetVocasManagement> handleGetSetVocasByCenterIdAndFilters(
+            @RequestParam(name = "centerId") UUID centerId,
+            @RequestParam(name = "roleName") String roleName,
             @RequestParam(name = "filters", required = false) String filters,
             @RequestParam(name = "limit", required = false) String limit,
             @RequestParam(name = "page", required = false) String page,
             @RequestParam(name = "sortBy", required = false) String sortBy,
             @RequestParam(name = "order", required = false) String order
     ) {
-        Specification_SetVoca specification_setVoca =
-                new SearchHelpers_SetVocas(new Specification_SetVoca(), filters)
-                        .getSpecification(Arrays.asList(
-                                "id," + ApiDataType.UUID_TYPE,
-                                "maxVoca," + ApiDataType.INTEGER_TYPE,
-                                "createdDate," + ApiDataType.DATE_TYPE,
-                                "updatedDate," + ApiDataType.DATE_TYPE,
-                                "setName," + ApiDataType.STRING_TYPE,
-                                "author.id," + ApiDataType.UUID_TYPE,
-                                "totalVocas," + ApiDataType.INTEGER_TYPE
-                        ));
+        List<UUID> userIds = userService.getUserIdsBaseOnCenterIdAndRoleName(centerId, roleName);
+        Specification_SetVoca spec = new Specification_SetVoca();
+        if (!userIds.isEmpty()) {
+            spec.add(new _SearchCriteria("author", SearchOperator.IN, userIds, "id",
+                    ApiDataType.UUID_TYPE));
+        }
 
+        Specification_SetVoca specification = new SearchHelpers_SetVocas(spec, filters)
+                .getSpecification(Arrays.asList(
+                        "id," + ApiDataType.UUID_TYPE,
+                        "maxVoca," + ApiDataType.INTEGER_TYPE,
+                        "createdDate," + ApiDataType.DATE_TYPE,
+                        "updatedDate," + ApiDataType.DATE_TYPE,
+                        "setName," + ApiDataType.STRING_TYPE,
+                        "author.id," + ApiDataType.UUID_TYPE,
+                        "totalVocas," + ApiDataType.INTEGER_TYPE
+                ));
         Pageable pageable = SortHelper.getSort(limit, page, sortBy, order);
-        List<SetVoca> setVocas = setVocaService.findAll(specification_setVoca, pageable);
-        Long total = setVocaService.count(specification_setVoca);
+        Long total = setVocaService.count(specification);
+        List<SetVoca> setVocas = setVocaService.findAll(specification, pageable);
         List<SetVocaResponse> setVocasResponses = setVocas.stream()
                 .map(SetVocaResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new SetVocasManagement(setVocasResponses, total));
-    }
-
-    @GetMapping("centers/{centerId}/set-vocas")
-    public ResponseEntity<List<SetVocaResponse>> handleGetSetVocasByCenterIdAndRole(
-            @PathVariable UUID centerId,
-            @RequestParam(name = "roleName") String roleName
-    ) throws NotFoundException {
-        setVocaDataValidate.validateCenterNotExist(centerId);
-        List<UUID> useIds = userService.getUserIdsBaseOnCenterIdAndRoleName(centerId, roleName);
-        Specification_SetVoca specification = new Specification_SetVoca();
-        specification.add(new _SearchCriteria("author", SearchOperator.IN, useIds, "id",
-                ApiDataType.UUID_TYPE));
-
-        List<SetVoca> setVocas = setVocaService.findAll(specification);
-        return ResponseEntity.ok(setVocas.stream().map(SetVocaResponse::new).collect(Collectors.toList()));
     }
 
     // DELETE

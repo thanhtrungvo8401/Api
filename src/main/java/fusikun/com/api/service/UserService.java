@@ -1,10 +1,6 @@
 package fusikun.com.api.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import fusikun.com.api.enums.ApiDataType;
@@ -95,7 +91,7 @@ public class UserService {
         Specification_User specification = new Specification_User();
         specification.add(new _SearchCriteria("center", SearchOperator.EQUAL, centerId, "id", ApiDataType.UUID_TYPE));
         specification.add(new _SearchCriteria("role", SearchOperator.EQUAL, roleName, "roleName",
-                ApiDataType.STRING_TYPE));
+         ApiDataType.STRING_TYPE));
         List<User> users = findAll(specification);
         return users.stream().map(User::getId).collect(Collectors.toList());
     }
