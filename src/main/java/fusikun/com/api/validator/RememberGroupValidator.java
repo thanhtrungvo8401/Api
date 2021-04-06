@@ -1,6 +1,6 @@
 package fusikun.com.api.validator;
 
-import fusikun.com.api.dto.RememberGroupRequest;
+import fusikun.com.api.dtoREQ.RememberGroupRequest;
 import fusikun.com.api.service.UserService;
 import fusikun.com.api.utils.ConstantErrorCodes;
 import fusikun.com.api.utils.IsValidRegex;

@@ -1,4 +1,4 @@
-package fusikun.com.api.dto;
+package fusikun.com.api.dtoRES;
 
 import fusikun.com.api.model.study.TestGroup;
 import lombok.AllArgsConstructor;

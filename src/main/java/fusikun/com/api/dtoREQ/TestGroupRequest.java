@@ -1,4 +1,4 @@
-package fusikun.com.api.dto;
+package fusikun.com.api.dtoREQ;
 
 import fusikun.com.api.model.app.User;
 import fusikun.com.api.model.study.TestGroup;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import fusikun.com.api.dto.MenuRequest;
+import fusikun.com.api.dtoREQ.MenuRequest;
 import fusikun.com.api.service.MenuService;
 import fusikun.com.api.utils.ConstantErrorCodes;
 

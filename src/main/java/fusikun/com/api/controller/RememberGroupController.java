@@ -1,8 +1,8 @@
 package fusikun.com.api.controller;
 
-import fusikun.com.api.dto.ObjectsManagementList;
-import fusikun.com.api.dto.RememberGroupRequest;
-import fusikun.com.api.dto.RememberGroupResponse;
+import fusikun.com.api.dtoRES.ObjectsManagementList;
+import fusikun.com.api.dtoREQ.RememberGroupRequest;
+import fusikun.com.api.dtoRES.RememberGroupResponse;
 import fusikun.com.api.enums.ApiDataType;
 import fusikun.com.api.enums.SearchOperator;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;

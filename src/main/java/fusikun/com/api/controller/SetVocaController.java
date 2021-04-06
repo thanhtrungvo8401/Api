@@ -7,19 +7,18 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import fusikun.com.api.dto.ObjectsManagementList;
+import fusikun.com.api.dtoRES.ObjectsManagementList;
 import fusikun.com.api.enums.ApiDataType;
 import fusikun.com.api.specificationSearch.SearchHelpers_SetVocas;
 import fusikun.com.api.utils.SortHelper;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import fusikun.com.api.dto.SetVocaRequest;
-import fusikun.com.api.dto.SetVocaResponse;
+import fusikun.com.api.dtoREQ.SetVocaRequest;
+import fusikun.com.api.dtoRES.SetVocaResponse;
 import fusikun.com.api.model.app.User;
 import fusikun.com.api.model.study.SetVoca;
 import fusikun.com.api.service.SetVocaService;

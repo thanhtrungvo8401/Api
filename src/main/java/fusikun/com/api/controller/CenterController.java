@@ -1,6 +1,6 @@
 package fusikun.com.api.controller;
 
-import fusikun.com.api.dto.CenterResponse;
+import fusikun.com.api.dtoRES.CenterResponse;
 import fusikun.com.api.model.study.Center;
 import fusikun.com.api.service.CenterService;
 import org.springframework.beans.factory.annotation.Autowired;

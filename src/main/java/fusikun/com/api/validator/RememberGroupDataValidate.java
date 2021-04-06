@@ -1,6 +1,6 @@
 package fusikun.com.api.validator;
 
-import fusikun.com.api.dto.RememberGroupRequest;
+import fusikun.com.api.dtoREQ.RememberGroupRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.service.RememberGroupService;
 import fusikun.com.api.service.UserService;

@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import fusikun.com.api.dto.AuthRequest;
-import fusikun.com.api.dto.AuthResponse;
+import fusikun.com.api.dtoREQ.AuthRequest;
+import fusikun.com.api.dtoRES.AuthResponse;
 import fusikun.com.api.model.app.Auth;
 import fusikun.com.api.service.AuthService;
 import fusikun.com.api.validator.AuthDataValidate;
