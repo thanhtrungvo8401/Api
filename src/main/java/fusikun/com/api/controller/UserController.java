@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import fusikun.com.api.dto.ObjectsManagementList;
+import fusikun.com.api.dtoRES.ObjectsManagementList;
 import fusikun.com.api.enums.ApiDataType;
 import fusikun.com.api.model.study.Center;
 import fusikun.com.api.service.CenterService;
@@ -17,8 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import fusikun.com.api.dto.UserRequest;
-import fusikun.com.api.dto.UserResponse;
+import fusikun.com.api.dtoREQ.UserRequest;
+import fusikun.com.api.dtoRES.UserResponse;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.app.User;
 import fusikun.com.api.service.UserService;

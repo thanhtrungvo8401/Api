@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
-import fusikun.com.api.dto.UserRequest;
+import fusikun.com.api.dtoREQ.UserRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.exceptionHandlers.Ex_NotAllowDeleteYourSelf;
 import fusikun.com.api.model.app.JwtUserDetails;

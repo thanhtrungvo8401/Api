@@ -13,9 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import fusikun.com.api.dto.UserRequest;
-import fusikun.com.api.dto.UserResponse;
-import fusikun.com.api.dto.User_StudentRequest;
+import fusikun.com.api.dtoREQ.UserRequest;
+import fusikun.com.api.dtoRES.UserResponse;
+import fusikun.com.api.dtoREQ.User_StudentRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.app.Role;
 import fusikun.com.api.model.app.User;

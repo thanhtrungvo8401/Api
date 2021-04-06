@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fusikun.com.api.dto.UserInfoObject;
+import fusikun.com.api.dtoRES.UserInfoObject;
 import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.model.app.User;
 import fusikun.com.api.utils.Constant;

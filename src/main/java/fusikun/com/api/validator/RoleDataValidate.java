@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
-import fusikun.com.api.dto.RoleRequest;
+import fusikun.com.api.dtoREQ.RoleRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodNotAllowedException;
 import fusikun.com.api.model.app.Role;
 import fusikun.com.api.model.app.User;

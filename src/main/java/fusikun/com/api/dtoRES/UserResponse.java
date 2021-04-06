@@ -1,4 +1,4 @@
-package fusikun.com.api.dto;
+package fusikun.com.api.dtoRES;
 
 import java.util.Date;
 import java.util.UUID;
@@ -19,6 +19,7 @@ public class UserResponse {
     private Date createdDate;
     private Date updatedDate;
     private RoleResponse role;
+    private CenterResponse center;
     private Integer maxSetVocas;
     private Boolean isActive;
 
@@ -30,5 +31,6 @@ public class UserResponse {
         this.maxSetVocas = user.getMaxSetVocas();
         this.isActive = user.getIsActive();
         this.role = new RoleResponse(user.getRole());
+        this.center = new CenterResponse(user.getCenter());
     }
 }

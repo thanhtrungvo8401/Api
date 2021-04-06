@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import fusikun.com.api.dto.UserInfoObject;
+import fusikun.com.api.dtoRES.UserInfoObject;
 import fusikun.com.api.exceptionHandlers.Ex_InvalidTokenException;
 import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.service.JwtUserDetailsService;

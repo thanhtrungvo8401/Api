@@ -1,4 +1,4 @@
-package fusikun.com.api.dto;
+package fusikun.com.api.dtoREQ;
 
 import java.util.UUID;
 

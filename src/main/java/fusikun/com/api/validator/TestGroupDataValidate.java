@@ -1,6 +1,6 @@
 package fusikun.com.api.validator;
 
-import fusikun.com.api.dto.TestGroupRequest;
+import fusikun.com.api.dtoREQ.TestGroupRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.service.TestGroupService;
 import fusikun.com.api.service.UserService;

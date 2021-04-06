@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import fusikun.com.api.dto.RoleRequest;
+import fusikun.com.api.dtoREQ.RoleRequest;
 import fusikun.com.api.model.app.Role;
 import fusikun.com.api.service.RoleService;
 import fusikun.com.api.utils.ConstantErrorCodes;

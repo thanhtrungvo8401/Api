@@ -6,7 +6,7 @@ import fusikun.com.api.service.CenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fusikun.com.api.dto.SetVocaRequest;
+import fusikun.com.api.dtoREQ.SetVocaRequest;
 import fusikun.com.api.exceptionHandlers.Ex_OverRangeException;
 import fusikun.com.api.model.app.User;
 import fusikun.com.api.service.SetVocaService;

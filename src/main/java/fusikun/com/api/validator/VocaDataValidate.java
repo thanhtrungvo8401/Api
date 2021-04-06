@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fusikun.com.api.dto.VocaRequest;
+import fusikun.com.api.dtoREQ.VocaRequest;
 import fusikun.com.api.exceptionHandlers.Ex_OverRangeException;
 import fusikun.com.api.model.study.SetVoca;
 import fusikun.com.api.model.study.Voca;

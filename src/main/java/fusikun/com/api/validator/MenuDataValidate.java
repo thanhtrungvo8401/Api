@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
-import fusikun.com.api.dto.MenuRequest;
+import fusikun.com.api.dtoREQ.MenuRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.utils.SpaceUtils;
 

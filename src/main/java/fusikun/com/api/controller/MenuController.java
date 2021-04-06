@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import fusikun.com.api.dto.ObjectsManagementList;
+import fusikun.com.api.dtoRES.ObjectsManagementList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fusikun.com.api.dto.MenuRequest;
-import fusikun.com.api.dto.MenuResponse;
+import fusikun.com.api.dtoREQ.MenuRequest;
+import fusikun.com.api.dtoRES.MenuResponse;
 import fusikun.com.api.enums.UrlEnpointEnums;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.app.Menu;

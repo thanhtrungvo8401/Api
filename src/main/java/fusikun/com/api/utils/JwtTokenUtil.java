@@ -7,12 +7,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 
-import fusikun.com.api.dto.UserInfoObject;
+import fusikun.com.api.dtoRES.UserInfoObject;
 import fusikun.com.api.model.app.JwtUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

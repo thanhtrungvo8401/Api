@@ -16,10 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import fusikun.com.api.dto.AuthResponse;
-import fusikun.com.api.dto.MenuResponse;
-import fusikun.com.api.dto.RoleRequest;
-import fusikun.com.api.dto.RoleResponse;
+import fusikun.com.api.dtoRES.AuthResponse;
+import fusikun.com.api.dtoRES.MenuResponse;
+import fusikun.com.api.dtoREQ.RoleRequest;
+import fusikun.com.api.dtoRES.RoleResponse;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.model.app.Auth;
 import fusikun.com.api.model.app.Menu;
