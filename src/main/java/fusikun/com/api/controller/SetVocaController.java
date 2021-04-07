@@ -72,6 +72,7 @@ public class SetVocaController {
         SetVoca setVoca = setVocaRequest.getSetVoca();
 //        oldSetVoca.setAuthor(setVoca.getAuthor()); // ----validate over-range here ----
         oldSetVoca.setSetName(setVoca.getSetName());
+        oldSetVoca.setMaxVoca(setVoca.getMaxVoca());
         SetVoca savedSetVoca = setVocaService.save(oldSetVoca);
         // return:
         return ResponseEntity.ok(new SetVocaResponse(savedSetVoca));
