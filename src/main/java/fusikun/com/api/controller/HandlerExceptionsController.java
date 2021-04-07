@@ -1,9 +1,10 @@
-package fusikun.com.api.exceptionHandlers;
+package fusikun.com.api.controller;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import fusikun.com.api.exceptionHandlers.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ import javassist.NotFoundException;
 // ControllerAdvice => use for all project:
 @ControllerAdvice
 @RestController
-public class Handler_Exceptions extends ResponseEntityExceptionHandler {
+public class HandlerExceptionsController extends ResponseEntityExceptionHandler {
 	// COMMON ERROR 500
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleExceptionForAll(Exception ex, WebRequest request){
