@@ -27,9 +27,9 @@ import javassist.NotFoundException;
 @ControllerAdvice
 @RestController
 public class Handler_Exceptions extends ResponseEntityExceptionHandler {
-	// COMMON ERROR:
+	// COMMON ERROR 500
 	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<Object> handleExceptionForAll(Exception ex, WebRequest request) throws Exception {
+	public final ResponseEntity<Object> handleExceptionForAll(Exception ex, WebRequest request){
 		List<Object> errorCodes = new LinkedList<>();
 		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.INTERNAL_SERVER_ERROR));
 		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
@@ -37,18 +37,18 @@ public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 	}
 
-	// NOT_FOUND EXCEPTION:
+	// NOT_FOUND EXCEPTION 404
 	@ExceptionHandler(NotFoundException.class)
-	public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request) throws Exception {
+	public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request){
 		List<Object> errorCodes = new LinkedList<>();
 		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.NOT_FOUND));
 		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false), errorCodes);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
 	}
-
+	// ACCESS DENIED 403
 	@ExceptionHandler(AccessDeniedException.class)
-	public final ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) throws Exception {
+	public final ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request){
 		List<Object> errorCodes = new LinkedList<>();
 		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.ACCESS_DENIED));
 		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
@@ -56,7 +56,7 @@ public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionResponse);
 	}
 
-	// METHOD_NOT_ALLOW_EXCEPTION:
+	// METHOD_NOT_ALLOW_EXCEPTION 400
 	@ExceptionHandler(Ex_MethodNotAllowedException.class)
 	public final ResponseEntity<Object> handleBadRequestException(Exception ex, WebRequest request) {
 		List<Object> errorCodes = new LinkedList<>();
@@ -75,10 +75,10 @@ public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(exceptionResponse);
 	}
 
-	// AUTHENTICATE:
+	// AUTHENTICATE 400
 	@ExceptionHandler({ BadCredentialsException.class, AuthenticationException.class, DisabledException.class })
-	public final ResponseEntity<Object> handleAuthenticationException(Exception ex, WebRequest request)
-			throws Exception {
+	public final ResponseEntity<Object> handleAuthenticationException(Exception ex,
+																	  WebRequest request) {
 		List<Object> errorCodes = new LinkedList<>();
 		errorCodes.add(new Ob_FieldError(ConstantErrorCodes.ANNOUNCE, ConstantErrorCodes.BAD_CREDENTIALS));
 		Ob_ExceptionResponse exceptionResponse = new Ob_ExceptionResponse(new Date(), ex.getMessage(),
@@ -86,7 +86,7 @@ public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}
 
-	// VALIDATION:
+	// VALIDATION 400
 	// -- SpringValidation
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -106,7 +106,7 @@ public class Handler_Exceptions extends ResponseEntityExceptionHandler {
 	// customValidation:
 	@ExceptionHandler({ Ex_MethodArgumentNotValidException.class })
 	public final ResponseEntity<Object> handleExceptionsCustomValidation(Exception exeption, WebRequest request)
-			throws Exception {
+			{
 		BindException ex = (BindException) exeption;
 		List<ObjectError> errorList = ex.getBindingResult().getAllErrors();
 		List<Object> errorCodes = new LinkedList<>();
