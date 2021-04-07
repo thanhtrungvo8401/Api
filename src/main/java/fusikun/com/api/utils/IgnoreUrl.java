@@ -10,11 +10,11 @@ public class IgnoreUrl {
 	private static final String[] _LIST_PUPLIC_URL = { "/api/common/v1/authenticate/login<!>POST",
 			"/api/common/v1/students<!>POST", "/api/v1/initial-project<!>GET" };
 
-	private static final List<String> generateUrlFromListDefined(Boolean hasMethod) {
+	private static List<String> generateUrlFromListDefined(Boolean hasMethod) {
 		if (hasMethod)
 			return Arrays.asList(_LIST_PUPLIC_URL);
 		else
-			return Arrays.asList(_LIST_PUPLIC_URL).stream().map(el -> el.split(Constant.FILTER_DIVICE)[0])
+			return Arrays.stream(_LIST_PUPLIC_URL).map(el -> el.split(Constant.FILTER_DIVICE)[0])
 					.collect(Collectors.toList());
 
 	}
@@ -25,7 +25,7 @@ public class IgnoreUrl {
 			"/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**",
 			"/v3/api-docs/**", "/swagger-ui/**" };
 
-	public static final Boolean isPublicUrl(HttpServletRequest request) {
+	public static Boolean isPublicUrl(HttpServletRequest request) {
 		String ignoreAuthenUrl = request.getRequestURI() + Constant.FILTER_DIVICE + request.getMethod();
 		if (generateUrlFromListDefined(true).contains(ignoreAuthenUrl)) {
 			return true;
@@ -42,9 +42,9 @@ public class IgnoreUrl {
 		return false;
 	}
 
-	public static final Boolean isNotForbiddenUrl(HttpServletRequest request) {
+	public static Boolean isNotForbiddenUrl(HttpServletRequest request) {
 		String reqUrl = request.getRequestURI();
-		if (reqUrl.contains(Constant.API_COMMON_URL)) {
+		if (reqUrl.contains(Constant.API_COMMON_URL)  || reqUrl.equals("/error")) {
 			return true;
 		}
 		return isPublicUrl(request);
