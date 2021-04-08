@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User_StudentRequest {
+public class StudentRequest {
     private UUID id;
 
     @Size(min = 8, message = ConstantErrorCodes.NOT_BELOW_8_LETTER)
