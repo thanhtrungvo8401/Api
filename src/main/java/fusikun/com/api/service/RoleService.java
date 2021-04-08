@@ -12,7 +12,6 @@ import fusikun.com.api.dtoRES.ObjectsManagementList;
 import fusikun.com.api.dtoRES.RoleResponse;
 import fusikun.com.api.model.app.Auth;
 import fusikun.com.api.model.app.Menu;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -126,7 +125,6 @@ public class RoleService {
     @Getter
     @Setter
     @NoArgsConstructor
-    @AllArgsConstructor
     private class RoleManagement extends ObjectsManagementList<RoleResponse> {
         public RoleManagement(List<RoleResponse> list, Long total) {
             super(list, total);

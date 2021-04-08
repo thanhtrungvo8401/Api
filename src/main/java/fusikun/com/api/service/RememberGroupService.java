@@ -12,6 +12,9 @@ import fusikun.com.api.specificationSearch.SearchHelpers_RememberGroup;
 import fusikun.com.api.specificationSearch.Specification_RememberGroup;
 import fusikun.com.api.specificationSearch._SearchCriteria;
 import fusikun.com.api.utils.SortHelper;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -120,6 +123,9 @@ public class RememberGroupService {
         return new RememberGroupResponse(rememberGroup);
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
     private class RemGroupManagement extends ObjectsManagementList<RememberGroupResponse> {
         public RemGroupManagement(List<RememberGroupResponse> list, Long total) {
             super(list, total);
