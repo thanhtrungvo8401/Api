@@ -109,7 +109,7 @@ public class SetVocaService {
             String sortBy,
             String order
     ) {
-        List<UUID> userIds = userService.getUserIdsBaseOnCenterIdAndRoleName(centerId, rolename);
+        List<UUID> userIds = userService._getUserIdsBaseOnCenterIdAndRoleName(centerId, rolename);
         Specification_SetVoca specification = new Specification_SetVoca();
         if (!userIds.isEmpty()) {
             specification.add(new _SearchCriteria(
