@@ -1,6 +1,7 @@
 package fusikun.com.api.service;
 
 import fusikun.com.api.dao.CenterRepository;
+import fusikun.com.api.dtoRES.CenterResponse;
 import fusikun.com.api.model.study.Center;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -41,7 +43,13 @@ public class CenterService {
         Optional<Center> optCenter = centerRepository.findById(id);
         return optCenter.orElse(null);
     }
+
     public void delete(Center center) {
         centerRepository.delete(center);
+    }
+
+    public List<CenterResponse> _findAllCenters() {
+        List<Center> centers = centerRepository.findAll();
+        return centers.stream().map(CenterResponse::new).collect(Collectors.toList());
     }
 }

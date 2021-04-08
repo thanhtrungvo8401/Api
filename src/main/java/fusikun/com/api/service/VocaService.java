@@ -1,11 +1,17 @@
 package fusikun.com.api.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import fusikun.com.api.dtoREQ.VocaRequest;
+import fusikun.com.api.dtoRES.ObjectsManagementList;
+import fusikun.com.api.dtoRES.VocaResponse;
+import fusikun.com.api.enums.ApiDataType;
+import fusikun.com.api.specificationSearch.SearchHelpers_Vocas;
+import fusikun.com.api.utils.SortHelper;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,31 +64,83 @@ public class VocaService {
         return vocaRepository.count(specification);
     }
 
-    public Long countVocaBySetVocaId(UUID setVocaId) {
-        Specification_Voca specification = getVocaSpecification(setVocaId);
-        return count(specification);
-    }
-
-    public void deleteById(UUID id) {
-        vocaRepository.deleteById(id);
-    }
-
-    public Voca create(Voca entity) {
-        SetVoca setVoca = setVocaService.findById(entity.getSetVoca().getId());
-        setVoca.increaseVoca();
-        setVocaService.save(setVoca);
-        return save(entity);
-    }
-
     public void delete(Voca voca) {
         vocaRepository.delete(voca);
     }
 
-    private Specification_Voca getVocaSpecification(UUID setVocaId) {
+    public VocaResponse _createVoca(VocaRequest req) {
+        Voca voca = req.getVocaObject();
+        SetVoca setVoca =
+                setVocaService.findById(voca.getSetVoca().getId());
+        setVoca.increaseVoca();
+        setVocaService.save(setVoca);
+        // we are not checking unique for CODE
+        return new VocaResponse(save(voca));
+    }
+
+    public VocaResponse _updateVocaById(VocaRequest req, UUID id) {
+        Voca oldVoca = findById(id);
+        oldVoca.setVoca(req.getVoca());
+        oldVoca.setMeaning(req.getMeaning());
+        oldVoca.setSentence(req.getSentence());
+        oldVoca.setNote(req.getNote());
+        return new VocaResponse(save(oldVoca));
+    }
+
+    public VocaResponse _deleteById(UUID id) {
+        Voca voca = findById(id);
+        SetVoca setVoca = voca.getSetVoca();
+        setVoca.decreaseVoca();
+        setVocaService.save(setVoca); // dao
+        delete(voca); // dao
+        return new VocaResponse(voca);
+    }
+
+    public VocasManagement _getVocasManagement(
+            String filters,
+            String limit,
+            String page,
+            String sortBy,
+            String order) {
+        Specification_Voca specification =
+                new SearchHelpers_Vocas(new Specification_Voca(), filters)
+                .getSpecification(Arrays.asList(
+                        "id," + ApiDataType.UUID_TYPE,
+                        "createdDate," + ApiDataType.DATE_TYPE,
+                        "note," + ApiDataType.STRING_TYPE,
+                        "meaning," + ApiDataType.STRING_TYPE,
+                        "sentence," + ApiDataType.STRING_TYPE,
+                        "updatedDate," + ApiDataType.DATE_TYPE,
+                        "voca," + ApiDataType.STRING_TYPE,
+                        "setVoca.id," + ApiDataType.UUID_TYPE,
+                        "setVoca.setName," + ApiDataType.STRING_TYPE
+                ));
+        Pageable pageable = SortHelper.getSort(limit, page, sortBy, order);
+        Long total = count(specification);
+        List<VocaResponse> vocaResponses =
+                findAll(specification, pageable)
+                .stream().map(VocaResponse::new)
+                .collect(Collectors.toList());
+        return new VocasManagement(vocaResponses, total);
+    }
+
+    public List<VocaResponse> _getVocasBySetId(UUID id) {
         Specification_Voca specification = new Specification_Voca();
-        SetVoca setVoca = new SetVoca();
-        setVoca.setId(setVocaId);
-        specification.add(new _SearchCriteria("setVoca", SearchOperator.EQUAL, setVoca));
-        return specification;
+        specification.add(new _SearchCriteria(
+                "setVoca",
+                SearchOperator.EQUAL,
+                setVocaService.findById(id)
+        ));
+        return findAll(specification)
+                .stream().map(VocaResponse::new)
+                .collect(Collectors.toList());
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    private class VocasManagement extends ObjectsManagementList<VocaResponse> {
+        public VocasManagement(List<VocaResponse> list, Long total) {
+            super(list, total);
+        }
     }
 }
