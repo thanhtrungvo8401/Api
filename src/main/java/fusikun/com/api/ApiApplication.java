@@ -1,5 +1,7 @@
 package fusikun.com.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,9 +26,12 @@ public class ApiApplication {
 
     @Autowired
     AuthorizationInterceptor authorizationInterceptor;
+    static Logger logger = LoggerFactory.getLogger(ApiApplication.class);
+
 
     public static void main(String[] args) {
         SpringApplication.run(ApiApplication.class, args);
+        logger.info("MEOMEO-KUN-API IS RESTARTED!");
     }
 
     @Bean
