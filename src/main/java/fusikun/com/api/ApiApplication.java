@@ -31,7 +31,7 @@ public class ApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ApiApplication.class, args);
-        logger.info("MEOMEO-KUN-API IS RESTARTED!");
+        logger.warn("MEOMEO-KUN-API IS RESTARTED!");
     }
 
     @Bean
@@ -40,14 +40,12 @@ public class ApiApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 String domainStrConfig = env.getProperty("configure.api.address");
-                try {
+                if (domainStrConfig != null) {
                     String[] domains = domainStrConfig.split(",");
                     registry.addMapping("/**").allowedOrigins(domains).allowedMethods("*");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("Check check configure.api.address");
+                } else {
+                    logger.error("Check check configure.api.address");
                 }
-
             }
 
             @Override
