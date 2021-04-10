@@ -7,6 +7,9 @@ import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.service.RememberGroupService;
 import fusikun.com.api.validator.RememberGroupDataValidate;
 import javassist.NotFoundException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,25 +29,38 @@ public class RememberGroupController {
     @Autowired
     RememberGroupService remService;
 
+    Logger logger = LoggerFactory.getLogger(RememberGroupController.class);
+
     // CREATE
     @PostMapping("/remember-groups")
     public ResponseEntity<RememberGroupResponse> handleCreateRememberGroup(
             @Valid
             @RequestBody RememberGroupRequest req)
             throws Ex_MethodArgumentNotValidException {
-        remGroupDataValidate.validate(req);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(remService._createRememberGroup(req));
+        try {
+            remGroupDataValidate.validate(req);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(remService._createRememberGroup(req));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     // FETCH REMEMBER_GROUP:
     @GetMapping("/owners/{ownerId}/remember-groups")
-    public ResponseEntity<List<RememberGroupResponse>>
-    handleGetAllRememberGroupByOwnerId(@PathVariable UUID ownerId)
+    public ResponseEntity<List<RememberGroupResponse>> handleGetAllRememberGroupByOwnerId(@PathVariable UUID ownerId)
             throws NotFoundException {
-        remGroupDataValidate.validateOwnerNotExistByOwnerId(ownerId);
-        return ResponseEntity.ok(remService._findAllByOwnerId(ownerId));
+        try {
+            remGroupDataValidate.validateOwnerNotExistByOwnerId(ownerId);
+            return ResponseEntity.ok(remService._findAllByOwnerId(ownerId));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @GetMapping("/remember-groups")
@@ -56,8 +72,14 @@ public class RememberGroupController {
             @RequestParam(name = "sortBy", required = false) String sortBy,
             @RequestParam(name = "order", required = false) String order
     ) {
-        return ResponseEntity.ok(
-                remService._findManagementByFilters(filters, limit, page, sortBy, order));
+        try {
+            return ResponseEntity.ok(
+                    remService._findManagementByFilters(filters, limit, page, sortBy, order));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     // UPDATE
@@ -66,17 +88,30 @@ public class RememberGroupController {
             @PathVariable UUID id,
             @Valid @RequestBody RememberGroupRequest req
     ) throws NotFoundException, Ex_MethodArgumentNotValidException {
-        remGroupDataValidate.validateRemGroupNotExistById(id);
-        remGroupDataValidate.validate(req);
-        return ResponseEntity.ok(remService._updateById(req, id));
+        try {
+            remGroupDataValidate.validateRemGroupNotExistById(id);
+            remGroupDataValidate.validate(req);
+            return ResponseEntity.ok(remService._updateById(req, id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     // DELETE
     @DeleteMapping("/remember-groups/{id}")
     public ResponseEntity<RememberGroupResponse> handleDeleteRemGroupById(@PathVariable UUID id)
             throws NotFoundException {
-        remGroupDataValidate.validateRemGroupNotExistById(id);
-        return ResponseEntity.ok(remService._deleteById(id));
+        try {
+            remGroupDataValidate.validateRemGroupNotExistById(id);
+            return ResponseEntity.ok(remService._deleteById(id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
+
     }
 
 }

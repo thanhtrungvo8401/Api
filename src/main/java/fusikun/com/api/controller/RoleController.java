@@ -4,6 +4,9 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import fusikun.com.api.dtoRES.ObjectsManagementList;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,8 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
+    Logger logger = LoggerFactory.getLogger(RoleController.class);
+
     @GetMapping("/roles")
     public ResponseEntity<ObjectsManagementList> getAllRoles() {
         return ResponseEntity
@@ -35,17 +40,29 @@ public class RoleController {
     @PostMapping("/roles")
     public ResponseEntity<Object> handleCreateRole(@Valid @RequestBody RoleRequest roleRequest)
             throws Ex_MethodArgumentNotValidException {
-        roleDataValidate.validate(roleRequest);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(roleService._createRole(roleRequest));
+        try {
+            roleDataValidate.validate(roleRequest);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(roleService._createRole(roleRequest));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @GetMapping("/roles/{id}")
     public ResponseEntity<RoleResponse> getRoleById(@PathVariable UUID id) throws NotFoundException {
-        roleDataValidate.validateExistById(id);
-        return ResponseEntity
-                .ok(roleService._getRoleById(id));
+        try {
+            roleDataValidate.validateExistById(id);
+            return ResponseEntity
+                    .ok(roleService._getRoleById(id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @PutMapping("/roles/{id}")
@@ -53,19 +70,32 @@ public class RoleController {
             @Valid @RequestBody RoleRequest roleReq,
             @PathVariable UUID id)
             throws Ex_MethodArgumentNotValidException, NotFoundException {
-        roleReq.setId(id);
-        roleDataValidate.validateExistById(roleReq.getId());
-        roleDataValidate.validate(roleReq);
-        return ResponseEntity
-                .ok(roleService._updateRoleById(roleReq, id));
+        try {
+            roleReq.setId(id);
+            roleDataValidate.validateExistById(roleReq.getId());
+            roleDataValidate.validate(roleReq);
+            return ResponseEntity
+                    .ok(roleService._updateRoleById(roleReq, id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @DeleteMapping("/roles/{id}")
-    public ResponseEntity<RoleResponse> handleDeleteRoleById(@PathVariable UUID id) throws NotFoundException {
-        roleDataValidate.validateExistById(id);
-        roleDataValidate.validateNeverDeleteRole(id);
-        roleDataValidate.validateRoleIsUsedByUser(id);
-        return ResponseEntity
-                .ok(roleService._deleteRoleById(id));
+    public ResponseEntity<RoleResponse> handleDeleteRoleById(@PathVariable UUID id)
+            throws NotFoundException {
+        try {
+            roleDataValidate.validateExistById(id);
+            roleDataValidate.validateNeverDeleteRole(id);
+            roleDataValidate.validateRoleIsUsedByUser(id);
+            return ResponseEntity
+                    .ok(roleService._deleteRoleById(id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 }

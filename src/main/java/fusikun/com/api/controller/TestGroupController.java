@@ -8,6 +8,9 @@ import fusikun.com.api.service.TestGroupService;
 import fusikun.com.api.validator.TestGroupDataValidate;
 
 import javassist.NotFoundException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +30,23 @@ public class TestGroupController {
     @Autowired
     TestGroupService service;
 
+    Logger logger = LoggerFactory.getLogger(TestGroupController.class);
+
     // Create
     @PostMapping("/test-groups")
     public ResponseEntity<Object> handleCreateTestGroup(
             @Valid @RequestBody TestGroupRequest req)
             throws Ex_MethodArgumentNotValidException {
-        dataValidate.validate(req);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(service._createTestGroup(req));
+        try {
+            dataValidate.validate(req);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(service._createTestGroup(req));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     // FETCH TEST_GROUP:
@@ -43,8 +54,14 @@ public class TestGroupController {
     public ResponseEntity<List<TestGroupResponse>>
     handleGetTestGroupsByOwnerId(@PathVariable UUID ownerId)
             throws NotFoundException {
-        dataValidate.validateOwnerNotExistByOwnerId(ownerId);
-        return ResponseEntity.ok(service._getTestGroupsByOwnerId(ownerId));
+        try {
+            dataValidate.validateOwnerNotExistByOwnerId(ownerId);
+            return ResponseEntity.ok(service._getTestGroupsByOwnerId(ownerId));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @GetMapping("/test-group")
@@ -56,8 +73,14 @@ public class TestGroupController {
             @RequestParam(name = "sortBy", required = false) String sortBy,
             @RequestParam(name = "order", required = false) String order
     ) {
-        return ResponseEntity
-                .ok(service._getTestGroupManagement(filters, limit, page, sortBy, order));
+        try {
+            return ResponseEntity
+                    .ok(service._getTestGroupManagement(filters, limit, page, sortBy, order));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     // UPDATE
@@ -66,17 +89,29 @@ public class TestGroupController {
             @PathVariable UUID id,
             @Valid @RequestBody TestGroupRequest req
     ) throws Ex_MethodArgumentNotValidException, NotFoundException {
-        req.setId(id);
-        dataValidate.validateTestGroupNotExistById(id);
-        dataValidate.validate(req);
-        return ResponseEntity.ok(service._updateTestGroupById(req, id));
+        try {
+            req.setId(id);
+            dataValidate.validateTestGroupNotExistById(id);
+            dataValidate.validate(req);
+            return ResponseEntity.ok(service._updateTestGroupById(req, id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     // DELETE
     @DeleteMapping("/test-group/{id}")
     public ResponseEntity<Object> handleDeleteTestGroupById(@PathVariable UUID id)
             throws NotFoundException {
-        dataValidate.validateTestGroupNotExistById(id);
-        return ResponseEntity.ok(service._deleteById(id));
+        try {
+            dataValidate.validateTestGroupNotExistById(id);
+            return ResponseEntity.ok(service._deleteById(id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 }
