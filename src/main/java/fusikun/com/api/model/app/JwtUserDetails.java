@@ -50,6 +50,7 @@ public class JwtUserDetails implements UserDetails {
             this.isActive = user.getIsActive();
             this.accessToken = user.getAccessToken();
             this.role = user.getRole();
+            this.role.getRoleName(); // load role instance
         }
     }
 
