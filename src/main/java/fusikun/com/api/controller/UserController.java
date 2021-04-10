@@ -48,13 +48,13 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<Object> getUserById(@PathVariable UUID id) throws NotFoundException {
+    public ResponseEntity<UserResponse> getUserById(@PathVariable UUID id) throws NotFoundException {
         userDataValidate.validateExistById(id);
         return ResponseEntity.ok(userService._getUserById(id));
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<Object> handleUpdateUserById(
+    public ResponseEntity<UserResponse> handleUpdateUserById(
             @Valid @RequestBody UserRequest userRequest,
             @PathVariable UUID id
     ) throws NotFoundException, Ex_MethodArgumentNotValidException {
@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Object> handleDeleteUserById
+    public ResponseEntity<UserResponse> handleDeleteUserById
             (@PathVariable UUID id) throws NotFoundException {
         userDataValidate.validateExistById(id);
         userDataValidate.validateNeverDeleteUser(id);
