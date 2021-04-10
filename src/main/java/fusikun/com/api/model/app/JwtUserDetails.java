@@ -37,7 +37,7 @@ public class JwtUserDetails implements UserDetails {
             this.accessToken = user.getAccessToken();
             this.role = user.getRole();
             List<Auth> auths = role.getAuths();
-            this.menus = auths.stream().filter(auth -> auth.getIsActive()).map(auth -> auth.getMenu())
+            this.menus = auths.stream().filter(Auth::getIsActive).map(Auth::getMenu)
                     .filter(menu -> menu.getMethod() != null).collect(Collectors.toList());
         }
     }
@@ -50,7 +50,6 @@ public class JwtUserDetails implements UserDetails {
             this.isActive = user.getIsActive();
             this.accessToken = user.getAccessToken();
             this.role = user.getRole();
-            this.role.getRoleName(); // to load Role role value;
         }
     }
 
