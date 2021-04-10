@@ -5,6 +5,9 @@ import java.util.*;
 import javax.validation.Valid;
 
 import fusikun.com.api.dtoRES.ObjectsManagementList;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ public class UserController {
 
     @Autowired
     UserDataValidate userDataValidate;
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/users")
     public ResponseEntity<ObjectsManagementList> handleGetUsers(
@@ -34,17 +38,29 @@ public class UserController {
             @RequestParam(name = "sortBy", required = false) String sortBy,
             @RequestParam(name = "order", required = false) String order
     ) {
-        return ResponseEntity
-                .ok(userService._getUsersManagement(filters, limit, page, sortBy, order));
+        try {
+            return ResponseEntity
+                    .ok(userService._getUsersManagement(filters, limit, page, sortBy, order));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @PostMapping("/users")
     public ResponseEntity<UserResponse> handleCreateUser(@Valid @RequestBody UserRequest userRequest)
             throws Ex_MethodArgumentNotValidException {
-        userDataValidate.validate(userRequest);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(userService._createUser(userRequest));
+        try {
+            userDataValidate.validate(userRequest);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(userService._createUser(userRequest));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @GetMapping("/users/{id}")
@@ -58,18 +74,30 @@ public class UserController {
             @Valid @RequestBody UserRequest userRequest,
             @PathVariable UUID id
     ) throws NotFoundException, Ex_MethodArgumentNotValidException {
-        userRequest.setId(id);
-        userDataValidate.validateExistById(id);
-        userDataValidate.validate(userRequest);
-        return ResponseEntity.ok(userService._updateUserById(userRequest, id));
+        try {
+            userRequest.setId(id);
+            userDataValidate.validateExistById(id);
+            userDataValidate.validate(userRequest);
+            return ResponseEntity.ok(userService._updateUserById(userRequest, id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<UserResponse> handleDeleteUserById
             (@PathVariable UUID id) throws NotFoundException {
-        userDataValidate.validateExistById(id);
-        userDataValidate.validateNeverDeleteUser(id);
-        userDataValidate.validateNotDeleteYourself(id);
-        return ResponseEntity.ok(userService._deleteUserById(id));
+        try {
+            userDataValidate.validateExistById(id);
+            userDataValidate.validateNeverDeleteUser(id);
+            userDataValidate.validateNotDeleteYourself(id);
+            return ResponseEntity.ok(userService._deleteUserById(id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 }

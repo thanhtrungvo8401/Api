@@ -31,7 +31,7 @@ public class ApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ApiApplication.class, args);
-        logger.info("MEOMEO-KUN-API IS RESTARTED!");
+        logger.warn("MEOMEO-KUN-API IS RESTARTED!");
     }
 
     @Bean
