@@ -23,8 +23,10 @@ import fusikun.com.api.model.study.Voca;
 import fusikun.com.api.specificationSearch.Specification_Voca;
 import fusikun.com.api.specificationSearch._SearchCriteria;
 import fusikun.com.api.enums.SearchOperator;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class VocaService {
     @Autowired
     VocaRepository vocaRepository;
@@ -75,7 +77,8 @@ public class VocaService {
         setVoca.increaseVoca();
         setVocaService.save(setVoca);
         // we are not checking unique for CODE
-        return new VocaResponse(save(voca));
+        save(voca);
+        return new VocaResponse(findById(voca.getId()));
     }
 
     public VocaResponse _updateVocaById(VocaRequest req, UUID id) {
@@ -104,23 +107,23 @@ public class VocaService {
             String order) {
         Specification_Voca specification =
                 new SearchHelpers_Vocas(new Specification_Voca(), filters)
-                .getSpecification(Arrays.asList(
-                        "id," + ApiDataType.UUID_TYPE,
-                        "createdDate," + ApiDataType.DATE_TYPE,
-                        "note," + ApiDataType.STRING_TYPE,
-                        "meaning," + ApiDataType.STRING_TYPE,
-                        "sentence," + ApiDataType.STRING_TYPE,
-                        "updatedDate," + ApiDataType.DATE_TYPE,
-                        "voca," + ApiDataType.STRING_TYPE,
-                        "setVoca.id," + ApiDataType.UUID_TYPE,
-                        "setVoca.setName," + ApiDataType.STRING_TYPE
-                ));
+                        .getSpecification(Arrays.asList(
+                                "id," + ApiDataType.UUID_TYPE,
+                                "createdDate," + ApiDataType.DATE_TYPE,
+                                "note," + ApiDataType.STRING_TYPE,
+                                "meaning," + ApiDataType.STRING_TYPE,
+                                "sentence," + ApiDataType.STRING_TYPE,
+                                "updatedDate," + ApiDataType.DATE_TYPE,
+                                "voca," + ApiDataType.STRING_TYPE,
+                                "setVoca.id," + ApiDataType.UUID_TYPE,
+                                "setVoca.setName," + ApiDataType.STRING_TYPE
+                        ));
         Pageable pageable = SortHelper.getSort(limit, page, sortBy, order);
         Long total = count(specification);
         List<VocaResponse> vocaResponses =
                 findAll(specification, pageable)
-                .stream().map(VocaResponse::new)
-                .collect(Collectors.toList());
+                        .stream().map(VocaResponse::new)
+                        .collect(Collectors.toList());
         return new VocasManagement(vocaResponses, total);
     }
 
@@ -135,6 +138,7 @@ public class VocaService {
                 .stream().map(VocaResponse::new)
                 .collect(Collectors.toList());
     }
+
     @Getter
     @Setter
     @NoArgsConstructor
