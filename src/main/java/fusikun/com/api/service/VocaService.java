@@ -109,6 +109,7 @@ public class VocaService {
                 new SearchHelpers_Vocas(new Specification_Voca(), filters)
                         .getSpecification(Arrays.asList(
                                 "id," + ApiDataType.UUID_TYPE,
+                                "code,"+ApiDataType.INTEGER_TYPE,
                                 "createdDate," + ApiDataType.DATE_TYPE,
                                 "note," + ApiDataType.STRING_TYPE,
                                 "meaning," + ApiDataType.STRING_TYPE,
