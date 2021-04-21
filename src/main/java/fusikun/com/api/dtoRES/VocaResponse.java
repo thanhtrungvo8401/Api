@@ -19,7 +19,7 @@ public class VocaResponse {
     private String note;
     private String meaning;
     private String sentence;
-    private Long code;
+    private Integer code;
     private Date createdDate;
     private Date updatedDate;
     private UUID setId;

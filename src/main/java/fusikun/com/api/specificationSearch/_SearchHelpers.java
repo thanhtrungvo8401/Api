@@ -19,13 +19,9 @@ public abstract class _SearchHelpers<T extends _Specification> {
     public _SearchHelpers(T specification, String _filters) {
         Map<String, String> filterMap;
         try {
-            filterMap = new Gson().fromJson(
-                    _filters,
-                    new TypeToken<Map<String, String>>() {
-                    }.getType());
+            filterMap = new Gson().fromJson(_filters, new TypeToken<Map<String, String>>() {}.getType());
         } catch (Exception e) {
-            throw new Ex_InvalidSearch("Filters = [" + _filters + "] is " +
-                    "invalid " + "filter!");
+            throw new Ex_InvalidSearch("Filters = [" + _filters + "] is " + "invalid " + "filter!");
         }
         this.filters = filterMap != null ? filterMap : new HashMap<>();
         this.specification = specification;

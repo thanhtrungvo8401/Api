@@ -43,7 +43,7 @@ public class VocaRequest {
     @NotNull(message = ConstantErrorCodes.NOT_NULL)
     private UUID setId;
 
-    private Long code;
+    private Integer code;
 
     public Voca getVocaObject() {
         Voca vocaObject = new Voca();

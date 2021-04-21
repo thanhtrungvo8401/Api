@@ -28,7 +28,7 @@ public class Voca {
     private String meaning;
     private String note;
     private String sentence;
-    private Long code;
+    private Integer code;
 
     private Boolean isActive;
     private Date createdDate;
