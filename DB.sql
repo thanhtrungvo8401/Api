@@ -118,7 +118,6 @@ CREATE TABLE `remember_group` (
   `isActive` bit(1) NOT NULL,
   `updatedDate` datetime NOT NULL,
   `vocaCodes` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `activeCodes` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `ownerId` binary(16) NOT NULL,
   PRIMARY KEY (`id`),

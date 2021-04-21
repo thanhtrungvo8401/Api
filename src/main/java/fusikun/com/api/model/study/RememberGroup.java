@@ -26,7 +26,6 @@ public class RememberGroup {
     private UUID id;
 
     private String vocaCodes;
-    private String activeCodes;
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

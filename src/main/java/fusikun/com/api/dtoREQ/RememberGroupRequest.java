@@ -28,9 +28,6 @@ public class RememberGroupRequest {
     private String vocaCodes;
 
     @NotNull(message = ConstantErrorCodes.NOT_NULL)
-    private String activeCodes;
-
-    @NotNull(message = ConstantErrorCodes.NOT_NULL)
     @Size(max = 50, message = ConstantErrorCodes.NOT_OVER_50_LETTER)
     @NotEmpty(message = ConstantErrorCodes.NOT_EMPTY)
     @NotBlank(message = ConstantErrorCodes.NOT_BLANK)
@@ -45,7 +42,6 @@ public class RememberGroupRequest {
         RememberGroup rememberGroup = new RememberGroup();
         rememberGroup.setId(this.id);
         rememberGroup.setVocaCodes(vocaCodes);
-        rememberGroup.setActiveCodes(activeCodes);
         rememberGroup.setName(name);
         rememberGroup.setOwner(new User(ownerId));
         rememberGroup.setIsActive(this.isActive);

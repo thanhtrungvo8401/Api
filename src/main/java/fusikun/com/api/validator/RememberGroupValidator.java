@@ -6,7 +6,6 @@ import fusikun.com.api.utils.ConstantErrorCodes;
 import fusikun.com.api.utils.IsValidRegex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -33,12 +32,6 @@ public class RememberGroupValidator implements Validator {
         // validate vocaCodes:
         if (!IsValidRegex.vocaCodes(remGroupReq.getVocaCodes())) {
             errors.rejectValue("vocaCodes", ConstantErrorCodes.INVALID_VALUE);
-        }
-        // validate activeCodes:
-        if (StringUtils.hasText(remGroupReq.getActiveCodes())) {
-            if (!IsValidRegex.vocaCodes(remGroupReq.getActiveCodes())) {
-                errors.rejectValue("activeCodes", ConstantErrorCodes.INVALID_VALUE);
-            }
         }
     }
 }

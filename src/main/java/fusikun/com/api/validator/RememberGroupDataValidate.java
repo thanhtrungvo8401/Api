@@ -27,7 +27,6 @@ public class RememberGroupDataValidate {
             throws Ex_MethodArgumentNotValidException {
         // TRYM WHITE SPACE:
         req.setVocaCodes(SpaceUtils.trymWhiteSpace(req.getVocaCodes()));
-        req.setActiveCodes(SpaceUtils.trymWhiteSpace(req.getActiveCodes()));
         req.setName(SpaceUtils.trymWhiteSpace(req.getName()));
         // VALIDATION:
         BindException errors = new BindException(req, RememberGroupRequest.class.getName());

@@ -113,7 +113,6 @@ public class RememberGroupService {
         RememberGroup oldRemGroup = findById(id);
         oldRemGroup.setName(request.getName());
         oldRemGroup.setVocaCodes(request.getVocaCodes());
-        oldRemGroup.setActiveCodes(request.getActiveCodes());
         return new RememberGroupResponse(save(oldRemGroup));
     }
 
