@@ -65,8 +65,14 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable UUID id) throws NotFoundException {
-        userDataValidate.validateExistById(id);
-        return ResponseEntity.ok(userService._getUserById(id));
+        try {
+            userDataValidate.validateExistById(id);
+            return ResponseEntity.ok(userService._getUserById(id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
     }
 
     @PutMapping("/users/{id}")
