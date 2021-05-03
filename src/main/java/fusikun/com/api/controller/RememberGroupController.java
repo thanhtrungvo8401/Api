@@ -82,6 +82,19 @@ public class RememberGroupController {
         }
     }
 
+    // GET REMEMBER_GROUP_BY_ID:
+    @GetMapping("/remember-groups/{id}")
+    public ResponseEntity<RememberGroupResponse> handleGetRemGroupById(@PathVariable UUID id) throws NotFoundException {
+        try {
+            remGroupDataValidate.validateRemGroupNotExistById(id);
+            return ResponseEntity.ok(remService._findById(id));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
+    }
+
     // UPDATE
     @PutMapping("/remember-groups/{id}")
     public ResponseEntity<RememberGroupResponse> handleUpdateRemGroupById(

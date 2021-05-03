@@ -122,6 +122,10 @@ public class RememberGroupService {
         return new RememberGroupResponse(rememberGroup);
     }
 
+    public RememberGroupResponse _findById(UUID id) {
+        return new RememberGroupResponse(findById(id));
+    }
+
     @Getter
     @Setter
     @NoArgsConstructor
