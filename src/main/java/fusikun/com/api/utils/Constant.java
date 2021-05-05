@@ -19,4 +19,5 @@ public class Constant {
 	public final static String EMAIL = "meomeo-kun@gmail.com";
 	public final static Integer MAX_SET_VOCAS = 3;
 	public final static String API_COMMON_URL = "/api/common";
+	public final static Integer RANDOM_LIMIT = 30;
 }

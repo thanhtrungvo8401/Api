@@ -140,6 +140,13 @@ public class VocaService {
                 .collect(Collectors.toList());
     }
 
+    public List<VocaResponse> _getRandomVocaByLevel(String level, Integer limit) {
+        return vocaRepository
+                .findRandVoca(level, limit)
+                .stream().map(VocaResponse::new)
+                .collect(Collectors.toList());
+    }
+
     @Getter
     @Setter
     @NoArgsConstructor

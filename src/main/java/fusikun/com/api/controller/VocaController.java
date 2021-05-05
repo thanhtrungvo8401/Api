@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import fusikun.com.api.dtoRES.ObjectsManagementList;
+import fusikun.com.api.utils.Constant;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,6 +111,18 @@ public class VocaController {
         try {
             return ResponseEntity
                     .ok(vocaService._getVocasManagement(filters, limit, page, sortBy, order));
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
+    }
+
+    // FETCH VOCAS BY RAND:
+    @GetMapping("/vocas/random/{level}")
+    public  ResponseEntity<List<VocaResponse>> getRandomVocaByLevel(@PathVariable String level) {
+        try {
+            return ResponseEntity.ok(vocaService._getRandomVocaByLevel(level, Constant.RANDOM_LIMIT));
         } catch (Exception ex) {
             String stackTrace = ExceptionUtils.getStackTrace(ex);
             logger.error(stackTrace);
