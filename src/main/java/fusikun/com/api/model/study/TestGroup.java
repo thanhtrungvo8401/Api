@@ -24,11 +24,16 @@ public class TestGroup {
     @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
 
-    private String vocaCodes;
-    private String corrects;
-    private String name;
+    private Integer number;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    private String myVoca;
+    private String n5;
+    private String n4;
+    private String n3;
+    private String n2;
+    private String n1;
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ownerId", nullable = false)
     private User owner;
 

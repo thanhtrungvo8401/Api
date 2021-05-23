@@ -127,15 +127,21 @@ CREATE TABLE `remember_group` (
 
 CREATE TABLE `test_group` (
   `id` binary(16) NOT NULL,
-  `createdDate` datetime NOT NULL,
-  `isActive` bit(1) NOT NULL,
-  `updatedDate` datetime NOT NULL,
-  `vocaCodes` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `corrects` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-   `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `number` smallint NOT NULL,
+  `n5` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `n4` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `n3` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `n2` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `myVoca` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `n1` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `ownerId` binary(16) NOT NULL,
-  KEY `FK_test_group__owner` (`ownerId`),
-  CONSTRAINT `FK_test_group__owner` FOREIGN KEY (`ownerId`) REFERENCES `user` (`id`)
+  `isActive` bit(1) NOT NULL,
+  `createdDate` datetime NOT NULL,
+  `updatedDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_test_group_userId_idx` (`ownerId`),
+  CONSTRAINT `fk_test_group__user` FOREIGN KEY (`ownerId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `auth`

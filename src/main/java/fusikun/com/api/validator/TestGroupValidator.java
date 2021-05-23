@@ -27,8 +27,27 @@ public class TestGroupValidator implements Validator {
             errors.rejectValue("ownerId", ConstantErrorCodes.NOT_FOUND);
         }
         // validate vocaCodes:
-        if (!IsValidRegex.vocaCodes(req.getVocaCodes())) {
-            errors.rejectValue("vocaCodes", ConstantErrorCodes.INVALID_VALUE);
+        if (!IsValidRegex.level_n_x(req.getMyVoca()) && !IsValidRegex.level_n_x_2(req.getMyVoca())) {
+            errors.rejectValue("myVoca", ConstantErrorCodes.INVALID_VALUE);
+        }
+        if (!IsValidRegex.level_n_x(req.getN5()) && !IsValidRegex.level_n_x_2(req.getN5())) {
+            errors.rejectValue("n5", ConstantErrorCodes.INVALID_VALUE);
+        }
+        if (!IsValidRegex.level_n_x(req.getN4()) && !IsValidRegex.level_n_x_2(req.getN4())) {
+            errors.rejectValue("n4", ConstantErrorCodes.INVALID_VALUE);
+        }
+        if (!IsValidRegex.level_n_x(req.getN3()) && !IsValidRegex.level_n_x_2(req.getN3())) {
+            errors.rejectValue("n3", ConstantErrorCodes.INVALID_VALUE);
+        }
+        if (!IsValidRegex.level_n_x(req.getN2()) && !IsValidRegex.level_n_x_2(req.getN2())) {
+            errors.rejectValue("n2", ConstantErrorCodes.INVALID_VALUE);
+        }
+        if (!IsValidRegex.level_n_x(req.getN1()) && !IsValidRegex.level_n_x_2(req.getN1())) {
+            errors.rejectValue("n1", ConstantErrorCodes.INVALID_VALUE);
+        }
+        // validate number:
+        if(req.getNumber() < 0) {
+            errors.rejectValue("number", ConstantErrorCodes.INVALID_VALUE);
         }
     }
 }

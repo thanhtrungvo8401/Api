@@ -20,4 +20,5 @@ public class Constant {
 	public final static Integer MAX_SET_VOCAS = 3;
 	public final static String API_COMMON_URL = "/api/common";
 	public final static Integer RANDOM_LIMIT = 30;
+	public final static Integer DEFAULT_TEST_GROUP_NUMBER = 50;
 }

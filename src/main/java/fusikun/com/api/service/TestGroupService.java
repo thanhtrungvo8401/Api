@@ -5,11 +5,11 @@ import fusikun.com.api.dtoREQ.TestGroupRequest;
 import fusikun.com.api.dtoRES.ObjectsManagementList;
 import fusikun.com.api.dtoRES.TestGroupResponse;
 import fusikun.com.api.enums.ApiDataType;
-import fusikun.com.api.enums.SearchOperator;
+import fusikun.com.api.model.app.User;
 import fusikun.com.api.model.study.TestGroup;
 import fusikun.com.api.specificationSearch.SearchHelpers_TestGroup;
 import fusikun.com.api.specificationSearch.Specification_TestGroup;
-import fusikun.com.api.specificationSearch._SearchCriteria;
+import fusikun.com.api.utils.Constant;
 import fusikun.com.api.utils.SortHelper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -75,17 +75,15 @@ public class TestGroupService {
         return new TestGroupResponse(save(testGroup));
     }
 
-    public List<TestGroupResponse> _getTestGroupsByOwnerId(UUID id) {
-        Specification_TestGroup specification = new Specification_TestGroup();
-        specification.add(new _SearchCriteria(
-                "owner",
-                SearchOperator.EQUAL,
-                userService.findById(id)
-        ));
-        List<TestGroup> testGroups = findAll(specification);
-        return testGroups.stream()
-                .map(TestGroupResponse::new)
-                .collect(Collectors.toList());
+    public TestGroupResponse _getTestGroupsByOwnerId(UUID id) {
+        TestGroup testGroup = repository.findByOwner(new User(id));
+        if (testGroup != null) {
+            return new TestGroupResponse(testGroup);
+        } else {
+            TestGroupRequest testGroupRequest =
+                    new TestGroupRequest(id, Constant.DEFAULT_TEST_GROUP_NUMBER,"0_", "0_", "0_", "0_", "0_", "0_");
+            return _createTestGroup(testGroupRequest);
+        }
     }
 
     public TestGroupManagement _getTestGroupManagement(
@@ -116,9 +114,13 @@ public class TestGroupService {
 
     public TestGroupResponse _updateTestGroupById(TestGroupRequest req, UUID id) {
         TestGroup oldTestGroup = findById(id);
-        oldTestGroup.setName(req.getName());
-        oldTestGroup.setVocaCodes(req.getVocaCodes());
-        oldTestGroup.setCorrects(req.getCorrects());
+        oldTestGroup.setMyVoca(req.getMyVoca());
+        oldTestGroup.setN5(req.getN5());
+        oldTestGroup.setN4(req.getN4());
+        oldTestGroup.setN3(req.getN3());
+        oldTestGroup.setN2(req.getN2());
+        oldTestGroup.setN1(req.getN1());
+        oldTestGroup.setNumber(req.getNumber());
         return new TestGroupResponse(save(oldTestGroup));
     }
 

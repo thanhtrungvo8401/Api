@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -51,7 +50,7 @@ public class TestGroupController {
 
     // FETCH TEST_GROUP:
     @GetMapping("/owners/{ownerId}/test-group")
-    public ResponseEntity<List<TestGroupResponse>>
+    public ResponseEntity<TestGroupResponse>
     handleGetTestGroupsByOwnerId(@PathVariable UUID ownerId)
             throws NotFoundException {
         try {

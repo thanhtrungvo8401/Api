@@ -4,7 +4,6 @@ import fusikun.com.api.dtoREQ.TestGroupRequest;
 import fusikun.com.api.exceptionHandlers.Ex_MethodArgumentNotValidException;
 import fusikun.com.api.service.TestGroupService;
 import fusikun.com.api.service.UserService;
-import fusikun.com.api.utils.SpaceUtils;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,10 +25,6 @@ public class TestGroupDataValidate {
 
     public final void validate(TestGroupRequest req)
             throws Ex_MethodArgumentNotValidException {
-        // TRYM WHITE SPACE:
-        req.setVocaCodes(SpaceUtils.trymWhiteSpace(req.getVocaCodes()));
-        req.setName(SpaceUtils.trymWhiteSpace(req.getName()));
-        req.setCorrects(SpaceUtils.trymWhiteSpace(req.getCorrects()));
         // VALIDATION:
         BindException errors = new BindException(req, TestGroupRequest.class.getName());
         validator.validate(req, errors);
