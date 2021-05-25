@@ -7,6 +7,7 @@ public class Constant {
 	public final static String BLANK = " ";
 	public final static String SLASH = "/";
 	public final static String COMMA = ",";
+	public final static String UNDER_LINE = "_";
 	public final static String DOT = ".";
 	public final static String DOT_REGEX = "\\.";
 	public final static String MENU_ADDRESS_DEVIDE = "_";
@@ -21,4 +22,11 @@ public class Constant {
 	public final static String API_COMMON_URL = "/api/common";
 	public final static Integer RANDOM_LIMIT = 30;
 	public final static Integer DEFAULT_TEST_GROUP_NUMBER = 50;
+	public final static class LEVEL {
+		public static String N1 = "N1";
+		public static String N2 = "N2";
+		public static String N3 = "N3";
+		public static String N4 = "N4";
+		public static String N5 = "N5";
+	}
 }
