@@ -16,5 +16,12 @@ public interface VocaRepository extends JpaRepository<Voca, UUID>, JpaSpecificat
             "INNER JOIN set_voca as S "+
             "ON V.setId = S.id and S.setName LIKE %?1% " +
             "ORDER BY RAND() LIMIT ?2 ",  nativeQuery = true)
-    public List<Voca> findRandVoca(String level, Integer limit);
+    List<Voca> findRandVoca(String level, Integer limit);
+
+    @Query(value = "SELECT * FROM voca as V "
+            + "WHERE setId in ?1 "
+            + "ORDER BY RAND() "
+            + "LIMIT ?2 "
+            , nativeQuery = true)
+    List<Voca> findRandVocaBaseOnTestGroup(List<UUID> setVocasId, Integer limit);
 }

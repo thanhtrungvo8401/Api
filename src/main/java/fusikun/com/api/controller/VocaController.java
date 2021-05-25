@@ -129,4 +129,17 @@ public class VocaController {
             throw ex;
         }
     }
+
+    @GetMapping("/test-vocas/vocas")
+    public ResponseEntity<List<VocaResponse>> getVocasBaseOnTestVocas() {
+        try {
+            return ResponseEntity.ok(vocaService._getVocasBaseOnTestVocas());
+        } catch (Exception ex) {
+            String stackTrace = ExceptionUtils.getStackTrace(ex);
+            logger.error(stackTrace);
+            throw ex;
+        }
+    }
+
+
 }

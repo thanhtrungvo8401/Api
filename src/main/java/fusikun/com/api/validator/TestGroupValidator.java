@@ -27,9 +27,6 @@ public class TestGroupValidator implements Validator {
             errors.rejectValue("ownerId", ConstantErrorCodes.NOT_FOUND);
         }
         // validate vocaCodes:
-        if (!IsValidRegex.level_n_x(req.getMyVoca()) && !IsValidRegex.level_n_x_2(req.getMyVoca())) {
-            errors.rejectValue("myVoca", ConstantErrorCodes.INVALID_VALUE);
-        }
         if (!IsValidRegex.level_n_x(req.getN5()) && !IsValidRegex.level_n_x_2(req.getN5())) {
             errors.rejectValue("n5", ConstantErrorCodes.INVALID_VALUE);
         }

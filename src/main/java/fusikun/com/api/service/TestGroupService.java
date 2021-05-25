@@ -5,6 +5,7 @@ import fusikun.com.api.dtoREQ.TestGroupRequest;
 import fusikun.com.api.dtoRES.ObjectsManagementList;
 import fusikun.com.api.dtoRES.TestGroupResponse;
 import fusikun.com.api.enums.ApiDataType;
+import fusikun.com.api.model.app.JwtUserDetails;
 import fusikun.com.api.model.app.User;
 import fusikun.com.api.model.study.TestGroup;
 import fusikun.com.api.specificationSearch.SearchHelpers_TestGroup;
@@ -17,6 +18,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,7 +83,7 @@ public class TestGroupService {
             return new TestGroupResponse(testGroup);
         } else {
             TestGroupRequest testGroupRequest =
-                    new TestGroupRequest(id, Constant.DEFAULT_TEST_GROUP_NUMBER,"0_", "0_", "0_", "0_", "0_", "0_");
+                    new TestGroupRequest(id, Constant.DEFAULT_TEST_GROUP_NUMBER, "0_", "0_", "0_", "0_", "0_", "0_");
             return _createTestGroup(testGroupRequest);
         }
     }
@@ -128,6 +130,14 @@ public class TestGroupService {
         TestGroup testGroup = findById(id);
         delete(testGroup);
         return new TestGroupResponse(testGroup);
+    }
+
+    public TestGroupResponse _getCurrentTestVocas() {
+        JwtUserDetails user = (JwtUserDetails) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        return _getTestGroupsByOwnerId(user.getId());
     }
 
     @Getter

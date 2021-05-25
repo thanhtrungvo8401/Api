@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import fusikun.com.api.dtoREQ.VocaRequest;
 import fusikun.com.api.dtoRES.ObjectsManagementList;
+import fusikun.com.api.dtoRES.TestGroupResponse;
 import fusikun.com.api.dtoRES.VocaResponse;
 import fusikun.com.api.enums.ApiDataType;
 import fusikun.com.api.specificationSearch.SearchHelpers_Vocas;
@@ -33,6 +34,9 @@ public class VocaService {
 
     @Autowired
     SetVocaService setVocaService;
+
+    @Autowired
+    TestGroupService testGroupService;
 
     public Voca findById(UUID id) {
         Optional<Voca> optVoca = vocaRepository.findById(id);
@@ -143,6 +147,15 @@ public class VocaService {
     public List<VocaResponse> _getRandomVocaByLevel(String level, Integer limit) {
         return vocaRepository
                 .findRandVoca(level, limit)
+                .stream().map(VocaResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<VocaResponse> _getVocasBaseOnTestVocas() {
+        TestGroupResponse t = testGroupService._getCurrentTestVocas();
+        List<SetVoca> setVocas = setVocaService._getSetVocasBaseOnTestVocas();
+        List<UUID> setIds = setVocas.stream().map(SetVoca::getId).collect(Collectors.toList());
+        return vocaRepository.findRandVocaBaseOnTestGroup(setIds, t.getNumber())
                 .stream().map(VocaResponse::new)
                 .collect(Collectors.toList());
     }
